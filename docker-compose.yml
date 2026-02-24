@@ -1,0 +1,57 @@
+version: '3.9'
+
+services:
+  postgres:
+    image: postgres:16-alpine
+    container_name: aitutor-postgres
+    environment:
+      POSTGRES_DB: aitutor
+      POSTGRES_USER: postgres
+      POSTGRES_PASSWORD: postgres
+    ports:
+      - "5432:5432"
+    volumes:
+      - postgres_data:/var/lib/postgresql/data
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U postgres"]
+      interval: 10s
+      timeout: 5s
+      retries: 5
+
+  backend:
+    build:
+      context: .
+      dockerfile: src/backend/AiTutor.API/Dockerfile
+    container_name: aitutor-backend
+    environment:
+      - ASPNETCORE_ENVIRONMENT=Development
+      - ConnectionStrings__DefaultConnection=Host=postgres;Port=5432;Database=aitutor;Username=postgres;Password=postgres
+      - JwtSettings__SecretKey=AiTutorSuperSecretKey2024!MustBe32Chars!!
+      - JwtSettings__Issuer=AiTutor.API
+      - JwtSettings__Audience=AiTutor.Client
+      - JwtSettings__ExpirationHours=24
+      - AiModule__BaseUrl=http://ai-module:8000
+    ports:
+      - "5000:8080"
+    depends_on:
+      postgres:
+        condition: service_healthy
+
+  ai-module:
+    build:
+      context: src/ai-module
+      dockerfile: Dockerfile
+    container_name: aitutor-ai-module
+    environment:
+      - OPENAI_API_KEY=${OPENAI_API_KEY}
+      - DOTNET_API_BASE_URL=http://backend:8080
+      - ENVIRONMENT=development
+    ports:
+      - "8000:8000"
+    volumes:
+      - ./src/ai-module:/app
+    depends_on:
+      - backend
+
+volumes:
+  postgres_data:

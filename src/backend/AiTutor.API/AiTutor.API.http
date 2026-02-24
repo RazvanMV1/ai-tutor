@@ -1,0 +1,6 @@
+@AiTutor.API_HostAddress = http://localhost:5245
+
+GET {{AiTutor.API_HostAddress}}/weatherforecast/
+Accept: application/json
+
+###

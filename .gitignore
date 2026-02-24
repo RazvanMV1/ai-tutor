@@ -1,0 +1,25 @@
+# .NET
+**/bin/
+**/obj/
+**/*.user
+.vs/
+*.suo
+*.swp
+
+# Python
+**/__pycache__/
+**/*.pyc
+**/venv/
+**/.env
+**/*.egg-info/
+**/dist/
+**/build/
+
+# IDE
+.idea/
+.vscode/
+
+# Secrets
+**/appsettings.Development.json
+**/.env.local
+**/appsettings.Local.json

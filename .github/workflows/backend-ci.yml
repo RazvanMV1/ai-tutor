@@ -63,8 +63,7 @@ jobs:
             /d:sonar.token=${{ secrets.SONAR_TOKEN }} \
             /d:sonar.host.url="https://sonarcloud.io" \
             /d:sonar.cs.vscoveragexml.reportsPaths=coverage.xml \
-            /d:sonar.exclusions="**/Migrations/**"
-
+            /d:sonar.exclusions="**/Migrations/**,**/bin/**,**/obj/**"
 
       - name: Build
         run: dotnet build --no-restore
@@ -76,8 +75,6 @@ jobs:
             -f xml -o coverage.xml
 
       - name: Run Integration Tests
-        env:
-          ConnectionStrings__DefaultConnection: "Host=localhost;Port=5432;Database=aitutor_test;Username=postgres;Password=postgres"
         run: |
           dotnet test tests/AiTutor.IntegrationTests/AiTutor.IntegrationTests.csproj \
             --no-build \
@@ -88,8 +85,6 @@ jobs:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
           SONAR_TOKEN: ${{ secrets.SONAR_TOKEN }}
         run: dotnet-sonarscanner end /d:sonar.token=${{ secrets.SONAR_TOKEN }}
-
-
 
   docker-build:
     name: Docker Build & Push

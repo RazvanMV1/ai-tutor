@@ -1,4 +1,3 @@
-using AiTutor.Application.Common.Exceptions;
 using AiTutor.Application.Common.Interfaces;
 using AiTutor.Application.Common.Models;
 using AiTutor.Domain.Entities;
@@ -33,7 +32,10 @@ public class CompleteLessonCommandHandler : IRequestHandler<CompleteLessonComman
         await _context.SaveChangesAsync(cancellationToken);
 
         return Result<ProgressResponse>.Success(
-            new ProgressResponse(progress.Id, progress.IsCompleted,
-                progress.ScorePercentage, progress.CompletedAt));
+            new ProgressResponse(
+                progress.Id,
+                progress.IsCompleted,
+                progress.ScorePercentage,
+                progress.CompletedAt));
     }
 }

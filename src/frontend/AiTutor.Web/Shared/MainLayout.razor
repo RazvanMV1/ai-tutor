@@ -1,0 +1,56 @@
+﻿@namespace AiTutor.Web.Shared
+@inherits LayoutComponentBase
+
+<MudLayout>
+    <MudAppBar Elevation="1" Color="Color.Primary">
+        <MudIconButton Icon="@Icons.Material.Filled.Menu"
+                       Color="Color.Inherit"
+                       Edge="Edge.Start"
+                       OnClick="ToggleDrawer" />
+        <MudText Typo="Typo.h6" Class="ml-2">🎓 AI-Enhanced Tutor</MudText>
+        <MudSpacer />
+        <MudText Typo="Typo.body2" Class="mr-2">@_userName</MudText>
+        <MudIconButton Icon="@Icons.Material.Filled.Logout"
+                       Color="Color.Inherit"
+                       OnClick="Logout" />
+    </MudAppBar>
+
+    <MudDrawer @bind-Open="_drawerOpen"
+               Elevation="1"
+               Variant="DrawerVariant.Responsive">
+        <MudDrawerHeader>
+            <MudText Typo="Typo.h6" Color="Color.Primary">Meniu</MudText>
+        </MudDrawerHeader>
+        <AiTutor.Web.Shared.NavMenu />
+    </MudDrawer>
+
+    <MudMainContent>
+        <MudContainer MaxWidth="MaxWidth.ExtraLarge" Class="pa-4">
+            @Body
+        </MudContainer>
+    </MudMainContent>
+</MudLayout>
+
+@code {
+    [Inject] private AuthService AuthService { get; set; } = default!;
+    [Inject] private NavigationManager Nav    { get; set; } = default!;
+
+    private bool   _drawerOpen = true;
+    private string _userName   = string.Empty;
+
+    protected override async Task OnInitializedAsync()
+    {
+        var isAuth = await AuthService.IsAuthenticatedAsync();
+        if (!isAuth)
+        {
+            Nav.NavigateTo("/login");
+            return;
+        }
+        var user = await AuthService.GetCurrentUserAsync();
+        _userName = user?.FirstName ?? user?.Email ?? string.Empty;
+    }
+
+    private void ToggleDrawer() => _drawerOpen = !_drawerOpen;
+
+    private async Task Logout() => await AuthService.LogoutAsync();
+}

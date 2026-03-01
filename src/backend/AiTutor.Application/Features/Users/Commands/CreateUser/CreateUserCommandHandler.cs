@@ -1,9 +1,7 @@
-using AiTutor.Application.Common.Exceptions;
 using AiTutor.Application.Common.Interfaces;
 using AiTutor.Application.Common.Models;
 using AiTutor.Domain.Entities;
 using MediatR;
-using Microsoft.EntityFrameworkCore;
 
 namespace AiTutor.Application.Features.Users.Commands.CreateUser;
 
@@ -19,13 +17,6 @@ public class CreateUserCommandHandler : IRequestHandler<CreateUserCommand, Resul
     public async Task<Result<CreateUserResponse>> Handle(CreateUserCommand request,
         CancellationToken cancellationToken)
     {
-        var existingUser = await _context.Users
-            .FirstOrDefaultAsync(u => u.Email.Value == request.Email.ToLowerInvariant(),
-                cancellationToken);
-
-        if (existingUser != null)
-            return Result<CreateUserResponse>.Failure("A user with this email already exists.", 409);
-
         var user = User.Create(request.FirstName, request.LastName, request.Email, request.Role);
 
         _context.Users.Add(user);

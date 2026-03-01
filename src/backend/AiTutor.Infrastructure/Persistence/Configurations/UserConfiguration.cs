@@ -23,13 +23,15 @@ public class UserConfiguration : IEntityTypeConfiguration<User>
             .IsRequired();
 
         builder.Property(u => u.Email)
-            .HasConversion(
-                email => email.Value,
-                value => Email.Create(value))
-            .IsRequired()
-            .HasMaxLength(256);
+        .HasConversion(
+            email => email.Value,
+            value => Email.Create(value))
+        .IsRequired()
+        .HasMaxLength(256)
+        .HasColumnName("Email");
 
         builder.HasIndex(u => u.Email).IsUnique();
+
 
         builder.HasMany(u => u.Progresses)
             .WithOne(p => p.User)

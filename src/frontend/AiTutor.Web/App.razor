@@ -1,0 +1,54 @@
+@namespace AiTutor.Web
+@using AiTutor.Web.Shared
+@using Microsoft.AspNetCore.Components.Routing
+
+<Fluxor.Blazor.Web.StoreInitializer />
+
+<MudThemeProvider Theme="@_appTheme" />
+<MudDialogProvider />
+<MudSnackbarProvider />
+
+<Router AppAssembly="@typeof(App).Assembly">
+    <Found Context="routeData">
+        <RouteView RouteData="@routeData" DefaultLayout="@typeof(MainLayout)" />
+        <FocusOnNavigate RouteData="@routeData" Selector="h1" />
+    </Found>
+    <NotFound>
+        <PageTitle>Paginã negãsitã</PageTitle>
+        <LayoutView Layout="@typeof(MainLayout)">
+            <MudContainer MaxWidth="MaxWidth.Small" Class="mt-16 text-center">
+                <MudText Typo="Typo.h1" Color="Color.Primary">404</MudText>
+                <MudText Typo="Typo.h5" Class="mb-4">Pagina nu a fost gãsitã</MudText>
+                <MudButton Variant="Variant.Filled" Color="Color.Primary" Href="/">
+                    Înapoi acasã
+                </MudButton>
+            </MudContainer>
+        </LayoutView>
+    </NotFound>
+</Router>
+
+@code {
+    private readonly MudTheme _appTheme = new()
+    {
+        PaletteLight = new PaletteLight
+        {
+            Primary          = "#1976D2",
+            Secondary        = "#43A047",
+            Tertiary         = "#FB8C00",
+            Background       = "#F5F5F5",
+            Surface          = "#FFFFFF",
+            AppbarBackground = "#1976D2",
+            AppbarText       = "#FFFFFF",
+            DrawerBackground = "#FFFFFF",
+            DrawerText       = "#212121",
+            DrawerIcon       = "#1976D2",
+        },
+        Typography = new Typography
+        {
+            Default = new DefaultTypography
+            {
+                FontFamily = new[] { "Roboto", "sans-serif" }
+            }
+        }
+    };
+}

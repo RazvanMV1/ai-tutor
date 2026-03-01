@@ -3,12 +3,8 @@ name: AI Module CI/CD
 on:
   push:
     branches: [ main ]
-    paths:
-      - 'src/ai-module/**'
   pull_request:
     branches: [ main ]
-    paths:
-      - 'src/ai-module/**'
 
 jobs:
   build-and-test:

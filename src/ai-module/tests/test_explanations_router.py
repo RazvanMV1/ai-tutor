@@ -22,7 +22,7 @@ def test_create_explanation_mock():
         difficulty_level=DifficultyLevel.BEGINNER
     )
 
-    with patch("app.routers.explanations.get_explanation",
+    with patch("app.services.ai_service.get_explanation",
                new_callable=AsyncMock) as mock_get:
         mock_get.return_value = mock_response
 
@@ -48,7 +48,7 @@ def test_create_hint_mock():
         subject=SubjectType.MATHEMATICS
     )
 
-    with patch("app.routers.explanations.get_hint",
+    with patch("app.services.ai_service.get_hint",
                new_callable=AsyncMock) as mock_get:
         mock_get.return_value = mock_response
 

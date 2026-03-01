@@ -21,7 +21,7 @@ def test_create_problems_mock():
         difficulty_level=DifficultyLevel.BEGINNER
     )
 
-    with patch("app.routers.problems.generate_problems",
+    with patch("app.services.ai_service.generate_problems",
                new_callable=AsyncMock) as mock_gen:
         mock_gen.return_value = mock_response
 

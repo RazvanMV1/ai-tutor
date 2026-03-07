@@ -1,0 +1,430 @@
+﻿@page "/ai/explanation"
+@inject AiService AiService
+@inject AuthService AuthService
+@inject ISnackbar Snackbar
+
+<PageTitle>Explicații AI - AI Tutor</PageTitle>
+
+<RedirectToLogin />
+
+<!-- Header -->
+<MudGrid Class="mb-4">
+    <MudItem xs="12">
+        <MudPaper Elevation="2" Class="pa-6"
+                  Style="border-radius:16px;
+                         background:linear-gradient(135deg,#6A1B9A 0%,#8E24AA 50%,#AB47BC 100%);">
+            <div class="d-flex align-center gap-3">
+                <MudIcon Icon="@Icons.Material.Filled.AutoAwesome"
+                         Style="font-size:2.5rem; color:white;" />
+                <div>
+                    <MudText Typo="Typo.h5" Style="color:white; font-weight:700;">
+                        Explicații Personalizate AI
+                    </MudText>
+                    <MudText Typo="Typo.body2" Style="color:rgba(255,255,255,0.85);">
+                        Obține explicații clare și exemple adaptate nivelului tău
+                    </MudText>
+                </div>
+            </div>
+        </MudPaper>
+    </MudItem>
+</MudGrid>
+
+<MudGrid>
+    <!-- Formular stânga -->
+    <MudItem xs="12" md="4">
+        <MudPaper Elevation="2" Class="pa-4" Style="border-radius:12px;">
+            <MudText Typo="Typo.h6" Class="mb-4" Color="Color.Primary">
+                <MudIcon Icon="@Icons.Material.Filled.Tune" Class="mr-2" />
+                Configurare
+            </MudText>
+
+            <!-- Materie -->
+            <MudSelect @bind-Value="_subject"
+                       Label="Materie"
+                       Variant="Variant.Outlined"
+                       Adornment="Adornment.Start"
+                       AdornmentIcon="@Icons.Material.Filled.MenuBook"
+                       AdornmentColor="Color.Primary"
+                       Class="mb-4"
+                       FullWidth="true">
+                <MudSelectItem Value="1">📐 Matematică</MudSelectItem>
+                <MudSelectItem Value="2">📖 Română</MudSelectItem>
+                <MudSelectItem Value="3">💻 Informatică</MudSelectItem>
+            </MudSelect>
+
+            <!-- Dificultate -->
+            <MudSelect @bind-Value="_difficulty"
+                       Label="Nivel dificultate"
+                       Variant="Variant.Outlined"
+                       Adornment="Adornment.Start"
+                       AdornmentIcon="@Icons.Material.Filled.SignalCellularAlt"
+                       AdornmentColor="Color.Secondary"
+                       Class="mb-4"
+                       FullWidth="true">
+                <MudSelectItem Value="1">🟢 Începător</MudSelectItem>
+                <MudSelectItem Value="2">🟡 Intermediar</MudSelectItem>
+                <MudSelectItem Value="3">🔴 Avansat</MudSelectItem>
+            </MudSelect>
+
+            <!-- Topic -->
+            <MudTextField @bind-Value="_topic"
+                          Label="Subiect / Topic"
+                          Variant="Variant.Outlined"
+                          Adornment="Adornment.Start"
+                          AdornmentIcon="@Icons.Material.Filled.Search"
+                          AdornmentColor="Color.Primary"
+                          Placeholder="ex: ecuații de gradul I, substantivul, recursivitate..."
+                          Lines="2"
+                          Class="mb-4"
+                          FullWidth="true" />
+
+            <!-- Vârsta elevului -->
+            <MudText Typo="Typo.body2" Class="mb-1">
+                Vârsta elevului:
+                <strong style="color:#1976D2;">@_studentAge ani</strong>
+            </MudText>
+            <MudSlider @bind-Value="_studentAge"
+                       Min="6" Max="18" Step="1"
+                       Color="Color.Primary"
+                       Class="mb-6">
+            </MudSlider>
+
+            <!-- Buton generare -->
+            <MudButton Variant="Variant.Filled"
+                       Color="Color.Primary"
+                       Size="Size.Large"
+                       FullWidth="true"
+                       StartIcon="@Icons.Material.Filled.AutoAwesome"
+                       Disabled="@(_isLoading || string.IsNullOrWhiteSpace(_topic))"
+                       OnClick="GenerateExplanation"
+                       Style="border-radius:8px; height:48px;">
+                @if (_isLoading)
+                {
+                    <MudProgressCircular Size="Size.Small"
+                                        Indeterminate="true"
+                                        Class="mr-2" />
+                    <span>Se generează...</span>
+                }
+                else
+                {
+                    <span>✨ Generează Explicație</span>
+                }
+            </MudButton>
+
+            <!-- Exemple rapide -->
+            <MudText Typo="Typo.caption" Color="Color.Secondary" Class="mt-4 mb-2">
+                Exemple rapide:
+            </MudText>
+            <div class="d-flex flex-wrap gap-1">
+                @foreach (var ex in _quickExamples)
+                {
+                    <MudChip T="string"
+                             Size="Size.Small"
+                             Variant="Variant.Outlined"
+                             Color="Color.Primary"
+                             OnClick="@(() => SetQuickExample(ex))">
+                        @ex
+                    </MudChip>
+                }
+            </div>
+        </MudPaper>
+    </MudItem>
+
+    <!-- Rezultat dreapta -->
+    <MudItem xs="12" md="8">
+        @if (_explanation is null && !_isLoading)
+        {
+            <!-- Placeholder când nu există rezultat -->
+            <MudPaper Elevation="1" Class="pa-8"
+                      Style="border-radius:12px; border:2px dashed #E0E0E0;
+                             background:#FAFAFA; height:100%;">
+                <div class="d-flex flex-column align-center justify-center"
+                     style="min-height:300px;">
+                    <MudIcon Icon="@Icons.Material.Filled.AutoAwesome"
+                             Style="font-size:4rem; color:#E0E0E0;" />
+                    <MudText Typo="Typo.h6" Color="Color.Secondary" Class="mt-3">
+                        Explicația ta va apărea aici
+                    </MudText>
+                    <MudText Typo="Typo.body2" Color="Color.Secondary"
+                             Align="Align.Center" Class="mt-1">
+                        Completează formularul și apasă "Generează Explicație"
+                    </MudText>
+                </div>
+            </MudPaper>
+        }
+        else if (_isLoading)
+        {
+            <MudPaper Elevation="2" Class="pa-8"
+                      Style="border-radius:12px; height:100%;">
+                <div class="d-flex flex-column align-center justify-center"
+                     style="min-height:300px;">
+                    <MudProgressCircular Color="Color.Primary"
+                                        Indeterminate="true"
+                                        Size="Size.Large" />
+                    <MudText Typo="Typo.body1" Color="Color.Primary" Class="mt-4">
+                        AI-ul generează explicația...
+                    </MudText>
+                    <MudText Typo="Typo.caption" Color="Color.Secondary" Class="mt-1">
+                        Acest lucru poate dura câteva secunde
+                    </MudText>
+                </div>
+            </MudPaper>
+        }
+        else if (_explanation is not null)
+        {
+            <div class="d-flex flex-column gap-3">
+                <!-- Card principal explicație -->
+                <MudPaper Elevation="2" Class="pa-5" Style="border-radius:12px;">
+                    <!-- Header card -->
+                    <div class="d-flex justify-space-between align-center mb-3 flex-wrap gap-2">
+                        <div class="d-flex align-center gap-2">
+                            <MudIcon Icon="@Icons.Material.Filled.Lightbulb"
+                                     Color="Color.Warning" />
+                            <MudText Typo="Typo.h6" Color="Color.Primary">
+                                @_explanation.Topic
+                            </MudText>
+                        </div>
+                        <div class="d-flex gap-1">
+                            <MudChip T="string" Size="Size.Small"
+                                     Color="Color.Primary" Variant="Variant.Filled">
+                                @GetSubjectName(_explanation.Subject)
+                            </MudChip>
+                            <MudChip T="string" Size="Size.Small"
+                                     Color="@GetDifficultyColor(_explanation.DifficultyLevel)"
+                                     Variant="Variant.Filled">
+                                @GetDifficultyName(_explanation.DifficultyLevel)
+                            </MudChip>
+                        </div>
+                    </div>
+
+                    <MudDivider Class="mb-3" />
+
+                    <!-- Explicație -->
+                    <MudText Typo="Typo.body1" Style="line-height:1.8;">
+                        @_explanation.Explanation
+                    </MudText>
+                </MudPaper>
+
+                <!-- Exemple -->
+                @if (_explanation.Examples?.Count > 0)
+                {
+                    <MudPaper Elevation="2" Class="pa-5" Style="border-radius:12px;">
+                        <MudText Typo="Typo.h6" Class="mb-3" Style="color:#F57C00;">
+                            <MudIcon Icon="@Icons.Material.Filled.Extension"
+                                     Class="mr-2" Style="color:#F57C00;" />
+                            Exemple
+                        </MudText>
+                        <div class="d-flex flex-wrap gap-2">
+                            @foreach (var example in _explanation.Examples)
+                            {
+                                <MudChip T="string"
+                                         Color="Color.Warning"
+                                         Variant="Variant.Outlined"
+                                         Size="Size.Medium"
+                                         Icon="@Icons.Material.Filled.Star">
+                                    @example
+                                </MudChip>
+                            }
+                        </div>
+                    </MudPaper>
+                }
+
+                <!-- Puncte cheie -->
+                @if (_explanation.KeyPoints?.Count > 0)
+                {
+                    <MudPaper Elevation="2" Class="pa-5" Style="border-radius:12px;">
+                        <MudText Typo="Typo.h6" Class="mb-3" Style="color:#388E3C;">
+                            <MudIcon Icon="@Icons.Material.Filled.CheckCircle"
+                                     Class="mr-2" Style="color:#388E3C;" />
+                            Puncte Cheie
+                        </MudText>
+                        <MudList T="string" Dense="true">
+                            @foreach (var point in _explanation.KeyPoints)
+                            {
+                                <MudListItem T="string"
+                                             Icon="@Icons.Material.Filled.ArrowRight"
+                                             IconColor="Color.Secondary">
+                                    <MudText Typo="Typo.body2">@point</MudText>
+                                </MudListItem>
+                            }
+                        </MudList>
+                    </MudPaper>
+                }
+
+                <!-- Secțiune indiciu -->
+                <MudPaper Elevation="2" Class="pa-5"
+                          Style="border-radius:12px; border:2px solid #E3F2FD;">
+                    <MudText Typo="Typo.h6" Class="mb-3" Color="Color.Primary">
+                        <MudIcon Icon="@Icons.Material.Filled.HelpOutline"
+                                 Class="mr-2" />
+                        Cere un Indiciu
+                    </MudText>
+
+                    <MudTextField @bind-Value="_hintQuestion"
+                                  Label="Întreabă ceva specific despre acest subiect..."
+                                  Variant="Variant.Outlined"
+                                  Lines="2"
+                                  FullWidth="true"
+                                  Class="mb-3"
+                                  Adornment="Adornment.Start"
+                                  AdornmentIcon="@Icons.Material.Filled.QuestionAnswer"
+                                  AdornmentColor="Color.Primary" />
+
+                    <MudButton Variant="Variant.Outlined"
+                               Color="Color.Primary"
+                               StartIcon="@Icons.Material.Filled.Lightbulb"
+                               Disabled="@(_isHintLoading || string.IsNullOrWhiteSpace(_hintQuestion))"
+                               OnClick="GetHint"
+                               Style="border-radius:8px;">
+                        @if (_isHintLoading)
+                        {
+                            <MudProgressCircular Size="Size.Small"
+                                                Indeterminate="true"
+                                                Class="mr-2" />
+                            <span>Se generează...</span>
+                        }
+                        else
+                        {
+                            <span>Obține Indiciu</span>
+                        }
+                    </MudButton>
+
+                    @if (_hint is not null)
+                    {
+                        <MudAlert Severity="Severity.Info"
+                                  Class="mt-3"
+                                  Icon="@Icons.Material.Filled.Lightbulb"
+                                  Style="border-radius:8px;">
+                            <MudText Typo="Typo.body2">
+                                <strong>Indiciu:</strong> @_hint.Hint
+                            </MudText>
+                        </MudAlert>
+                    }
+                </MudPaper>
+            </div>
+        }
+    </MudItem>
+</MudGrid>
+
+@code {
+    private int    _subject     = 1;
+    private int    _difficulty  = 1;
+    private string _topic       = string.Empty;
+    private int    _studentAge  = 12;
+
+    private bool                _isLoading  = false;
+    private ExplanationResponse? _explanation = null;
+
+    private string  _hintQuestion  = string.Empty;
+    private bool    _isHintLoading = false;
+    private HintResponse? _hint    = null;
+
+    private readonly string[] _quickExamples =
+    [
+        "Ecuații gradul I",
+        "Fracții",
+        "Substantivul",
+        "Verbul",
+        "Recursivitate",
+        "Vectori C++",
+        "Poezia",
+        "Mulțimi"
+    ];
+
+    private void SetQuickExample(string example)
+    {
+        _topic = example;
+        _explanation = null;
+        _hint = null;
+    }
+
+    private async Task GenerateExplanation()
+    {
+        if (string.IsNullOrWhiteSpace(_topic)) return;
+
+        _isLoading   = true;
+        _explanation = null;
+        _hint        = null;
+
+        try
+        {
+            _explanation = await AiService.GetExplanationAsync(
+                new ExplanationRequest(_topic, _subject, _difficulty, _studentAge));
+
+            Snackbar.Add("Explicație generată cu succes! ✨", Severity.Success);
+        }
+        catch (Exception ex)
+        {
+            Snackbar.Add($"Eroare la generarea explicației: {ex.Message}", Severity.Error);
+
+            // Date demo când AI nu e disponibil
+            _explanation = new ExplanationResponse(
+                Topic: _topic,
+                Explanation: $"Aceasta este o explicație demo pentru '{_topic}'. " +
+                             "Modulul AI nu este disponibil momentan, dar în mod normal " +
+                             "aici ar apărea o explicație detaliată și personalizată " +
+                             $"pentru un elev de {_studentAge} ani.",
+                Examples: ["Exemplu 1", "Exemplu 2", "Exemplu 3"],
+                KeyPoints: ["Punct cheie 1", "Punct cheie 2", "Punct cheie 3"],
+                Subject: _subject,
+                DifficultyLevel: _difficulty
+            );
+        }
+        finally
+        {
+            _isLoading = false;
+        }
+    }
+
+    private async Task GetHint()
+    {
+        if (string.IsNullOrWhiteSpace(_hintQuestion)) return;
+
+        _isHintLoading = true;
+        _hint          = null;
+
+        try
+        {
+            _hint = await AiService.GetHintAsync(
+                new HintRequest(_hintQuestion, _subject));
+        }
+        catch (Exception ex)
+        {
+            Snackbar.Add($"Eroare la obținerea indiciului: {ex.Message}", Severity.Error);
+
+            _hint = new HintResponse(
+                Question: _hintQuestion,
+                Hint: "Acesta este un indiciu demo. Modulul AI nu este disponibil momentan.",
+                Subject: _subject
+            );
+        }
+        finally
+        {
+            _isHintLoading = false;
+        }
+    }
+
+    private static string GetSubjectName(int subject) => subject switch
+    {
+        1 => "📐 Matematică",
+        2 => "📖 Română",
+        3 => "💻 Informatică",
+        _ => "Necunoscut"
+    };
+
+    private static string GetDifficultyName(int difficulty) => difficulty switch
+    {
+        1 => "🟢 Începător",
+        2 => "🟡 Intermediar",
+        3 => "🔴 Avansat",
+        _ => "Necunoscut"
+    };
+
+    private static Color GetDifficultyColor(int difficulty) => difficulty switch
+    {
+        1 => Color.Success,
+        2 => Color.Warning,
+        3 => Color.Error,
+        _ => Color.Default
+    };
+}

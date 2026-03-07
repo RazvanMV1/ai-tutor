@@ -1,0 +1,537 @@
+﻿@page "/progress"
+@inject ApiService ApiService
+@inject AuthService AuthService
+@inject NavigationManager Navigation
+@inject ISnackbar Snackbar
+
+<PageTitle>Progresul Meu - AI Tutor</PageTitle>
+
+<RedirectToLogin />
+
+<!-- Header -->
+<MudGrid Class="mb-4">
+    <MudItem xs="12">
+        <MudPaper Elevation="2" Class="pa-6"
+                  Style="border-radius:16px;
+                         background:linear-gradient(135deg,#4A148C 0%,#7B1FA2 50%,#AB47BC 100%);">
+            <div class="d-flex justify-space-between align-center flex-wrap gap-4">
+                <div class="d-flex align-center gap-3">
+                    <MudIcon Icon="@Icons.Material.Filled.TrendingUp"
+                             Style="font-size:2.5rem; color:white;" />
+                    <div>
+                        <MudText Typo="Typo.h5" Style="color:white; font-weight:700;">
+                            Progresul Meu
+                        </MudText>
+                        <MudText Typo="Typo.body2" Style="color:rgba(255,255,255,0.85);">
+                            Urmărește evoluția ta în timp
+                        </MudText>
+                    </div>
+                </div>
+                <MudButton Variant="Variant.Filled"
+                           StartIcon="@Icons.Material.Filled.Refresh"
+                           Style="background:rgba(255,255,255,0.2); color:white; border-radius:8px;"
+                           OnClick="LoadProgressAsync">
+                    Reîncarcă
+                </MudButton>
+            </div>
+        </MudPaper>
+    </MudItem>
+</MudGrid>
+
+@if (_isLoading)
+{
+    <div class="d-flex justify-center align-center" style="height:40vh;">
+        <div class="d-flex flex-column align-center">
+            <MudProgressCircular Color="Color.Primary"
+                                 Indeterminate="true"
+                                 Size="Size.Large" />
+            <MudText Typo="Typo.body1" Color="Color.Primary" Class="mt-4">
+                Se încarcă progresul...
+            </MudText>
+        </div>
+    </div>
+}
+else
+{
+    <!-- Statistici sumar -->
+    <MudGrid Class="mb-4">
+        <MudItem xs="6" sm="3">
+            <MudPaper Elevation="2" Class="pa-4 text-center"
+                      Style="border-radius:12px; border-top:4px solid #7B1FA2;">
+                <MudText Typo="Typo.h4" Style="color:#7B1FA2; font-weight:700;">
+                    @_totalCount
+                </MudText>
+                <MudText Typo="Typo.caption" Color="Color.Secondary">
+                    Total lecții
+                </MudText>
+            </MudPaper>
+        </MudItem>
+
+        <MudItem xs="6" sm="3">
+            <MudPaper Elevation="2" Class="pa-4 text-center"
+                      Style="border-radius:12px; border-top:4px solid #388E3C;">
+                <MudText Typo="Typo.h4" Style="color:#388E3C; font-weight:700;">
+                    @_completedCount
+                </MudText>
+                <MudText Typo="Typo.caption" Color="Color.Secondary">
+                    Completate
+                </MudText>
+            </MudPaper>
+        </MudItem>
+
+        <MudItem xs="6" sm="3">
+            <MudPaper Elevation="2" Class="pa-4 text-center"
+                      Style="border-radius:12px; border-top:4px solid #F57C00;">
+                <MudText Typo="Typo.h4" Style="color:#F57C00; font-weight:700;">
+                    @_averageScore%
+                </MudText>
+                <MudText Typo="Typo.caption" Color="Color.Secondary">
+                    Scor mediu
+                </MudText>
+            </MudPaper>
+        </MudItem>
+
+        <MudItem xs="6" sm="3">
+            <MudPaper Elevation="2" Class="pa-4 text-center"
+                      Style="border-radius:12px; border-top:4px solid #1976D2;">
+                <MudText Typo="Typo.h4" Style="color:#1976D2; font-weight:700;">
+                    @_progressPercent%
+                </MudText>
+                <MudText Typo="Typo.caption" Color="Color.Secondary">
+                    Progres general
+                </MudText>
+            </MudPaper>
+        </MudItem>
+    </MudGrid>
+
+    <!-- Progres vizual per materie -->
+    <MudGrid Class="mb-4">
+        <MudItem xs="12" md="4">
+            <MudPaper Elevation="2" Class="pa-4"
+                      Style="border-radius:12px; border-left:4px solid #1976D2;">
+                <div class="d-flex justify-space-between align-center mb-2">
+                    <MudText Typo="Typo.subtitle2">📐 Matematică</MudText>
+                    <MudText Typo="Typo.subtitle2" Color="Color.Primary">
+                        @_mathStats.Completed / @_mathStats.Total
+                    </MudText>
+                </div>
+                <MudProgressLinear Value="@_mathStats.Percent"
+                                   Color="Color.Primary"
+                                   Rounded="true"
+                                   Size="Size.Medium"
+                                   Class="mb-1" />
+                <MudText Typo="Typo.caption" Color="Color.Secondary">
+                    Scor mediu: @_mathStats.AvgScore%
+                </MudText>
+            </MudPaper>
+        </MudItem>
+
+        <MudItem xs="12" md="4">
+            <MudPaper Elevation="2" Class="pa-4"
+                      Style="border-radius:12px; border-left:4px solid #388E3C;">
+                <div class="d-flex justify-space-between align-center mb-2">
+                    <MudText Typo="Typo.subtitle2">📖 Română</MudText>
+                    <MudText Typo="Typo.subtitle2" Color="Color.Secondary">
+                        @_roStats.Completed / @_roStats.Total
+                    </MudText>
+                </div>
+                <MudProgressLinear Value="@_roStats.Percent"
+                                   Color="Color.Secondary"
+                                   Rounded="true"
+                                   Size="Size.Medium"
+                                   Class="mb-1" />
+                <MudText Typo="Typo.caption" Color="Color.Secondary">
+                    Scor mediu: @_roStats.AvgScore%
+                </MudText>
+            </MudPaper>
+        </MudItem>
+
+        <MudItem xs="12" md="4">
+            <MudPaper Elevation="2" Class="pa-4"
+                      Style="border-radius:12px; border-left:4px solid #7B1FA2;">
+                <div class="d-flex justify-space-between align-center mb-2">
+                    <MudText Typo="Typo.subtitle2">💻 Informatică</MudText>
+                    <MudText Typo="Typo.subtitle2" Style="color:#7B1FA2;">
+                        @_infoStats.Completed / @_infoStats.Total
+                    </MudText>
+                </div>
+                <MudProgressLinear Value="@_infoStats.Percent"
+                                   Color="Color.Tertiary"
+                                   Rounded="true"
+                                   Size="Size.Medium"
+                                   Class="mb-1" />
+                <MudText Typo="Typo.caption" Color="Color.Secondary">
+                    Scor mediu: @_infoStats.AvgScore%
+                </MudText>
+            </MudPaper>
+        </MudItem>
+    </MudGrid>
+
+    <!-- Tabel progres detaliat -->
+    <MudPaper Elevation="2" Class="pa-4" Style="border-radius:12px;">
+        <div class="d-flex justify-space-between align-center mb-4 flex-wrap gap-3">
+            <MudText Typo="Typo.h6" Color="Color.Primary">
+                <MudIcon Icon="@Icons.Material.Filled.TableChart" Class="mr-2" />
+                Detalii Progres
+            </MudText>
+
+            <div class="d-flex gap-2 flex-wrap align-center">
+                <MudTextField @bind-Value="_searchText"
+                              Placeholder="Caută lecție..."
+                              Variant="Variant.Outlined"
+                              Adornment="Adornment.Start"
+                              AdornmentIcon="@Icons.Material.Filled.Search"
+                              AdornmentColor="Color.Primary"
+                              Margin="Margin.Dense"
+                              Style="min-width:200px;" />
+
+                <MudChip T="string"
+                         Size="Size.Small"
+                         Color="@(_filterStatus == "all" ? Color.Primary : Color.Default)"
+                         Variant="@(_filterStatus == "all" ? Variant.Filled : Variant.Outlined)"
+                         OnClick="@(() => _filterStatus = "all")">
+                    Toate
+                </MudChip>
+                <MudChip T="string"
+                         Size="Size.Small"
+                         Color="@(_filterStatus == "completed" ? Color.Success : Color.Default)"
+                         Variant="@(_filterStatus == "completed" ? Variant.Filled : Variant.Outlined)"
+                         OnClick="@(() => _filterStatus = "completed")">
+                    ✅ Completate
+                </MudChip>
+                <MudChip T="string"
+                         Size="Size.Small"
+                         Color="@(_filterStatus == "pending" ? Color.Warning : Color.Default)"
+                         Variant="@(_filterStatus == "pending" ? Variant.Filled : Variant.Outlined)"
+                         OnClick="@(() => _filterStatus = "pending")">
+                    ⏳ Nefinalizate
+                </MudChip>
+            </div>
+        </div>
+
+        @if (!FilteredProgress.Any())
+        {
+            <div class="d-flex flex-column align-center pa-8">
+                <MudIcon Icon="@Icons.Material.Filled.SearchOff"
+                         Style="font-size:3rem; color:#BDBDBD;" />
+                <MudText Color="Color.Secondary" Class="mt-2">
+                    Nu există rezultate pentru filtrul selectat.
+                </MudText>
+            </div>
+        }
+        else
+        {
+            <div style="overflow-x:auto;">
+                <table style="width:100%; border-collapse:collapse;">
+                    <thead>
+                        <tr style="background:#F5F5F5;">
+                            <th style="padding:12px 16px; text-align:left;
+                                       font-size:0.75rem; color:#757575;
+                                       font-weight:600; text-transform:uppercase;
+                                       letter-spacing:0.5px;">
+                                Lecție
+                            </th>
+                            <th style="padding:12px 16px; text-align:center;
+                                       font-size:0.75rem; color:#757575;
+                                       font-weight:600; text-transform:uppercase;
+                                       letter-spacing:0.5px;">
+                                Status
+                            </th>
+                            <th style="padding:12px 16px; text-align:center;
+                                       font-size:0.75rem; color:#757575;
+                                       font-weight:600; text-transform:uppercase;
+                                       letter-spacing:0.5px;">
+                                Scor
+                            </th>
+                            <th style="padding:12px 16px; text-align:center;
+                                       font-size:0.75rem; color:#757575;
+                                       font-weight:600; text-transform:uppercase;
+                                       letter-spacing:0.5px;">
+                                Încercări
+                            </th>
+                            <th style="padding:12px 16px; text-align:right;
+                                       font-size:0.75rem; color:#757575;
+                                       font-weight:600; text-transform:uppercase;
+                                       letter-spacing:0.5px;">
+                                Data
+                            </th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        @foreach (var item in FilteredProgress)
+                        {
+                            <tr @onmouseenter="@(() => _hoveredRow = item.LessonId)"
+                                @onmouseleave="@(() => _hoveredRow = Guid.Empty)"
+                                style="@(_hoveredRow == item.LessonId
+                                    ? "background:#F5F5F5; border-bottom:1px solid #F0F0F0;"
+                                    : "border-bottom:1px solid #F0F0F0;")">
+
+                                <!-- Lecție -->
+                                <td style="padding:14px 16px;">
+                                    <div class="d-flex align-center gap-2">
+                                        <MudIcon Icon="@Icons.Material.Filled.AutoStories"
+                                                 Size="Size.Small"
+                                                 Color="Color.Primary" />
+                                        <MudText Typo="Typo.body2" Style="font-weight:500;">
+                                            @item.LessonTitle
+                                        </MudText>
+                                    </div>
+                                </td>
+
+                                <!-- Status -->
+                                <td style="padding:14px 16px; text-align:center;">
+                                    @if (item.IsCompleted)
+                                    {
+                                        <MudChip T="string" Size="Size.Small"
+                                                 Color="Color.Success"
+                                                 Variant="Variant.Filled"
+                                                 Icon="@Icons.Material.Filled.CheckCircle">
+                                            Completată
+                                        </MudChip>
+                                    }
+                                    else
+                                    {
+                                        <MudChip T="string" Size="Size.Small"
+                                                 Color="Color.Warning"
+                                                 Variant="Variant.Outlined"
+                                                 Icon="@Icons.Material.Filled.HourglassEmpty">
+                                            În progres
+                                        </MudChip>
+                                    }
+                                </td>
+
+                                <!-- Scor -->
+                                <td style="padding:14px 16px; text-align:center;">
+                                    @if (item.IsCompleted)
+                                    {
+                                        <div class="d-flex flex-column align-center gap-1">
+                                            <MudText Typo="Typo.body2"
+                                                     Style="@($"font-weight:700; color:{GetScoreColor(item.ScorePercentage)};")">
+                                                @item.ScorePercentage%
+                                            </MudText>
+                                            <div style="width:60px; height:6px;
+                                                        border-radius:3px;
+                                                        background:#E0E0E0; overflow:hidden;">
+                                                <div style="@($"height:100%; width:{item.ScorePercentage}%; background:{GetScoreColor(item.ScorePercentage)}; border-radius:3px;")">
+                                                </div>
+                                            </div>
+                                        </div>
+                                    }
+                                    else
+                                    {
+                                        <MudText Typo="Typo.body2" Color="Color.Secondary">
+                                            —
+                                        </MudText>
+                                    }
+                                </td>
+
+                                <!-- Încercări -->
+                                <td style="padding:14px 16px; text-align:center;">
+                                    <MudChip T="string" Size="Size.Small"
+                                             Color="Color.Default"
+                                             Variant="Variant.Outlined">
+                                        @item.AttemptsCount
+                                    </MudChip>
+                                </td>
+
+                                <!-- Data -->
+                                <td style="padding:14px 16px; text-align:right;">
+                                    @if (item.CompletedAt.HasValue)
+                                    {
+                                        <MudText Typo="Typo.caption" Color="Color.Secondary">
+                                            @item.CompletedAt.Value.ToString("dd MMM yyyy")
+                                        </MudText>
+                                    }
+                                    else
+                                    {
+                                        <MudText Typo="Typo.caption" Color="Color.Secondary">
+                                            —
+                                        </MudText>
+                                    }
+                                </td>
+                            </tr>
+                        }
+                    </tbody>
+                </table>
+            </div>
+
+            <!-- Footer tabel -->
+            <div class="d-flex justify-space-between align-center mt-3 flex-wrap gap-2">
+                <MudText Typo="Typo.caption" Color="Color.Secondary">
+                    Se afișează @FilteredProgress.Count() din @_progress.Count înregistrări
+                </MudText>
+                <div class="d-flex gap-3">
+                    <div class="d-flex align-center gap-1">
+                        <div style="width:10px; height:10px; border-radius:50%;
+                                    background:#388E3C;"></div>
+                        <MudText Typo="Typo.caption">Scor ≥ 70%</MudText>
+                    </div>
+                    <div class="d-flex align-center gap-1">
+                        <div style="width:10px; height:10px; border-radius:50%;
+                                    background:#F57C00;"></div>
+                        <MudText Typo="Typo.caption">Scor 40-69%</MudText>
+                    </div>
+                    <div class="d-flex align-center gap-1">
+                        <div style="width:10px; height:10px; border-radius:50%;
+                                    background:#D32F2F;"></div>
+                        <MudText Typo="Typo.caption">Scor &lt; 40%</MudText>
+                    </div>
+                </div>
+            </div>
+        }
+    </MudPaper>
+}
+
+@code {
+    private bool   _isLoading    = true;
+    private string _searchText   = string.Empty;
+    private string _filterStatus = "all";
+    private Guid   _hoveredRow   = Guid.Empty;
+
+    private List<StudentProgressDto> _progress = [];
+
+    private int _totalCount      = 0;
+    private int _completedCount  = 0;
+    private int _averageScore    = 0;
+    private int _progressPercent = 0;
+
+    private SubjectStats _mathStats = new();
+    private SubjectStats _roStats   = new();
+    private SubjectStats _infoStats = new();
+
+    private record SubjectStats(
+        int Total     = 0,
+        int Completed = 0,
+        int AvgScore  = 0)
+    {
+        public double Percent => Total > 0
+            ? Math.Round((double)Completed / Total * 100)
+            : 0;
+    }
+
+    private IEnumerable<StudentProgressDto> FilteredProgress =>
+        _progress
+            .Where(p =>
+            {
+                var matchesSearch = string.IsNullOrWhiteSpace(_searchText) ||
+                    p.LessonTitle.Contains(_searchText,
+                        StringComparison.OrdinalIgnoreCase);
+
+                var matchesStatus = _filterStatus switch
+                {
+                    "completed" => p.IsCompleted,
+                    "pending"   => !p.IsCompleted,
+                    _           => true
+                };
+
+                return matchesSearch && matchesStatus;
+            })
+            .OrderByDescending(p => p.CompletedAt ?? DateTime.MinValue);
+
+    protected override async Task OnAfterRenderAsync(bool firstRender)
+    {
+        if (!firstRender) return;
+        await LoadProgressAsync();
+    }
+
+    private async Task LoadProgressAsync()
+    {
+        _isLoading = true;
+        StateHasChanged();
+
+        try
+        {
+            var user = await AuthService.GetUserAsync();
+            if (user is null)
+            {
+                Navigation.NavigateTo("/login");
+                return;
+            }
+
+            _progress = await ApiService.GetProgressAsync(user.Id);
+
+            if (_progress.Count == 0)
+                LoadDemoProgress();
+        }
+        catch
+        {
+            LoadDemoProgress();
+            Snackbar.Add("Backend indisponibil — se afișează date demo.", Severity.Info);
+        }
+        finally
+        {
+            CalculateStats();
+            _isLoading = false;
+            StateHasChanged();
+        }
+    }
+
+    private void CalculateStats()
+    {
+        _totalCount      = _progress.Count;
+        _completedCount  = _progress.Count(p => p.IsCompleted);
+        _progressPercent = _totalCount > 0
+            ? (int)Math.Round((double)_completedCount / _totalCount * 100)
+            : 0;
+
+        var completed = _progress.Where(p => p.IsCompleted).ToList();
+        _averageScore = completed.Count > 0
+            ? (int)Math.Round(completed.Average(p => p.ScorePercentage))
+            : 0;
+
+        _mathStats = GetSubjectStats("mat");
+        _roStats   = GetSubjectStats("rom");
+        _infoStats = GetSubjectStats("inf");
+    }
+
+    private SubjectStats GetSubjectStats(string keyword)
+    {
+        var items = _progress
+            .Where(p => p.LessonTitle.Contains(keyword,
+                StringComparison.OrdinalIgnoreCase))
+            .ToList();
+
+        if (items.Count == 0) return new SubjectStats();
+
+        var completed = items.Where(p => p.IsCompleted).ToList();
+        var avgScore  = completed.Count > 0
+            ? (int)Math.Round(completed.Average(p => p.ScorePercentage))
+            : 0;
+
+        return new SubjectStats(items.Count, completed.Count, avgScore);
+    }
+
+    private static string GetScoreColor(int score) => score switch
+    {
+        >= 70 => "#388E3C",
+        >= 40 => "#F57C00",
+        _     => "#D32F2F"
+    };
+
+    private void LoadDemoProgress()
+    {
+        _progress =
+        [
+            new StudentProgressDto(Guid.NewGuid(), "Ecuații de gradul I",
+                true,  92, 1, DateTime.Now.AddDays(-1)),
+            new StudentProgressDto(Guid.NewGuid(), "Substantivul",
+                true,  78, 2, DateTime.Now.AddDays(-3)),
+            new StudentProgressDto(Guid.NewGuid(), "Algoritmi de bază",
+                true,  85, 1, DateTime.Now.AddDays(-5)),
+            new StudentProgressDto(Guid.NewGuid(), "Verbul",
+                true,  65, 1, DateTime.Now.AddDays(-7)),
+            new StudentProgressDto(Guid.NewGuid(), "Recursivitate",
+                true,  90, 2, DateTime.Now.AddDays(-10)),
+            new StudentProgressDto(Guid.NewGuid(), "Sisteme de ecuații",
+                true,  55, 3, DateTime.Now.AddDays(-12)),
+            new StudentProgressDto(Guid.NewGuid(), "Figuri de stil",
+                false,  0, 0, null),
+            new StudentProgressDto(Guid.NewGuid(), "Grafuri",
+                false,  0, 0, null),
+            new StudentProgressDto(Guid.NewGuid(), "Trigonometrie",
+                false,  0, 0, null),
+            new StudentProgressDto(Guid.NewGuid(), "Comentariul literar",
+                false,  0, 0, null),
+        ];
+    }
+}

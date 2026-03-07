@@ -1,77 +1,61 @@
-﻿using System.Net.Http;
-using System.Net.Http.Json;
+﻿using System.Net.Http.Json;
+using System.Text.Json;
 using AiTutor.Web.Models;
-using Microsoft.JSInterop;
 
 namespace AiTutor.Web.Services;
 
 public class ApiService
 {
-    private readonly IHttpClientFactory _factory;
-    private readonly IJSRuntime _js;
-    private HttpClient? _client;
+    private readonly AuthService _auth;
 
-    public ApiService(IHttpClientFactory factory, IJSRuntime js)
+    private static JsonSerializerOptions JsonOpts => new()
+    { PropertyNameCaseInsensitive = true };
+
+    public ApiService(AuthService auth) => _auth = auth;
+
+    // ── Auth ─────────────────────────────────────────────────────────────────
+    public async Task<AuthResponse?> LoginAsync(LoginRequest request)
     {
-        _factory = factory;
-        _js = js;
+        var client = _auth.GetUnauthenticatedClient();
+        var response = await client.PostAsJsonAsync("/api/auth/login", request);
+        response.EnsureSuccessStatusCode();
+        return await response.Content.ReadFromJsonAsync<AuthResponse>(JsonOpts);
     }
 
-    private async Task<HttpClient> GetClientAsync()
+    public async Task RegisterAsync(RegisterRequest request)
     {
-        if (_client is not null) return _client;
-        _client = _factory.CreateClient("BackendApi");
-        var token = await _js.InvokeAsync<string?>("localStorage.getItem", "auth_token");
-        if (!string.IsNullOrEmpty(token))
-            _client.DefaultRequestHeaders.Authorization =
-                new System.Net.Http.Headers.AuthenticationHeaderValue("Bearer", token);
-        return _client;
+        var client = _auth.GetUnauthenticatedClient();
+        var response = await client.PostAsJsonAsync("/api/auth/register", request);
+        response.EnsureSuccessStatusCode();
     }
 
+    // ── Subjects ─────────────────────────────────────────────────────────────
     public async Task<List<SubjectDto>> GetSubjectsAsync()
     {
-        var client = await GetClientAsync();
-        try
-        {
-            return await client.GetFromJsonAsync<List<SubjectDto>>("/api/subjects")
-                   ?? new List<SubjectDto>();
-        }
-        catch { return new List<SubjectDto>(); }
+        var client = await _auth.GetAuthenticatedClientAsync();
+        return await client.GetFromJsonAsync<List<SubjectDto>>("/api/subjects", JsonOpts)
+               ?? [];
     }
 
-    public async Task<LessonDto?> GetLessonAsync(int id)
+    // ── Lessons ──────────────────────────────────────────────────────────────
+    public async Task<LessonDto?> GetLessonAsync(Guid id)
     {
-        var client = await GetClientAsync();
-        try { return await client.GetFromJsonAsync<LessonDto>($"/api/lessons/{id}"); }
-        catch { return null; }
+        var client = await _auth.GetAuthenticatedClientAsync();
+        return await client.GetFromJsonAsync<LessonDto>($"/api/lessons/{id}", JsonOpts);
     }
 
-    public async Task<List<StudentProgressDto>> GetProgressAsync(string userId)
+    // ── Progress ─────────────────────────────────────────────────────────────
+    public async Task<List<StudentProgressDto>> GetProgressAsync(Guid userId)
     {
-        var client = await GetClientAsync();
-        try
-        {
-            return await client.GetFromJsonAsync<List<StudentProgressDto>>($"/api/progress/{userId}")
-                   ?? new List<StudentProgressDto>();
-        }
-        catch { return new List<StudentProgressDto>(); }
+        var client = await _auth.GetAuthenticatedClientAsync();
+        return await client.GetFromJsonAsync<List<StudentProgressDto>>(
+            $"/api/progress/{userId}", JsonOpts) ?? [];
     }
 
-    public async Task<bool> CompleteProgressAsync(CompleteProgressRequest request)
+    public async Task CompleteLessonAsync(CompleteLessonRequest request)
     {
-        var client = await GetClientAsync();
-        try
-        {
-            var response = await client.PostAsJsonAsync("/api/progress/complete", request);
-            return response.IsSuccessStatusCode;
-        }
-        catch { return false; }
-    }
-
-    public async Task<UserDto?> GetUserAsync(string id)
-    {
-        var client = await GetClientAsync();
-        try { return await client.GetFromJsonAsync<UserDto>($"/api/users/{id}"); }
-        catch { return null; }
+        var client = await _auth.GetAuthenticatedClientAsync();
+        var response = await client.PostAsJsonAsync("/api/progress/complete", request);
+        response.EnsureSuccessStatusCode();
     }
 }

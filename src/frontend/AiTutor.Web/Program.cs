@@ -1,28 +1,19 @@
-﻿using AiTutor.Web;
-using AiTutor.Web.Services;
+﻿using AiTutor.Web.Services;
 using Fluxor;
 using Microsoft.AspNetCore.Components.Web;
 using Microsoft.AspNetCore.Components.WebAssembly.Hosting;
 using MudBlazor.Services;
 
 var builder = WebAssemblyHostBuilder.CreateDefault(args);
-
-// ── Root Components ───────────────────────────────────────────────────────────
-builder.RootComponents.Add<App>("#app");
+builder.RootComponents.Add<AiTutor.Web.App>("#app");
 builder.RootComponents.Add<HeadOutlet>("head::after");
 
-// ── HTTP Clients ──────────────────────────────────────────────────────────────
+// ── HTTP Clients ─────────────────────────────────────────────────────────────
 builder.Services.AddHttpClient("BackendApi", client =>
-{
-    client.BaseAddress = new Uri("http://localhost:5000");
-    client.Timeout = TimeSpan.FromSeconds(30);
-});
+    client.BaseAddress = new Uri("http://localhost:5000"));
 
 builder.Services.AddHttpClient("AiApi", client =>
-{
-    client.BaseAddress = new Uri("http://localhost:8000");
-    client.Timeout = TimeSpan.FromSeconds(60);
-});
+    client.BaseAddress = new Uri("http://localhost:8000"));
 
 // ── Services ──────────────────────────────────────────────────────────────────
 builder.Services.AddScoped<AuthService>();
@@ -30,21 +21,13 @@ builder.Services.AddScoped<ApiService>();
 builder.Services.AddScoped<AiService>();
 
 // ── MudBlazor ─────────────────────────────────────────────────────────────────
-builder.Services.AddMudServices(config =>
-{
-    config.SnackbarConfiguration.PositionClass = MudBlazor.Defaults.Classes.Position.BottomRight;
-    config.SnackbarConfiguration.PreventDuplicates = false;
-    config.SnackbarConfiguration.NewestOnTop = true;
-    config.SnackbarConfiguration.ShowCloseIcon = true;
-    config.SnackbarConfiguration.VisibleStateDuration = 4000;
-    config.SnackbarConfiguration.HideTransitionDuration = 300;
-    config.SnackbarConfiguration.ShowTransitionDuration = 300;
-});
+builder.Services.AddMudServices();
 
 // ── Fluxor ────────────────────────────────────────────────────────────────────
 builder.Services.AddFluxor(options =>
 {
     options.ScanAssemblies(typeof(Program).Assembly);
+    // ReduxDevTools eliminat - evităm dependența opțională
 });
 
 await builder.Build().RunAsync();

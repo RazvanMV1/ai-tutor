@@ -1,29 +1,67 @@
-﻿@namespace AiTutor.Web.Shared
+﻿@inject AiTutor.Web.Services.AuthService AuthService
+@inject NavigationManager Navigation
+@inject ISnackbar Snackbar
+@using AiTutor.Web.Models
 
 <MudNavMenu>
-    <MudNavLink Href="/"
+    <MudText Typo="Typo.subtitle2" Class="px-4 py-2"
+             Style="color:rgba(255,255,255,0.6); font-size:0.7rem; letter-spacing:1px;">
+        NAVIGARE
+    </MudText>
+
+    <MudNavLink Href="/dashboard"
                 Icon="@Icons.Material.Filled.Dashboard"
-                Match="NavLinkMatch.All">
-        Dashboard
+                IconColor="Color.Inherit">
+        Acasă
     </MudNavLink>
 
     <MudNavLink Href="/subjects"
-                Icon="@Icons.Material.Filled.MenuBook">
+                Icon="@Icons.Material.Filled.MenuBook"
+                IconColor="Color.Inherit">
         Materii
     </MudNavLink>
 
-    <MudNavLink Href="/ai-explanation"
-                Icon="@Icons.Material.Filled.Psychology">
-        AI Explicații
+    <MudDivider Class="my-2" Style="border-color:rgba(255,255,255,0.2);" />
+
+    <MudText Typo="Typo.subtitle2" Class="px-4 py-1"
+             Style="color:rgba(255,255,255,0.6); font-size:0.7rem; letter-spacing:1px;">
+        AI ASISTENT
+    </MudText>
+
+    <MudNavLink Href="/ai/explanation"
+                Icon="@Icons.Material.Filled.AutoAwesome"
+                IconColor="Color.Warning">
+        Explicații AI
     </MudNavLink>
 
-    <MudNavLink Href="/ai-problems"
-                Icon="@Icons.Material.Filled.Quiz">
-        AI Probleme
+    <MudNavLink Href="/ai/problems"
+                Icon="@Icons.Material.Filled.Psychology"
+                IconColor="Color.Warning">
+        Probleme AI
     </MudNavLink>
+
+    <MudDivider Class="my-2" Style="border-color:rgba(255,255,255,0.2);" />
 
     <MudNavLink Href="/progress"
-                Icon="@Icons.Material.Filled.TrendingUp">
+                Icon="@Icons.Material.Filled.TrendingUp"
+                IconColor="Color.Inherit">
         Progresul Meu
     </MudNavLink>
+
+    <MudDivider Class="my-2" Style="border-color:rgba(255,255,255,0.2);" />
+
+    <MudNavLink Icon="@Icons.Material.Filled.Logout"
+                IconColor="Color.Error"
+                OnClick="HandleLogout">
+        Deconectare
+    </MudNavLink>
 </MudNavMenu>
+
+@code {
+    private async Task HandleLogout()
+    {
+        await AuthService.LogoutAsync();
+        Snackbar.Add("Ai fost deconectat cu succes.", Severity.Info);
+        Navigation.NavigateTo("/login", forceLoad: true);
+    }
+}

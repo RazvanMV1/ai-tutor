@@ -1,104 +1,75 @@
-﻿using System.IdentityModel.Tokens.Jwt;
-using System.Net.Http;
-using System.Net.Http.Json;
+﻿using System.Net.Http.Headers;
 using System.Text.Json;
 using AiTutor.Web.Models;
-using Microsoft.AspNetCore.Components;
+using Microsoft.Extensions.Http;
 using Microsoft.JSInterop;
 
 namespace AiTutor.Web.Services;
 
 public class AuthService
 {
-    private readonly IJSRuntime _js;
-    private readonly HttpClient _httpClient;
-    private readonly NavigationManager _nav;
-
     private const string TokenKey = "auth_token";
     private const string UserKey = "auth_user";
 
-    public AuthService(IJSRuntime js, IHttpClientFactory factory, NavigationManager nav)
+    private readonly IJSRuntime _js;
+    private readonly IHttpClientFactory _httpFactory;
+
+    private string? _cachedToken;
+    private UserInfo? _cachedUser;
+
+    public AuthService(IJSRuntime js, IHttpClientFactory httpFactory)
     {
         _js = js;
-        _httpClient = factory.CreateClient("BackendApi");
-        _nav = nav;
+        _httpFactory = httpFactory;
     }
 
-    // ── localStorage ─────────────────────────────────────────────────────────
-
-    public async Task SaveTokenAsync(AuthResponse authResponse)
+    public async Task SaveAuthAsync(AuthResponse response)
     {
-        await _js.InvokeVoidAsync("localStorage.setItem", TokenKey, authResponse.Token);
-        var userJson = JsonSerializer.Serialize(authResponse);
-        await _js.InvokeVoidAsync("localStorage.setItem", UserKey, userJson);
+        _cachedToken = response.Token;
+        _cachedUser = response.User;
+        await _js.InvokeVoidAsync("localStorage.setItem", TokenKey, response.Token);
+        await _js.InvokeVoidAsync("localStorage.setItem", UserKey,
+            JsonSerializer.Serialize(response.User));
     }
 
     public async Task<string?> GetTokenAsync()
-        => await _js.InvokeAsync<string?>("localStorage.getItem", TokenKey);
-
-    public async Task<AuthResponse?> GetCurrentUserAsync()
     {
+        if (_cachedToken is not null) return _cachedToken;
+        _cachedToken = await _js.InvokeAsync<string?>("localStorage.getItem", TokenKey);
+        return _cachedToken;
+    }
+
+    public async Task<UserInfo?> GetUserAsync()
+    {
+        if (_cachedUser is not null) return _cachedUser;
         var json = await _js.InvokeAsync<string?>("localStorage.getItem", UserKey);
-        if (string.IsNullOrEmpty(json)) return null;
-        try { return JsonSerializer.Deserialize<AuthResponse>(json); }
-        catch { return null; }
+        if (json is null) return null;
+        _cachedUser = JsonSerializer.Deserialize<UserInfo>(json,
+            new JsonSerializerOptions { PropertyNameCaseInsensitive = true });
+        return _cachedUser;
     }
 
     public async Task<bool> IsAuthenticatedAsync()
-    {
-        var token = await GetTokenAsync();
-        if (string.IsNullOrEmpty(token)) return false;
-        try
-        {
-            var handler = new JwtSecurityTokenHandler();
-            var jwt = handler.ReadJwtToken(token);
-            return jwt.ValidTo > DateTime.UtcNow;
-        }
-        catch { return false; }
-    }
+        => (await GetTokenAsync()) is not null;
 
     public async Task LogoutAsync()
     {
+        _cachedToken = null;
+        _cachedUser = null;
         await _js.InvokeVoidAsync("localStorage.removeItem", TokenKey);
         await _js.InvokeVoidAsync("localStorage.removeItem", UserKey);
-        _nav.NavigateTo("/login");
     }
 
-    // ── API Calls ────────────────────────────────────────────────────────────
+    public HttpClient GetUnauthenticatedClient()
+        => _httpFactory.CreateClient("BackendApi");
 
-    public async Task<(bool Success, string? Error, AuthResponse? Data)>
-        LoginAsync(LoginRequest request)
+    public async Task<HttpClient> GetAuthenticatedClientAsync()
     {
-        try
-        {
-            var response = await _httpClient.PostAsJsonAsync("/api/auth/login", request);
-            if (response.IsSuccessStatusCode)
-            {
-                var data = await response.Content.ReadFromJsonAsync<AuthResponse>();
-                return (true, null, data);
-            }
-            var error = await response.Content.ReadAsStringAsync();
-            return (false, $"Eroare {(int)response.StatusCode}: {error}", null);
-        }
-        catch (Exception ex)
-        {
-            return (false, $"Conexiunea a eșuat: {ex.Message}", null);
-        }
-    }
-
-    public async Task<(bool Success, string? Error)>
-        RegisterAsync(RegisterRequest request)
-    {
-        try
-        {
-            var response = await _httpClient.PostAsJsonAsync("/api/auth/register", request);
-            if (response.IsSuccessStatusCode) return (true, null);
-            var error = await response.Content.ReadAsStringAsync();
-            return (false, $"Eroare {(int)response.StatusCode}: {error}");
-        }
-        catch (Exception ex)
-        {
-            return (false, $"Conexiunea a eșuat: {ex.Message}");
-        }
+        var client = _httpFactory.CreateClient("BackendApi");
+        var token = await GetTokenAsync();
+        if (!string.IsNullOrEmpty(token))
+            client.DefaultRequestHeaders.Authorization =
+                new AuthenticationHeaderValue("Bearer", token);
+        return client;
     }
 }

@@ -1,4 +1,4 @@
-namespace AiTutor.Web.Models;
+﻿namespace AiTutor.Web.Models;
 
 public record ExplanationRequest(
     string Topic,
@@ -6,6 +6,7 @@ public record ExplanationRequest(
     int DifficultyLevel,
     int StudentAge);
 
+// ⚠️ examples și keyPoints sunt array-uri lowercase
 public record ExplanationResponse(
     string Topic,
     string Explanation,
@@ -14,9 +15,14 @@ public record ExplanationResponse(
     int Subject,
     int DifficultyLevel);
 
-public record HintRequest(string Question, int Subject);
+public record HintRequest(
+    string Question,
+    int Subject);
 
-public record HintResponse(string Question, string Hint, int Subject);
+public record HintResponse(
+    string Question,
+    string Hint,
+    int Subject);
 
 public record ProblemRequest(
     string Topic,

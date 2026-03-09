@@ -6,7 +6,7 @@ namespace AiTutor.Web.Store.Auth;
 [FeatureState]
 public record AuthState
 {
-    public UserInfo? User { get; init; }
+    public AuthResponse? User { get; init; }
     public string? Token { get; init; }
     public bool IsLoading { get; init; }
     public string? Error { get; init; }

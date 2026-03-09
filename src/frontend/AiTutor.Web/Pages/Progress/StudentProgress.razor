@@ -266,7 +266,6 @@ else
                                     ? "background:#F5F5F5; border-bottom:1px solid #F0F0F0;"
                                     : "border-bottom:1px solid #F0F0F0;")">
 
-                                <!-- Lecție -->
                                 <td style="padding:14px 16px;">
                                     <div class="d-flex align-center gap-2">
                                         <MudIcon Icon="@Icons.Material.Filled.AutoStories"
@@ -278,7 +277,6 @@ else
                                     </div>
                                 </td>
 
-                                <!-- Status -->
                                 <td style="padding:14px 16px; text-align:center;">
                                     @if (item.IsCompleted)
                                     {
@@ -300,7 +298,6 @@ else
                                     }
                                 </td>
 
-                                <!-- Scor -->
                                 <td style="padding:14px 16px; text-align:center;">
                                     @if (item.IsCompleted)
                                     {
@@ -325,7 +322,6 @@ else
                                     }
                                 </td>
 
-                                <!-- Încercări -->
                                 <td style="padding:14px 16px; text-align:center;">
                                     <MudChip T="string" Size="Size.Small"
                                              Color="Color.Default"
@@ -334,7 +330,6 @@ else
                                     </MudChip>
                                 </td>
 
-                                <!-- Data -->
                                 <td style="padding:14px 16px; text-align:right;">
                                     @if (item.CompletedAt.HasValue)
                                     {
@@ -355,7 +350,6 @@ else
                 </table>
             </div>
 
-            <!-- Footer tabel -->
             <div class="d-flex justify-space-between align-center mt-3 flex-wrap gap-2">
                 <MudText Typo="Typo.caption" Color="Color.Secondary">
                     Se afișează @FilteredProgress.Count() din @_progress.Count înregistrări
@@ -448,7 +442,17 @@ else
                 return;
             }
 
-            _progress = await ApiService.GetProgressAsync(user.Id);
+            // ⚠️ UserId vine din AuthResponse
+            var progressList = await ApiService.GetProgressAsync(user.UserId);
+
+            // ⚠️ Backend nu returnează LessonTitle
+            // Setăm un titlu placeholder bazat pe LessonId
+            _progress = progressList
+                .Select(p => p with
+                {
+                    LessonTitle = $"Lecție {p.LessonId.ToString()[..8]}..."
+                })
+                .ToList();
 
             if (_progress.Count == 0)
                 LoadDemoProgress();
@@ -456,7 +460,8 @@ else
         catch
         {
             LoadDemoProgress();
-            Snackbar.Add("Backend indisponibil — se afișează date demo.", Severity.Info);
+            Snackbar.Add("Backend indisponibil — se afișează date demo.",
+                         Severity.Info);
         }
         finally
         {
@@ -512,26 +517,36 @@ else
     {
         _progress =
         [
-            new StudentProgressDto(Guid.NewGuid(), "Ecuații de gradul I",
-                true,  92, 1, DateTime.Now.AddDays(-1)),
-            new StudentProgressDto(Guid.NewGuid(), "Substantivul",
-                true,  78, 2, DateTime.Now.AddDays(-3)),
-            new StudentProgressDto(Guid.NewGuid(), "Algoritmi de bază",
-                true,  85, 1, DateTime.Now.AddDays(-5)),
-            new StudentProgressDto(Guid.NewGuid(), "Verbul",
-                true,  65, 1, DateTime.Now.AddDays(-7)),
-            new StudentProgressDto(Guid.NewGuid(), "Recursivitate",
-                true,  90, 2, DateTime.Now.AddDays(-10)),
-            new StudentProgressDto(Guid.NewGuid(), "Sisteme de ecuații",
-                true,  55, 3, DateTime.Now.AddDays(-12)),
-            new StudentProgressDto(Guid.NewGuid(), "Figuri de stil",
-                false,  0, 0, null),
-            new StudentProgressDto(Guid.NewGuid(), "Grafuri",
-                false,  0, 0, null),
-            new StudentProgressDto(Guid.NewGuid(), "Trigonometrie",
-                false,  0, 0, null),
-            new StudentProgressDto(Guid.NewGuid(), "Comentariul literar",
-                false,  0, 0, null),
+            new StudentProgressDto(Guid.NewGuid(), Guid.NewGuid(), Guid.NewGuid(),
+                true,  92, 1, DateTime.Now.AddDays(-1))
+                { LessonTitle = "Ecuații de gradul I" },
+            new StudentProgressDto(Guid.NewGuid(), Guid.NewGuid(), Guid.NewGuid(),
+                true,  78, 2, DateTime.Now.AddDays(-3))
+                { LessonTitle = "Substantivul" },
+            new StudentProgressDto(Guid.NewGuid(), Guid.NewGuid(), Guid.NewGuid(),
+                true,  85, 1, DateTime.Now.AddDays(-5))
+                { LessonTitle = "Algoritmi de bază" },
+            new StudentProgressDto(Guid.NewGuid(), Guid.NewGuid(), Guid.NewGuid(),
+                true,  65, 1, DateTime.Now.AddDays(-7))
+                { LessonTitle = "Verbul" },
+            new StudentProgressDto(Guid.NewGuid(), Guid.NewGuid(), Guid.NewGuid(),
+                true,  90, 2, DateTime.Now.AddDays(-10))
+                { LessonTitle = "Recursivitate" },
+            new StudentProgressDto(Guid.NewGuid(), Guid.NewGuid(), Guid.NewGuid(),
+                true,  55, 3, DateTime.Now.AddDays(-12))
+                { LessonTitle = "Sisteme de ecuații" },
+            new StudentProgressDto(Guid.NewGuid(), Guid.NewGuid(), Guid.NewGuid(),
+                false, 0,  0, null)
+                { LessonTitle = "Figuri de stil" },
+            new StudentProgressDto(Guid.NewGuid(), Guid.NewGuid(), Guid.NewGuid(),
+                false, 0,  0, null)
+                { LessonTitle = "Grafuri" },
+            new StudentProgressDto(Guid.NewGuid(), Guid.NewGuid(), Guid.NewGuid(),
+                false, 0,  0, null)
+                { LessonTitle = "Trigonometrie" },
+            new StudentProgressDto(Guid.NewGuid(), Guid.NewGuid(), Guid.NewGuid(),
+                false, 0,  0, null)
+                { LessonTitle = "Comentariul literar" },
         ];
     }
 }

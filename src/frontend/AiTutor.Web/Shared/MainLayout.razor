@@ -6,7 +6,6 @@
 
 @if (_isPublicPage)
 {
-    <!-- Layout simplu pentru Login/Register -->
     <MudThemeProvider />
     <MudSnackbarProvider />
     <MudDialogProvider />
@@ -34,7 +33,7 @@ else
                     @_user.FullName
                 </MudChip>
                 <MudChip T="string" Color="Color.Warning" Size="Size.Small">
-                    @GetRoleName(_user.Role)
+                    @_user.Role
                 </MudChip>
             }
         </MudAppBar>
@@ -63,9 +62,9 @@ else
 }
 
 @code {
-    private bool      _drawerOpen  = true;
-    private UserInfo? _user;
-    private bool      _isPublicPage = false;
+    private bool          _drawerOpen   = true;
+    private AuthResponse? _user         = null;
+    private bool          _isPublicPage = false;
 
     private static readonly string[] PublicRoutes = ["/login", "/register"];
 
@@ -96,15 +95,6 @@ else
     }
 
     private void ToggleDrawer() => _drawerOpen = !_drawerOpen;
-
-    private static string GetRoleName(int role) => role switch
-    {
-        1 => "Elev",
-        2 => "Părinte",
-        3 => "Profesor",
-        4 => "Admin",
-        _ => "Utilizator"
-    };
 
     public void Dispose()
         => Navigation.LocationChanged -= OnLocationChanged;

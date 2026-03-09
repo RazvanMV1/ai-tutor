@@ -146,7 +146,7 @@
             }
 
             await AuthService.SaveAuthAsync(response);
-            Snackbar.Add($"Bine ai venit, {response.User.FullName}! 🎉",
+            Snackbar.Add($"Bine ai venit, {response.FirstName}! 🎉",
                          Severity.Success);
             Navigation.NavigateTo("/dashboard");
         }
@@ -164,4 +164,5 @@
             _isLoading = false;
         }
     }
+
 }

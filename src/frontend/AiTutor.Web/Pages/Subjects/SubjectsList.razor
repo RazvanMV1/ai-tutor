@@ -251,7 +251,7 @@ else
                                     <MudSpacer />
 
                                     <MudText Typo="Typo.caption" Color="Color.Secondary">
-                                        @lesson.CreatedAt.ToString("dd MMM yyyy")
+                                        @(lesson.CreatedAt?.ToString("dd MMM yyyy") ?? "—")
                                     </MudText>
                                 </MudCardActions>
                             </MudCard>
@@ -329,24 +329,23 @@ else
 </MudDialog>
 
 @code {
-    private bool              _isLoading       = true;
+    private bool              _isLoading        = true;
     private bool              _isLessonsLoading = false;
-    private bool              _isCompleting    = false;
-    private List<SubjectDto>  _subjects        = [];
-    private List<LessonDto>   _lessons         = [];
-    private SubjectDto?       _selectedSubject = null;
-    private LessonDto?        _selectedLesson  = null;
+    private bool              _isCompleting     = false;
+    private List<SubjectDto>  _subjects         = [];
+    private List<LessonDto>   _lessons          = [];
+    private SubjectDto?       _selectedSubject  = null;
+    private LessonDto?        _selectedLesson   = null;
     private int               _filterDifficulty = 0;
-    private List<StudentProgressDto> _progress = [];
+    private List<StudentProgressDto> _progress  = [];
 
-    // Dialog
     private bool   _lessonDialogOpen = false;
     private int    _completionScore  = 80;
     private DialogOptions _dialogOptions = new()
     {
-        MaxWidth     = MaxWidth.Medium,
-        FullWidth    = true,
-        CloseButton  = true
+        MaxWidth    = MaxWidth.Medium,
+        FullWidth   = true,
+        CloseButton = true
     };
 
     private IEnumerable<LessonDto> FilteredLessons =>
@@ -365,14 +364,14 @@ else
         try
         {
             _subjects = await ApiService.GetSubjectsAsync();
-
             if (_subjects.Count == 0)
                 LoadDemoSubjects();
         }
         catch
         {
             LoadDemoSubjects();
-            Snackbar.Add("Backend indisponibil — se afișează date demo.", Severity.Info);
+            Snackbar.Add("Backend indisponibil — se afișează date demo.",
+                         Severity.Info);
         }
         finally
         {
@@ -390,12 +389,10 @@ else
 
         try
         {
-            // Încarcă progresul userului
             var user = await AuthService.GetUserAsync();
             if (user is not null)
-                _progress = await ApiService.GetProgressAsync(user.Id);
+                _progress = await ApiService.GetProgressAsync(user.UserId);
 
-            // Demo lecții per materie
             _lessons = GetDemoLessons(subject.Type);
         }
         catch
@@ -411,8 +408,8 @@ else
 
     private void OpenLesson(LessonDto lesson)
     {
-        _selectedLesson  = lesson;
-        _completionScore = 80;
+        _selectedLesson   = lesson;
+        _completionScore  = 80;
         _lessonDialogOpen = true;
     }
 
@@ -433,7 +430,9 @@ else
             if (user is not null)
             {
                 await ApiService.CompleteLessonAsync(
-                    new CompleteLessonRequest(user.Id, _selectedLesson.Id,
+                    new CompleteLessonRequest(
+                        user.UserId,
+                        _selectedLesson.Id,
                         _completionScore));
             }
 
@@ -456,9 +455,9 @@ else
         => _progress.Any(p => p.LessonId == lessonId && p.IsCompleted);
 
     private int GetLessonScore(Guid lessonId)
-        => _progress.FirstOrDefault(p => p.LessonId == lessonId)?.ScorePercentage ?? 0;
+        => _progress.FirstOrDefault(p => p.LessonId == lessonId)
+               ?.ScorePercentage ?? 0;
 
-    // ── Config materii ────────────────────────────────────────────────────────
     private record SubjectConfig(string Color, string LightColor, string Emoji);
 
     private static SubjectConfig GetSubjectConfig(int type) => type switch
@@ -469,7 +468,6 @@ else
         _ => new("#757575", "#F5F5F5", "📚")
     };
 
-    // ── Difficulty helpers ────────────────────────────────────────────────────
     private static string GetDifficultyName(int d) => d switch
     {
         1 => "🟢 Începător",
@@ -502,75 +500,90 @@ else
         _ => Color.Default
     };
 
-    // ── Demo data ─────────────────────────────────────────────────────────────
     private void LoadDemoSubjects()
     {
         _subjects =
         [
-            new SubjectDto(Guid.NewGuid(), "Matematică",
-                "Algebră, geometrie și analiză matematică", 1),
-            new SubjectDto(Guid.NewGuid(), "Română",
-                "Gramatică, literatură și comunicare", 2),
-            new SubjectDto(Guid.NewGuid(), "Informatică",
-                "Algoritmi, structuri de date și programare", 3),
+            new SubjectDto(Guid.NewGuid(), "Matematică", 1,
+                "Algebră, geometrie și analiză matematică"),
+            new SubjectDto(Guid.NewGuid(), "Română", 2,
+                "Gramatică, literatură și comunicare"),
+            new SubjectDto(Guid.NewGuid(), "Informatică", 3,
+                "Algoritmi, structuri de date și programare"),
         ];
     }
 
-    private static List<LessonDto> GetDemoLessons(int subjectType) => subjectType switch
-    {
-        1 =>
-        [
-            new(Guid.NewGuid(), "Ecuații de gradul I",
-                "Rezolvarea ecuațiilor de forma ax + b = 0. Vom învăța pașii de rezolvare și cazurile speciale.",
-                1, 1, Guid.Empty, DateTime.Now.AddDays(-30)),
-            new(Guid.NewGuid(), "Sisteme de ecuații",
-                "Rezolvarea sistemelor de două ecuații cu două necunoscute prin metoda substituției și a reducerii.",
-                2, 2, Guid.Empty, DateTime.Now.AddDays(-25)),
-            new(Guid.NewGuid(), "Funcția de gradul I",
-                "Proprietățile funcției liniare f(x) = ax + b. Grafic, monotonie și aplicații.",
-                3, 2, Guid.Empty, DateTime.Now.AddDays(-20)),
-            new(Guid.NewGuid(), "Ecuații de gradul II",
-                "Formula discriminantului și rezolvarea ecuațiilor pătratice. Relațiile lui Viète.",
-                4, 3, Guid.Empty, DateTime.Now.AddDays(-15)),
-            new(Guid.NewGuid(), "Trigonometrie",
-                "Funcțiile trigonometrice sinus, cosinus și tangentă. Identități și aplicații.",
-                5, 3, Guid.Empty, DateTime.Now.AddDays(-10)),
-        ],
-        2 =>
-        [
-            new(Guid.NewGuid(), "Substantivul",
-                "Definiție, clasificare și funcții sintactice ale substantivului în propoziție.",
-                1, 1, Guid.Empty, DateTime.Now.AddDays(-30)),
-            new(Guid.NewGuid(), "Verbul",
-                "Timpurile verbale și modurile de exprimare. Conjugarea verbelor regulate și neregulate.",
-                2, 1, Guid.Empty, DateTime.Now.AddDays(-25)),
-            new(Guid.NewGuid(), "Propoziția subordonată",
-                "Tipuri de propoziții subordonate și relațiile de subordonare în frază.",
-                3, 2, Guid.Empty, DateTime.Now.AddDays(-20)),
-            new(Guid.NewGuid(), "Figuri de stil",
-                "Metafora, comparația, personificarea și alte figuri de stil în textele literare.",
-                4, 2, Guid.Empty, DateTime.Now.AddDays(-15)),
-            new(Guid.NewGuid(), "Comentariul literar",
-                "Structura și tehnica redactării unui comentariu literar la nivel avansat.",
-                5, 3, Guid.Empty, DateTime.Now.AddDays(-10)),
-        ],
-        _ =>
-        [
-            new(Guid.NewGuid(), "Algoritmi de bază",
-                "Introducere în algoritmi: secvență, decizie și repetare. Pseudocod și flowchart.",
-                1, 1, Guid.Empty, DateTime.Now.AddDays(-30)),
-            new(Guid.NewGuid(), "Tablouri unidimensionale",
-                "Vectori în C++: declarare, parcurgere și operații de bază. Algoritmi pe tablouri.",
-                2, 1, Guid.Empty, DateTime.Now.AddDays(-25)),
-            new(Guid.NewGuid(), "Sortare și căutare",
-                "Algoritmii de sortare (bubble, selection, insertion) și căutarea binară.",
-                3, 2, Guid.Empty, DateTime.Now.AddDays(-20)),
-            new(Guid.NewGuid(), "Recursivitate",
-                "Principiul recursivității. Factorial, Fibonacci și alte probleme clasice recursive.",
-                4, 2, Guid.Empty, DateTime.Now.AddDays(-15)),
-            new(Guid.NewGuid(), "Grafuri",
-                "Reprezentarea grafurilor. BFS, DFS și aplicații în probleme de concurs.",
-                5, 3, Guid.Empty, DateTime.Now.AddDays(-10)),
-        ]
-    };
+    private static List<LessonDto> GetDemoLessons(int subjectType) =>
+        subjectType switch
+        {
+            1 =>
+            [
+                new LessonDto(Guid.NewGuid(), "Ecuații de gradul I",
+                    1, Guid.Empty,
+                    "Rezolvarea ecuațiilor de forma ax + b = 0.",
+                    1, DateTime.Now.AddDays(-30)),
+                new LessonDto(Guid.NewGuid(), "Sisteme de ecuații",
+                    2, Guid.Empty,
+                    "Rezolvarea sistemelor de două ecuații cu două necunoscute.",
+                    2, DateTime.Now.AddDays(-25)),
+                new LessonDto(Guid.NewGuid(), "Funcția de gradul I",
+                    2, Guid.Empty,
+                    "Proprietățile funcției liniare f(x) = ax + b.",
+                    3, DateTime.Now.AddDays(-20)),
+                new LessonDto(Guid.NewGuid(), "Ecuații de gradul II",
+                    3, Guid.Empty,
+                    "Formula discriminantului și relațiile lui Viète.",
+                    4, DateTime.Now.AddDays(-15)),
+                new LessonDto(Guid.NewGuid(), "Trigonometrie",
+                    3, Guid.Empty,
+                    "Funcțiile trigonometrice și identitățile fundamentale.",
+                    5, DateTime.Now.AddDays(-10)),
+            ],
+            2 =>
+            [
+                new LessonDto(Guid.NewGuid(), "Substantivul",
+                    1, Guid.Empty,
+                    "Definiție, clasificare și funcții sintactice.",
+                    1, DateTime.Now.AddDays(-30)),
+                new LessonDto(Guid.NewGuid(), "Verbul",
+                    1, Guid.Empty,
+                    "Timpurile verbale și modurile de exprimare.",
+                    2, DateTime.Now.AddDays(-25)),
+                new LessonDto(Guid.NewGuid(), "Propoziția subordonată",
+                    2, Guid.Empty,
+                    "Tipuri de propoziții subordonate în frază.",
+                    3, DateTime.Now.AddDays(-20)),
+                new LessonDto(Guid.NewGuid(), "Figuri de stil",
+                    2, Guid.Empty,
+                    "Metafora, comparația și personificarea.",
+                    4, DateTime.Now.AddDays(-15)),
+                new LessonDto(Guid.NewGuid(), "Comentariul literar",
+                    3, Guid.Empty,
+                    "Structura și tehnica redactării unui comentariu.",
+                    5, DateTime.Now.AddDays(-10)),
+            ],
+            _ =>
+            [
+                new LessonDto(Guid.NewGuid(), "Algoritmi de bază",
+                    1, Guid.Empty,
+                    "Introducere în algoritmi: secvență, decizie și repetare.",
+                    1, DateTime.Now.AddDays(-30)),
+                new LessonDto(Guid.NewGuid(), "Tablouri unidimensionale",
+                    1, Guid.Empty,
+                    "Vectori în C++: declarare, parcurgere și operații.",
+                    2, DateTime.Now.AddDays(-25)),
+                new LessonDto(Guid.NewGuid(), "Sortare și căutare",
+                    2, Guid.Empty,
+                    "Algoritmi de sortare și căutarea binară.",
+                    3, DateTime.Now.AddDays(-20)),
+                new LessonDto(Guid.NewGuid(), "Recursivitate",
+                    2, Guid.Empty,
+                    "Principiul recursivității. Factorial și Fibonacci.",
+                    4, DateTime.Now.AddDays(-15)),
+                new LessonDto(Guid.NewGuid(), "Grafuri",
+                    3, Guid.Empty,
+                    "Reprezentarea grafurilor. BFS și DFS.",
+                    5, DateTime.Now.AddDays(-10)),
+            ]
+        };
 }

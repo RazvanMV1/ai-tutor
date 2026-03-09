@@ -14,7 +14,7 @@ public static class AuthReducers
         {
             IsLoading = false,
             Token = action.Response.Token,
-            User = action.Response.User,
+            User = action.Response,
             Error = null
         };
 
@@ -27,6 +27,7 @@ public static class AuthReducers
         => state with { Token = null, User = null, Error = null };
 
     [ReducerMethod]
-    public static AuthState OnSetFromStorage(AuthState state, SetAuthFromStorageAction action)
-        => state with { Token = action.Response.Token, User = action.Response.User };
+    public static AuthState OnSetFromStorage(AuthState state,
+        SetAuthFromStorageAction action)
+        => state with { Token = action.Response.Token, User = action.Response };
 }

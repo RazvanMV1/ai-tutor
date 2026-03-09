@@ -6,34 +6,39 @@ namespace AiTutor.Web.Services;
 
 public class AiService
 {
-    private readonly IHttpClientFactory _httpFactory;
-
-    public AiService(IHttpClientFactory httpFactory)
-        => _httpFactory = httpFactory;
-
-    private HttpClient Client => _httpFactory.CreateClient("AiApi");
+    private readonly AuthService _auth;
 
     private static JsonSerializerOptions JsonOpts => new()
     { PropertyNameCaseInsensitive = true };
 
-    public async Task<ExplanationResponse?> GetExplanationAsync(ExplanationRequest request)
+    public AiService(AuthService auth) => _auth = auth;
+
+    public async Task<ExplanationResponse?> GetExplanationAsync(
+        ExplanationRequest request)
     {
-        var response = await Client.PostAsJsonAsync("/api/explanations", request);
+        var client = await _auth.GetAuthenticatedClientAsync();
+        var response = await client.PostAsJsonAsync(
+            "/api/Ai/explanation", request);
         response.EnsureSuccessStatusCode();
-        return await response.Content.ReadFromJsonAsync<ExplanationResponse>(JsonOpts);
+        return await response.Content
+            .ReadFromJsonAsync<ExplanationResponse>(JsonOpts);
     }
 
     public async Task<HintResponse?> GetHintAsync(HintRequest request)
     {
-        var response = await Client.PostAsJsonAsync("/api/explanations/hint", request);
+        var client = await _auth.GetAuthenticatedClientAsync();
+        var response = await client.PostAsJsonAsync("/api/Ai/hint", request);
         response.EnsureSuccessStatusCode();
-        return await response.Content.ReadFromJsonAsync<HintResponse>(JsonOpts);
+        return await response.Content
+            .ReadFromJsonAsync<HintResponse>(JsonOpts);
     }
 
     public async Task<ProblemResponse?> GetProblemsAsync(ProblemRequest request)
     {
-        var response = await Client.PostAsJsonAsync("/api/problems", request);
+        var client = await _auth.GetAuthenticatedClientAsync();
+        var response = await client.PostAsJsonAsync("/api/Ai/problems", request);
         response.EnsureSuccessStatusCode();
-        return await response.Content.ReadFromJsonAsync<ProblemResponse>(JsonOpts);
+        return await response.Content
+            .ReadFromJsonAsync<ProblemResponse>(JsonOpts);
     }
 }

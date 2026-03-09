@@ -376,9 +376,12 @@ else
             return;
         }
 
-        _userName = user.FullName.Split(' ')[0];
-        await LoadDataAsync(user.Id);
+        // ⚠️ UserId din AuthResponse
+        _userName = user.FirstName;
+        await LoadDataAsync(user.UserId);
     }
+
+
 
     private async Task LoadDataAsync(Guid userId)
     {
@@ -444,16 +447,27 @@ else
 
         _recentActivity =
         [
-            new StudentProgressDto(Guid.NewGuid(), "Ecuații de gradul I",
-                true,  85, 1, DateTime.Now.AddDays(-1)),
-            new StudentProgressDto(Guid.NewGuid(), "Substantivul",
-                true,  72, 2, DateTime.Now.AddDays(-2)),
-            new StudentProgressDto(Guid.NewGuid(), "Algoritmi de sortare",
-                true,  90, 1, DateTime.Now.AddDays(-3)),
-            new StudentProgressDto(Guid.NewGuid(), "Fracții ordinare",
-                false,  0, 0, null),
-            new StudentProgressDto(Guid.NewGuid(), "Verbul",
-                false,  0, 0, null),
+            new StudentProgressDto(
+                Guid.NewGuid(), Guid.NewGuid(), Guid.NewGuid(),
+                true, 85, 1, DateTime.Now.AddDays(-1))
+                { LessonTitle = "Ecuații de gradul I" },
+            new StudentProgressDto(
+                Guid.NewGuid(), Guid.NewGuid(), Guid.NewGuid(),
+                true, 72, 2, DateTime.Now.AddDays(-2))
+                { LessonTitle = "Substantivul" },
+            new StudentProgressDto(
+                Guid.NewGuid(), Guid.NewGuid(), Guid.NewGuid(),
+                true, 90, 1, DateTime.Now.AddDays(-3))
+                { LessonTitle = "Algoritmi de sortare" },
+            new StudentProgressDto(
+                Guid.NewGuid(), Guid.NewGuid(), Guid.NewGuid(),
+                false, 0, 0, null)
+                { LessonTitle = "Fracții ordinare" },
+            new StudentProgressDto(
+                Guid.NewGuid(), Guid.NewGuid(), Guid.NewGuid(),
+                false, 0, 0, null)
+                { LessonTitle = "Verbul" },
         ];
     }
+
 }

@@ -1,7 +1,6 @@
 ﻿using System.Net.Http.Headers;
 using System.Text.Json;
 using AiTutor.Web.Models;
-using Microsoft.Extensions.Http;
 using Microsoft.JSInterop;
 
 namespace AiTutor.Web.Services;
@@ -15,7 +14,7 @@ public class AuthService
     private readonly IHttpClientFactory _httpFactory;
 
     private string? _cachedToken;
-    private UserInfo? _cachedUser;
+    private AuthResponse? _cachedUser;
 
     public AuthService(IJSRuntime js, IHttpClientFactory httpFactory)
     {
@@ -26,25 +25,31 @@ public class AuthService
     public async Task SaveAuthAsync(AuthResponse response)
     {
         _cachedToken = response.Token;
-        _cachedUser = response.User;
-        await _js.InvokeVoidAsync("localStorage.setItem", TokenKey, response.Token);
-        await _js.InvokeVoidAsync("localStorage.setItem", UserKey,
-            JsonSerializer.Serialize(response.User));
+        _cachedUser = response;
+
+        await _js.InvokeVoidAsync("localStorage.setItem",
+            TokenKey, response.Token);
+        await _js.InvokeVoidAsync("localStorage.setItem",
+            UserKey, JsonSerializer.Serialize(response));
     }
 
     public async Task<string?> GetTokenAsync()
     {
         if (_cachedToken is not null) return _cachedToken;
-        _cachedToken = await _js.InvokeAsync<string?>("localStorage.getItem", TokenKey);
+        _cachedToken = await _js.InvokeAsync<string?>(
+            "localStorage.getItem", TokenKey);
         return _cachedToken;
     }
 
-    public async Task<UserInfo?> GetUserAsync()
+    public async Task<AuthResponse?> GetUserAsync()
     {
         if (_cachedUser is not null) return _cachedUser;
-        var json = await _js.InvokeAsync<string?>("localStorage.getItem", UserKey);
+
+        var json = await _js.InvokeAsync<string?>(
+            "localStorage.getItem", UserKey);
         if (json is null) return null;
-        _cachedUser = JsonSerializer.Deserialize<UserInfo>(json,
+
+        _cachedUser = JsonSerializer.Deserialize<AuthResponse>(json,
             new JsonSerializerOptions { PropertyNameCaseInsensitive = true });
         return _cachedUser;
     }
@@ -67,9 +72,25 @@ public class AuthService
     {
         var client = _httpFactory.CreateClient("BackendApi");
         var token = await GetTokenAsync();
+
         if (!string.IsNullOrEmpty(token))
             client.DefaultRequestHeaders.Authorization =
                 new AuthenticationHeaderValue("Bearer", token);
+
         return client;
+    }
+
+    // Helper — rol ca int pentru compatibilitate cu UI
+    public async Task<int> GetRoleIntAsync()
+    {
+        var user = await GetUserAsync();
+        return user?.Role switch
+        {
+            "Admin" => 4,
+            "Teacher" => 3,
+            "Parent" => 2,
+            "Student" => 1,
+            _ => 1
+        };
     }
 }

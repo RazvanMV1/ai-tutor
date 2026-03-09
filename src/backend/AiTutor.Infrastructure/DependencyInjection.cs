@@ -37,6 +37,7 @@ public static class DependencyInjection
         services.AddScoped<IJwtService, JwtService>();
         services.AddScoped<ICurrentUserService, CurrentUserService>();
         services.AddHttpContextAccessor();
+        services.AddHttpClient<IAiTutorService, AiTutorService>();
 
         return services;
     }

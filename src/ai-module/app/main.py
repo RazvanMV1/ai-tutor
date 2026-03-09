@@ -17,9 +17,8 @@ app.add_middleware(
 )
 
 app.include_router(health.router, prefix="/health", tags=["Health"])
-#app.include_router(explanations.router, prefix="/api/explanations", tags=["Explanations"])
-#app.include_router(problems.router, prefix="/api/problems", tags=["Problems"])
-
+app.include_router(explanations.router, prefix="/api/explanations", tags=["Explanations"])
+app.include_router(problems.router, prefix="/api/problems", tags=["Problems"])
 
 @app.get("/")
 async def root():

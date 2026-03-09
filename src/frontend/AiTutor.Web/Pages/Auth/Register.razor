@@ -1,0 +1,12 @@
+@page "/register"
+@layout AuthLayout
+@inject NavigationManager Navigation
+
+<PageTitle>Înregistrare | AiTutor</PageTitle>
+
+@code {
+    protected override void OnInitialized()
+    {
+        Navigation.NavigateTo("/login");
+    }
+}

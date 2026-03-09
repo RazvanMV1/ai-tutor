@@ -1,0 +1,391 @@
+@page "/login"
+@layout AuthLayout
+@inject ApiService ApiService
+@inject AuthService AuthService
+@inject NavigationManager Navigation
+@inject ISnackbar Snackbar
+
+<PageTitle>Autentificare | AiTutor</PageTitle>
+
+<div style="min-height:100vh; display:flex; background:#F0F4F8;">
+    <!-- Left Panel - Gradient -->
+    <div class="d-none d-md-flex" style="width:45%; background:linear-gradient(135deg,#1976D2 0%,#1565C0 40%,#0D47A1 100%);
+         position:relative; overflow:hidden; flex-direction:column; align-items:center; justify-content:center; padding:3rem;">
+
+        <div style="position:absolute; top:-60px; right:-60px; width:300px; height:300px;
+                    background:rgba(255,255,255,0.06); border-radius:50%;"></div>
+        <div style="position:absolute; bottom:-80px; left:-40px; width:250px; height:250px;
+                    background:rgba(255,255,255,0.04); border-radius:50%;"></div>
+
+        <div style="text-align:center; color:white; position:relative; z-index:1;">
+            <div style="width:80px; height:80px; background:rgba(255,255,255,0.15); border-radius:20px;
+                        display:flex; align-items:center; justify-content:center; margin:0 auto 1.5rem;">
+                <MudIcon Icon="@Icons.Material.Filled.AutoAwesome" Style="font-size:44px; color:#FF6B35;" />
+            </div>
+            <MudText Typo="Typo.h3" Style="font-weight:800; margin-bottom:0.5rem;">AiTutor</MudText>
+            <MudText Typo="Typo.h6" Style="opacity:0.85; font-weight:400; margin-bottom:2rem;">
+                Platforma educațională AI pentru elevi
+            </MudText>
+
+            <div style="text-align:left; max-width:300px; margin:0 auto;">
+                <div style="display:flex; align-items:center; gap:12px; margin-bottom:1rem;
+                            background:rgba(255,255,255,0.1); border-radius:12px; padding:0.75rem 1rem;">
+                    <MudIcon Icon="@Icons.Material.Filled.AutoAwesome" Style="color:#FF6B35; font-size:22px;" />
+                    <MudText Typo="Typo.body2" Style="color:white; opacity:0.9;">Explicații AI personalizate</MudText>
+                </div>
+                <div style="display:flex; align-items:center; gap:12px; margin-bottom:1rem;
+                            background:rgba(255,255,255,0.1); border-radius:12px; padding:0.75rem 1rem;">
+                    <MudIcon Icon="@Icons.Material.Filled.Quiz" Style="color:#FF6B35; font-size:22px;" />
+                    <MudText Typo="Typo.body2" Style="color:white; opacity:0.9;">Quiz-uri interactive</MudText>
+                </div>
+                <div style="display:flex; align-items:center; gap:12px; margin-bottom:1rem;
+                            background:rgba(255,255,255,0.1); border-radius:12px; padding:0.75rem 1rem;">
+                    <MudIcon Icon="@Icons.Material.Filled.TrendingUp" Style="color:#FF6B35; font-size:22px;" />
+                    <MudText Typo="Typo.body2" Style="color:white; opacity:0.9;">Urmărire progres</MudText>
+                </div>
+                <div style="display:flex; align-items:center; gap:12px; margin-bottom:1rem;
+                            background:rgba(255,255,255,0.1); border-radius:12px; padding:0.75rem 1rem;">
+                    <MudIcon Icon="@Icons.Material.Filled.School" Style="color:#FF6B35; font-size:22px;" />
+                    <MudText Typo="Typo.body2" Style="color:white; opacity:0.9;">Lecții structurate</MudText>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Right Panel - Form -->
+    <div style="flex:1; display:flex; align-items:center; justify-content:center; padding:2rem;">
+        <div style="width:100%; max-width:440px;">
+
+            <div style="text-align:center; margin-bottom:2rem;">
+                <div style="display:flex; justify-content:center; margin-bottom:12px;">
+                    <MudIcon Icon="@Icons.Material.Filled.AutoAwesome" Style="font-size:48px; color:#FF6B35;" />
+                </div>
+                <MudText Typo="Typo.h4" Style="font-weight:800; color:#1A1A2E;">
+                    @(_isLogin ? "Bun venit înapoi!" : "Creează cont")
+                </MudText>
+                <MudText Typo="Typo.body1" Style="color:#546E7A; margin-top:0.5rem;">
+                    @(_isLogin ? "Intră în contul tău AiTutor" : "Începe călătoria ta de învățare")
+                </MudText>
+            </div>
+
+            <!-- Tab Toggle -->
+            <MudPaper Elevation="0" Class="pa-1 mb-4" Style="background:#E8EEF5; border-radius:12px;">
+                <div style="display:grid; grid-template-columns:1fr 1fr; gap:4px;">
+                    <MudButton Variant="@(_isLogin ? Variant.Filled : Variant.Text)"
+                               Color="@(_isLogin ? Color.Primary : Color.Default)"
+                               OnClick="@SwitchToLogin"
+                               Style="border-radius:10px; font-weight:600;">
+                        Autentificare
+                    </MudButton>
+                    <MudButton Variant="@(!_isLogin ? Variant.Filled : Variant.Text)"
+                               Color="@(!_isLogin ? Color.Primary : Color.Default)"
+                               OnClick="@SwitchToRegister"
+                               Style="border-radius:10px; font-weight:600;">
+                        Înregistrare
+                    </MudButton>
+                </div>
+            </MudPaper>
+
+            <!-- Error Alert -->
+            @if (!string.IsNullOrEmpty(_errorMessage))
+            {
+                <MudAlert Severity="Severity.Error" Class="mb-3" Style="border-radius:12px;" ShowCloseIcon="true" CloseIconClicked="@ClearError">
+                    @_errorMessage
+                </MudAlert>
+            }
+
+            <MudPaper Elevation="2" Class="pa-4" Style="border-radius:20px;">
+                @if (_isLogin)
+                {
+                    <!-- LOGIN FORM -->
+                    <MudTextField @bind-Value="_email"
+                                  Label="Adresă Email"
+                                  Variant="Variant.Outlined"
+                                  InputType="InputType.Email"
+                                  Adornment="Adornment.Start"
+                                  AdornmentIcon="@Icons.Material.Filled.Email"
+                                  AdornmentColor="Color.Primary"
+                                  Class="mb-3"
+                                  Disabled="@_isLoading" />
+
+                    <MudTextField @bind-Value="_password"
+                                  Label="Parolă"
+                                  Variant="Variant.Outlined"
+                                  InputType="@(_showPassword ? InputType.Text : InputType.Password)"
+                                  Adornment="Adornment.End"
+                                  AdornmentIcon="@(_showPassword ? Icons.Material.Filled.VisibilityOff : Icons.Material.Filled.Visibility)"
+                                  OnAdornmentClick="@(() => _showPassword = !_showPassword)"
+                                  AdornmentColor="Color.Primary"
+                                  Class="mb-4"
+                                  Disabled="@_isLoading"
+                                  OnKeyDown="@HandleLoginKeyDown" />
+
+                    <MudButton Variant="Variant.Filled"
+                               Color="Color.Primary"
+                               FullWidth="true"
+                               OnClick="@HandleLogin"
+                               Disabled="@_isLoading"
+                               Style="border-radius:12px; height:48px; font-size:1rem; font-weight:700;">
+                        @if (_isLoading)
+                        {
+                            <MudProgressCircular Size="Size.Small" Indeterminate="true"
+                                                 Color="Color.Inherit" Class="mr-2" />
+                            <span>Se autentifică...</span>
+                        }
+                        else
+                        {
+                            <MudIcon Icon="@Icons.Material.Filled.Login" Class="mr-2" />
+                            <span>Autentificare</span>
+                        }
+                    </MudButton>
+                }
+                else
+                {
+                    <!-- REGISTER FORM -->
+                    <div style="display:grid; grid-template-columns:1fr 1fr; gap:12px;" class="mb-3">
+                        <MudTextField @bind-Value="_firstName"
+                                      Label="Prenume"
+                                      Variant="Variant.Outlined"
+                                      Adornment="Adornment.Start"
+                                      AdornmentIcon="@Icons.Material.Filled.Person"
+                                      AdornmentColor="Color.Primary"
+                                      Disabled="@_isLoading" />
+                        <MudTextField @bind-Value="_lastName"
+                                      Label="Nume"
+                                      Variant="Variant.Outlined"
+                                      Disabled="@_isLoading" />
+                    </div>
+
+                    <MudTextField @bind-Value="_email"
+                                  Label="Adresă Email"
+                                  Variant="Variant.Outlined"
+                                  InputType="InputType.Email"
+                                  Adornment="Adornment.Start"
+                                  AdornmentIcon="@Icons.Material.Filled.Email"
+                                  AdornmentColor="Color.Primary"
+                                  Class="mb-3"
+                                  Disabled="@_isLoading" />
+
+                    <MudTextField @bind-Value="_password"
+                                  Label="Parolă"
+                                  Variant="Variant.Outlined"
+                                  InputType="@(_showPassword ? InputType.Text : InputType.Password)"
+                                  Adornment="Adornment.End"
+                                  AdornmentIcon="@(_showPassword ? Icons.Material.Filled.VisibilityOff : Icons.Material.Filled.Visibility)"
+                                  OnAdornmentClick="@(() => _showPassword = !_showPassword)"
+                                  AdornmentColor="Color.Primary"
+                                  Class="mb-3"
+                                  Disabled="@_isLoading" />
+
+                    <MudSelect T="UserRole" @bind-Value="_selectedRole"
+                               Label="Tip cont"
+                               Variant="Variant.Outlined"
+                               Adornment="Adornment.Start"
+                               AdornmentIcon="@Icons.Material.Filled.Badge"
+                               AdornmentColor="Color.Primary"
+                               Class="mb-4"
+                               Disabled="@_isLoading">
+                        <MudSelectItem Value="UserRole.Student">Elev</MudSelectItem>
+                        <MudSelectItem Value="UserRole.Parent">Părinte</MudSelectItem>
+                        <MudSelectItem Value="UserRole.Teacher">Profesor</MudSelectItem>
+                    </MudSelect>
+
+                    <MudButton Variant="Variant.Filled"
+                               Color="Color.Primary"
+                               FullWidth="true"
+                               OnClick="@HandleRegister"
+                               Disabled="@_isLoading"
+                               Style="border-radius:12px; height:48px; font-size:1rem; font-weight:700;">
+                        @if (_isLoading)
+                        {
+                            <MudProgressCircular Size="Size.Small" Indeterminate="true"
+                                                 Color="Color.Inherit" Class="mr-2" />
+                            <span>Se creează contul...</span>
+                        }
+                        else
+                        {
+                            <MudIcon Icon="@Icons.Material.Filled.PersonAdd" Class="mr-2" />
+                            <span>Creează cont</span>
+                        }
+                    </MudButton>
+                }
+
+                <MudDivider Class="my-3" />
+                <div style="text-align:center;">
+                    <MudText Typo="Typo.caption" Style="color:#546E7A;">
+                        @(_isLogin ? "Nu ai cont? " : "Ai deja cont? ")
+                    </MudText>
+                    <MudLink OnClick="@ToggleMode" Style="color:#1976D2; cursor:pointer; font-weight:600; font-size:0.75rem;">
+                        @(_isLogin ? "Înregistrează-te" : "Autentifică-te")
+                    </MudLink>
+                </div>
+            </MudPaper>
+        </div>
+    </div>
+</div>
+
+@code {
+    private bool _isLogin = true;
+    private bool _isLoading = false;
+    private bool _showPassword = false;
+    private string _email = "";
+    private string _password = "";
+    private string _firstName = "";
+    private string _lastName = "";
+    private string _errorMessage = "";
+    private UserRole _selectedRole = UserRole.Student;
+
+    protected override async Task OnInitializedAsync()
+    {
+        try
+        {
+            var isAuth = await AuthService.IsAuthenticatedAsync();
+            if (isAuth)
+            {
+                Navigation.NavigateTo("/dashboard", forceLoad: false);
+            }
+        }
+        catch
+        {
+            // Ignore errors on init - just show login page
+        }
+    }
+
+    private void SwitchToLogin()
+    {
+        _isLogin = true;
+        _errorMessage = "";
+        _isLoading = false;
+    }
+
+    private void SwitchToRegister()
+    {
+        _isLogin = false;
+        _errorMessage = "";
+        _isLoading = false;
+    }
+
+    private void ToggleMode()
+    {
+        _isLogin = !_isLogin;
+        _errorMessage = "";
+        _isLoading = false;
+    }
+
+    private void ClearError()
+    {
+        _errorMessage = "";
+    }
+
+    private async Task HandleLoginKeyDown(KeyboardEventArgs e)
+    {
+        if (e.Key == "Enter") await HandleLogin();
+    }
+
+    private async Task HandleLogin()
+    {
+        if (_isLoading) return;
+
+        _errorMessage = "";
+
+        if (string.IsNullOrWhiteSpace(_email))
+        {
+            _errorMessage = "Completează adresa de email!";
+            return;
+        }
+
+        if (string.IsNullOrWhiteSpace(_password))
+        {
+            _errorMessage = "Completează parola!";
+            return;
+        }
+
+        _isLoading = true;
+
+        try
+        {
+            var response = await ApiService.LoginAsync(new LoginRequest
+            {
+                Email = _email.Trim(),
+                Password = _password
+            });
+
+            if (response != null && !string.IsNullOrEmpty(response.Token))
+            {
+                await AuthService.SaveAuthAsync(response);
+                Snackbar.Add($"Bun venit, {response.User?.FullName ?? "utilizator"}! 👋", Severity.Success);
+                Navigation.NavigateTo("/dashboard", forceLoad: false);
+            }
+            else
+            {
+                _errorMessage = "Email sau parolă incorectă. Încearcă din nou.";
+            }
+        }
+        catch (HttpRequestException ex)
+        {
+            _errorMessage = $"Eroare de rețea: Nu se poate conecta la server. ({ex.Message})";
+        }
+        catch (Exception ex)
+        {
+            _errorMessage = $"Eroare: {ex.Message}";
+        }
+        finally
+        {
+            _isLoading = false;
+        }
+    }
+
+    private async Task HandleRegister()
+    {
+        if (_isLoading) return;
+
+        _errorMessage = "";
+
+        if (string.IsNullOrWhiteSpace(_firstName) || string.IsNullOrWhiteSpace(_lastName) ||
+            string.IsNullOrWhiteSpace(_email) || string.IsNullOrWhiteSpace(_password))
+        {
+            _errorMessage = "Completează toate câmpurile!";
+            return;
+        }
+
+        if (_password.Length < 6)
+        {
+            _errorMessage = "Parola trebuie să aibă cel puțin 6 caractere!";
+            return;
+        }
+
+        _isLoading = true;
+
+        try
+        {
+            var success = await ApiService.RegisterAsync(new RegisterRequest
+            {
+                FirstName = _firstName.Trim(),
+                LastName = _lastName.Trim(),
+                Email = _email.Trim(),
+                Password = _password,
+                Role = _selectedRole
+            });
+
+            if (success)
+            {
+                Snackbar.Add("Cont creat cu succes! Autentifică-te acum.", Severity.Success);
+                _isLogin = true;
+                _errorMessage = "";
+                _password = "";
+            }
+            else
+            {
+                _errorMessage = "Eroare la înregistrare. Emailul poate fi deja folosit sau parola nu îndeplinește cerințele.";
+            }
+        }
+        catch (Exception ex)
+        {
+            _errorMessage = $"Eroare: {ex.Message}";
+        }
+        finally
+        {
+            _isLoading = false;
+        }
+    }
+}

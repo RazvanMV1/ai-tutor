@@ -1,0 +1,49 @@
+@inject NavigationManager Navigation
+
+<MudNavMenu>
+    <MudNavLink Href="/dashboard" Icon="@Icons.Material.Filled.Dashboard" Match="NavLinkMatch.All">
+        Panou Principal
+    </MudNavLink>
+    
+    <MudNavGroup Title="Studiu" Icon="@Icons.Material.Filled.School" Expanded="true">
+        <MudNavLink Href="/subjects" Icon="@Icons.Material.Filled.Category">
+            Materii
+        </MudNavLink>
+        <MudNavLink Href="/lessons" Icon="@Icons.Material.Filled.MenuBook">
+            Lecții
+        </MudNavLink>
+        <MudNavLink Href="/quiz" Icon="@Icons.Material.Filled.Quiz">
+            Quiz-uri
+        </MudNavLink>
+    </MudNavGroup>
+
+    <MudNavGroup Title="Asistent AI" Icon="@Icons.Material.Filled.AutoAwesome" Expanded="true">
+        <MudNavLink Href="/ai/explanation" Icon="@Icons.Material.Filled.Psychology">
+            Explicații AI
+        </MudNavLink>
+        <MudNavLink Href="/ai/problems" Icon="@Icons.Material.Filled.EditNote">
+            Probleme AI
+        </MudNavLink>
+    </MudNavGroup>
+
+    <MudNavGroup Title="Cont" Icon="@Icons.Material.Filled.Person" Expanded="false">
+        <MudNavLink Href="/progress" Icon="@Icons.Material.Filled.TrendingUp">
+            Progresul Meu
+        </MudNavLink>
+        <MudNavLink Href="/subscriptions" Icon="@Icons.Material.Filled.Star">
+            Abonamente
+        </MudNavLink>
+    </MudNavGroup>
+</MudNavMenu>
+
+<div style="position:absolute; bottom:16px; left:16px; right:16px;">
+    <MudPaper Class="pa-3" Style="background:linear-gradient(135deg,rgba(255,107,53,0.1),rgba(255,140,105,0.05)); border:1px solid rgba(255,107,53,0.2); border-radius:12px;">
+        <div style="display:flex; align-items:center; gap:8px;">
+            <MudIcon Icon="@Icons.Material.Filled.AutoAwesome" Style="color:#FF6B35; font-size:20px;" />
+            <div>
+                <MudText Typo="Typo.caption" Style="font-weight:700; color:#FF6B35;">AI Powered</MudText>
+                <MudText Typo="Typo.caption" Style="color:#546E7A; display:block;">Google Gemini</MudText>
+            </div>
+        </div>
+    </MudPaper>
+</div>

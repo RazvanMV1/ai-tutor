@@ -1,0 +1,80 @@
+html, body {
+    font-family: 'Inter', 'Helvetica Neue', Helvetica, Arial, sans-serif;
+    background: #F0F4F8;
+    margin: 0;
+    padding: 0;
+}
+
+* {
+    box-sizing: border-box;
+}
+
+h1:focus {
+    outline: none;
+}
+
+a {
+    color: #1976D2;
+    text-decoration: none;
+}
+
+a:hover {
+    text-decoration: underline;
+}
+
+/* Blazor Error UI */
+#blazor-error-ui {
+    background: #d32f2f;
+    bottom: 0;
+    box-shadow: 0 -1px 2px rgba(0, 0, 0, 0.2);
+    display: none;
+    left: 0;
+    padding: 0.6rem 1.25rem 0.7rem 1.25rem;
+    position: fixed;
+    width: 100%;
+    z-index: 1000;
+    color: white;
+}
+
+#blazor-error-ui .dismiss {
+    cursor: pointer;
+    position: absolute;
+    right: 0.75rem;
+    top: 0.5rem;
+}
+
+.mud-nav-link.active {
+    background: rgba(25, 118, 210, 0.1) !important;
+    color: #1976D2 !important;
+    font-weight: 700 !important;
+    border-radius: 8px !important;
+}
+
+.mud-nav-link:hover {
+    background: rgba(25, 118, 210, 0.06) !important;
+    border-radius: 8px !important;
+}
+
+/* Scrollbar */
+::-webkit-scrollbar {
+    width: 6px;
+    height: 6px;
+}
+
+::-webkit-scrollbar-track {
+    background: transparent;
+}
+
+::-webkit-scrollbar-thumb {
+    background: #B0BEC5;
+    border-radius: 3px;
+}
+
+::-webkit-scrollbar-thumb:hover {
+    background: #546E7A;
+}
+
+/* MudBlazor fixes */
+.mud-main-content {
+    transition: padding-left 0.3s ease;
+}

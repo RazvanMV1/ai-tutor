@@ -1,0 +1,261 @@
+@page "/lesson/{LessonId:guid}"
+@inject ApiService ApiService
+@inject AuthService AuthService
+@inject NavigationManager Navigation
+@inject ISnackbar Snackbar
+@inject IJSRuntime JS
+
+<PageTitle>@(_lesson?.Title ?? "Lecție") | AiTutor</PageTitle>
+
+<div class="page-fade-in">
+    @if (_isLoading)
+    {
+        <MudPaper Class="pa-4 mb-4" Style="border-radius:16px;">
+            <MudSkeleton Width="60%" Height="32px" Class="mb-3" />
+            <MudSkeleton Width="100%" Height="16px" Class="mb-2" />
+            <MudSkeleton Width="90%" Height="16px" Class="mb-2" />
+            <MudSkeleton Width="80%" Height="16px" />
+        </MudPaper>
+    }
+    else if (_lesson != null)
+    {
+        <!-- Back Button -->
+        <div style="display:flex; align-items:center; gap:8px; margin-bottom:1rem;">
+            <MudIconButton Icon="@Icons.Material.Filled.ArrowBack" 
+                           OnClick="@(() => Navigation.NavigateTo("/lessons"))" />
+            <MudText Typo="Typo.body2" Style="color:#546E7A;">Înapoi la lecții</MudText>
+        </div>
+
+        <MudGrid>
+            <!-- Main Content -->
+            <MudItem xs="12" md="8">
+                <!-- Hero Header -->
+                <div class="hero-gradient mb-4" style="position:relative;">
+                    <div style="position:relative; z-index:1;">
+                        <div style="display:flex; align-items:center; gap:10px; margin-bottom:0.75rem;">
+                            <span class="@GetDifficultyClass(_lesson.Difficulty)" 
+                                  style="background:rgba(255,255,255,0.2); color:white; border-color:rgba(255,255,255,0.3);">
+                                @GetDifficultyLabel(_lesson.Difficulty)
+                            </span>
+                            @if (_isCompleted)
+                            {
+                                <span style="background:rgba(56,142,60,0.3); color:white; border:1px solid rgba(255,255,255,0.3); 
+                                             padding:2px 10px; border-radius:20px; font-size:0.75rem; font-weight:600;">
+                                    ✓ Completat
+                                </span>
+                            }
+                        </div>
+                        <MudText Typo="Typo.h4" Style="font-weight:800; color:white; margin-bottom:0.5rem;">
+                            @_lesson.Title
+                        </MudText>
+                        <MudText Typo="Typo.caption" Style="color:rgba(255,255,255,0.7);">
+                            Lecția #@_lesson.OrderIndex · Adăugat @_lesson.CreatedAt.ToString("dd MMM yyyy")
+                        </MudText>
+                    </div>
+                </div>
+
+                <!-- Lesson Content -->
+                <MudPaper Elevation="1" Class="pa-5 mb-4" Style="border-radius:16px;">
+                    <div style="line-height:1.8; color:#37474F; font-size:1rem;">
+                        @((MarkupString)FormatContent(_lesson.Content))
+                    </div>
+                </MudPaper>
+
+                <!-- Complete Button -->
+                @if (!_isCompleted)
+                {
+                    <MudButton Variant="Variant.Filled" Color="Color.Success" FullWidth="true"
+                               OnClick="CompleteLesson" Disabled="_isCompletingLesson" Class="btn-bounce mb-4"
+                               Style="height:52px; border-radius:14px; font-size:1.1rem; font-weight:700;">
+                        @if (_isCompletingLesson)
+                        {
+                            <MudProgressCircular Size="Size.Small" Indeterminate="true" Color="Color.Inherit" Class="mr-2" />
+                            <span>Se salvează...</span>
+                        }
+                        else
+                        {
+                            <MudIcon Icon="@Icons.Material.Filled.CheckCircle" Class="mr-2" />
+                            <span>Marchează ca Completat</span>
+                        }
+                    </MudButton>
+                }
+                else
+                {
+                    <MudAlert Severity="Severity.Success" Class="mb-4" Style="border-radius:14px;">
+                        <MudText Style="font-weight:600;">🎉 Felicitări! Ai completat această lecție cu scorul @_score%</MudText>
+                    </MudAlert>
+                }
+            </MudItem>
+
+            <!-- Sidebar -->
+            <MudItem xs="12" md="4">
+                <!-- Quiz Section -->
+                <MudPaper Elevation="1" Class="pa-4 mb-4" Style="border-radius:16px;">
+                    <div style="display:flex; align-items:center; gap:8px; margin-bottom:1rem;">
+                        <MudIcon Icon="@Icons.Material.Filled.Quiz" Style="color:#FF6B35;" />
+                        <MudText Typo="Typo.h6" Style="font-weight:700;">Quiz-uri Disponibile</MudText>
+                    </div>
+
+                    @if (_isLoadingQuizzes)
+                    {
+                        @for (int i = 0; i < 2; i++)
+                        {
+                            <MudSkeleton Height="60px" Class="mb-2" Style="border-radius:10px;" />
+                        }
+                    }
+                    else if (_quizzes.Count == 0)
+                    {
+                        <div style="text-align:center; padding:1.5rem; color:#546E7A;">
+                            <MudIcon Icon="@Icons.Material.Outlined.Quiz" Style="font-size:40px; opacity:0.3;" />
+                            <MudText Typo="Typo.body2" Class="mt-1">Nu există quiz-uri pentru această lecție</MudText>
+                        </div>
+                    }
+                    else
+                    {
+                        @foreach (var quiz in _quizzes)
+                        {
+                            <div class="card-hover" style="border:1px solid #e0e0e0; border-radius:10px; padding:0.75rem 1rem; 
+                                        margin-bottom:8px; cursor:pointer;"
+                                 @onclick="@(() => Navigation.NavigateTo($"/quiz/{quiz.Id}"))">
+                                <div style="display:flex; align-items:center; justify-content:space-between;">
+                                    <div>
+                                        <MudText Typo="Typo.body2" Style="font-weight:600;">@quiz.Title</MudText>
+                                        <MudText Typo="Typo.caption" Style="color:#546E7A;">
+                                            @quiz.QuestionsCount întrebări · @quiz.TimeLimitMinutes min
+                                        </MudText>
+                                    </div>
+                                    <div style="display:flex; flex-direction:column; align-items:flex-end; gap:4px;">
+                                        <span class="@GetDifficultyClass(quiz.Difficulty)">@GetDifficultyLabel(quiz.Difficulty)</span>
+                                        <MudIcon Icon="@Icons.Material.Filled.PlayArrow" Style="color:#1976D2; font-size:20px;" />
+                                    </div>
+                                </div>
+                            </div>
+                        }
+                    }
+                </MudPaper>
+
+                <!-- AI Help Card -->
+                <div class="ai-card pa-4" style="cursor:pointer;"
+                     @onclick="@(() => Navigation.NavigateTo("/ai/explanation"))">
+                    <div style="display:flex; align-items:center; gap:8px; margin-bottom:0.75rem;">
+                        <MudIcon Icon="@Icons.Material.Filled.AutoAwesome" Style="color:#FF6B35; font-size:22px;" />
+                        <MudText Typo="Typo.body1" Style="font-weight:700; color:#FF6B35;">Ajutor AI</MudText>
+                    </div>
+                    <MudText Typo="Typo.body2" Style="color:#546E7A; margin-bottom:0.75rem;">
+                        Nu înțelegi ceva? Cere o explicație personalizată de la AI.
+                    </MudText>
+                    <MudButton Variant="Variant.Outlined" FullWidth="true"
+                               Style="border-color:#FF6B35; color:#FF6B35; border-radius:10px; font-weight:600;">
+                        Generează Explicație AI
+                    </MudButton>
+                </div>
+            </MudItem>
+        </MudGrid>
+    }
+    else
+    {
+        <div style="text-align:center; padding:4rem; color:#546E7A;">
+            <MudIcon Icon="@Icons.Material.Filled.ErrorOutline" Style="font-size:64px; opacity:0.3;" />
+            <MudText Typo="Typo.h6" Class="mt-3">Lecția nu a fost găsită</MudText>
+            <MudButton Variant="Variant.Filled" Color="Color.Primary" Href="/lessons" Class="mt-3">
+                Înapoi la lecții
+            </MudButton>
+        </div>
+    }
+</div>
+
+@code {
+    [Parameter] public Guid LessonId { get; set; }
+
+    private bool _isLoading = true;
+    private bool _isLoadingQuizzes = true;
+    private bool _isCompletingLesson = false;
+    private bool _isCompleted = false;
+    private int _score = 0;
+    private LessonDto? _lesson;
+    private List<QuizSummaryDto> _quizzes = new();
+
+    protected override async Task OnInitializedAsync()
+    {
+        try
+        {
+            _lesson = await ApiService.GetLessonByIdAsync(LessonId);
+            _isLoading = false;
+
+            // Load quizzes
+            _quizzes = await ApiService.GetQuizzesByLessonAsync(LessonId);
+            _isLoadingQuizzes = false;
+
+            // Check progress
+            var userId = await AuthService.GetCurrentUserIdAsync();
+            var progress = await ApiService.GetProgressAsync(userId);
+            var lessonProgress = progress.FirstOrDefault(p => p.LessonId == LessonId);
+            if (lessonProgress != null)
+            {
+                _isCompleted = lessonProgress.IsCompleted;
+                _score = lessonProgress.ScorePercentage;
+            }
+        }
+        catch
+        {
+            Snackbar.Add("Eroare la încărcarea lecției.", Severity.Error);
+            _isLoading = false;
+            _isLoadingQuizzes = false;
+        }
+    }
+
+    private async Task CompleteLesson()
+    {
+        _isCompletingLesson = true;
+        try
+        {
+            var userId = await AuthService.GetCurrentUserIdAsync();
+            var success = await ApiService.CompleteLessonAsync(new CompleteLessonCommand
+            {
+                UserId = userId,
+                LessonId = LessonId,
+                ScorePercentage = 100
+            });
+            if (success)
+            {
+                _isCompleted = true;
+                _score = 100;
+                Snackbar.Add("Lecție completată! Felicitări! 🎉", Severity.Success);
+                await JS.InvokeVoidAsync("launchConfetti");
+            }
+            else
+            {
+                Snackbar.Add("Eroare la salvarea progresului.", Severity.Error);
+            }
+        }
+        catch
+        {
+            Snackbar.Add("Eroare la salvarea progresului.", Severity.Error);
+        }
+        _isCompletingLesson = false;
+    }
+
+    private string FormatContent(string content)
+    {
+        if (string.IsNullOrEmpty(content)) return "<p>Conținut indisponibil.</p>";
+        // Convert newlines to paragraphs
+        var paragraphs = content.Split('\n', StringSplitOptions.RemoveEmptyEntries);
+        return string.Join("", paragraphs.Select(p => $"<p>{p}</p>"));
+    }
+
+    private string GetDifficultyClass(DifficultyLevel level) => level switch
+    {
+        DifficultyLevel.Beginner => "badge-beginner",
+        DifficultyLevel.Intermediate => "badge-intermediate",
+        DifficultyLevel.Advanced => "badge-advanced",
+        _ => "badge-beginner"
+    };
+
+    private string GetDifficultyLabel(DifficultyLevel level) => level switch
+    {
+        DifficultyLevel.Beginner => "Beginner",
+        DifficultyLevel.Intermediate => "Intermediar",
+        DifficultyLevel.Advanced => "Avansat",
+        _ => "Necunoscut"
+    };
+}

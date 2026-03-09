@@ -1,0 +1,40 @@
+@page "/quiz"
+@inject NavigationManager Navigation
+@inject AuthService AuthService
+@inject ApiService ApiService
+@inject ISnackbar Snackbar
+
+<PageTitle>Quiz-uri | AiTutor</PageTitle>
+
+<div class="page-fade-in">
+    <div class="hero-gradient mb-4">
+        <MudText Typo="Typo.h4" Style="font-weight:800; color:white;">Quiz-uri</MudText>
+        <MudText Typo="Typo.body1" Style="color:rgba(255,255,255,0.85); margin-top:0.25rem;">
+            Testează-ți cunoștințele
+        </MudText>
+    </div>
+
+    <MudPaper Elevation="1" Class="pa-4" Style="border-radius:16px;">
+        <div style="text-align:center; padding:3rem; color:#546E7A;">
+            <MudIcon Icon="@Icons.Material.Filled.Quiz" Style="font-size:80px; color:#1976D2; opacity:0.4;" />
+            <MudText Typo="Typo.h5" Class="mt-3" Style="font-weight:700; color:#1A1A2E;">
+                Accesează Quiz-urile din Lecții
+            </MudText>
+            <MudText Typo="Typo.body1" Class="mt-2" Style="max-width:400px; margin:0 auto;">
+                Quiz-urile sunt asociate fiecărei lecții. Navighează la o lecție pentru a accesa quiz-urile disponibile.
+            </MudText>
+            <div style="display:flex; gap:12px; justify-content:center; margin-top:2rem; flex-wrap:wrap;">
+                <MudButton Variant="Variant.Filled" Color="Color.Primary" Href="/subjects"
+                           Style="border-radius:12px; font-weight:700;" Class="btn-bounce">
+                    <MudIcon Icon="@Icons.Material.Filled.Category" Class="mr-2" />
+                    Explorează Materii
+                </MudButton>
+                <MudButton Variant="Variant.Outlined" Color="Color.Primary" Href="/lessons"
+                           Style="border-radius:12px; font-weight:700;">
+                    <MudIcon Icon="@Icons.Material.Filled.MenuBook" Class="mr-2" />
+                    Vezi Lecțiile
+                </MudButton>
+            </div>
+        </div>
+    </MudPaper>
+</div>

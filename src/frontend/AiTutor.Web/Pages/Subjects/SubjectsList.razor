@@ -1,0 +1,309 @@
+@page "/subjects"
+@inject ApiService ApiService
+@inject AuthService AuthService
+@inject NavigationManager Navigation
+@inject ISnackbar Snackbar
+
+<PageTitle>Materii | AiTutor</PageTitle>
+
+<div class="page-fade-in">
+    <!-- Header -->
+    <div class="hero-gradient mb-4">
+        <div style="display:flex; align-items:center; justify-content:space-between; flex-wrap:wrap; gap:1rem;">
+            <div>
+                <MudText Typo="Typo.h4" Style="font-weight:800; color:white;">Materii</MudText>
+                <MudText Typo="Typo.body1" Style="color:rgba(255,255,255,0.85); margin-top:0.25rem;">
+                    Alege materia pe care vrei să o studiezi
+                </MudText>
+            </div>
+            @if (_canManage)
+            {
+                <MudButton Variant="Variant.Filled"
+                           Style="background:rgba(255,255,255,0.2); color:white; border-radius:12px; font-weight:700; border:1px solid rgba(255,255,255,0.4);"
+                           StartIcon="@Icons.Material.Filled.Add"
+                           OnClick="OpenAddDialog">
+                    Adaugă Materie
+                </MudButton>
+            }
+        </div>
+    </div>
+
+    @if (_isLoading)
+    {
+        <MudGrid>
+            @for (int i = 0; i < 3; i++)
+            {
+                <MudItem xs="12" sm="6" md="4">
+                    <MudPaper Class="pa-4" Style="border-radius:16px; height:200px;">
+                        <MudSkeleton Width="50%" Height="24px" Class="mb-3" />
+                        <MudSkeleton Width="80%" Height="16px" Class="mb-2" />
+                        <MudSkeleton Width="60%" Height="16px" />
+                    </MudPaper>
+                </MudItem>
+            }
+        </MudGrid>
+    }
+    else
+    {
+        <MudGrid>
+            @foreach (var (subject, index) in _subjects.Select((s, i) => (s, i)))
+            {
+                var config = GetSubjectConfig(subject.Type);
+                <MudItem xs="12" sm="6" md="4">
+                    <div class="@($"card-hover scale-in stagger-{index + 1}")"
+                         style="@($"border-radius:20px; overflow:hidden; background:white; border:1px solid {config.BorderColor}; cursor:pointer;")"
+                         @onclick="@(() => Navigation.NavigateTo($"/lessons/{subject.Id}"))">
+
+                        <!-- Card Header Gradient -->
+                        <div style="@($"background:{config.Gradient}; padding:2rem 1.5rem 3rem; position:relative; overflow:hidden;")">
+                            <div style="position:absolute; top:-20px; right:-20px; width:100px; height:100px;
+                                        background:rgba(255,255,255,0.12); border-radius:50%;"></div>
+                            <div style="width:60px; height:60px; background:rgba(255,255,255,0.2); border-radius:16px;
+                                        display:flex; align-items:center; justify-content:center; position:relative;">
+                                <MudIcon Icon="@config.Icon" Style="color:white; font-size:32px;" />
+                            </div>
+                        </div>
+
+                        <!-- Card Body -->
+                        <div style="padding:1.5rem; margin-top:-1.5rem; background:white; border-radius:20px; position:relative;">
+                            <MudText Typo="Typo.h5" Style="@($"font-weight:800; color:{config.TextColor}; margin-bottom:0.5rem;")">
+                                @subject.Name
+                            </MudText>
+                            <MudText Typo="Typo.body2" Style="color:#546E7A; line-height:1.6; margin-bottom:1.5rem; min-height:48px;">
+                                @subject.Description
+                            </MudText>
+                            <MudButton Variant="Variant.Filled" FullWidth="true" Class="btn-bounce"
+                                       Style="@($"background:{config.Gradient}; color:white; border-radius:10px; font-weight:700;")">
+                                <MudIcon Icon="@Icons.Material.Filled.ArrowForward" Class="mr-2" />
+                                Explorează Lecțiile
+                            </MudButton>
+                        </div>
+                    </div>
+                </MudItem>
+            }
+        </MudGrid>
+
+        @if (_subjects.Count == 0)
+        {
+            <MudPaper Class="pa-6" Style="border-radius:16px; text-align:center; background:#F8FAFC;">
+                <MudIcon Icon="@Icons.Material.Filled.School" Style="font-size:80px; color:#B0BEC5;" />
+                <MudText Typo="Typo.h6" Class="mt-3" Style="color:#546E7A;">Nu există materii disponibile</MudText>
+                <MudText Typo="Typo.body2" Style="color:#90A4AE; margin-top:0.5rem;">
+                    @if (_canManage)
+                    {
+                        <span>Adaugă prima materie folosind butonul de mai sus.</span>
+                    }
+                    else
+                    {
+                        <span>Contactează un profesor sau administrator pentru a adăuga materii.</span>
+                    }
+                </MudText>
+            </MudPaper>
+        }
+    }
+</div>
+
+<!-- ── Dialog Adaugă Materie ── -->
+<MudDialog @bind-Visible="_showDialog" Options="_dialogOptions">
+    <TitleContent>
+        <MudText Typo="Typo.h6" Style="font-weight:700;">
+            <MudIcon Icon="@Icons.Material.Filled.Add" Class="mr-2" Style="color:#1976D2;" />
+            Adaugă Materie Nouă
+        </MudText>
+    </TitleContent>
+    <DialogContent>
+        <MudGrid>
+            <MudItem xs="12">
+                <MudTextField @bind-Value="_newName"
+                              Label="Numele materiei *"
+                              Variant="Variant.Outlined"
+                              Adornment="Adornment.Start"
+                              AdornmentIcon="@Icons.Material.Filled.School"
+                              AdornmentColor="Color.Primary"
+                              Placeholder="ex: Matematică, Fizică, Chimie..." />
+            </MudItem>
+            <MudItem xs="12">
+                <MudTextField @bind-Value="_newDescription"
+                              Label="Descriere *"
+                              Variant="Variant.Outlined"
+                              Lines="3"
+                              Placeholder="Descrie pe scurt materia și ce acoperă..." />
+            </MudItem>
+            <MudItem xs="12">
+                <MudSelect T="SubjectType" @bind-Value="_newType"
+                           Label="Tip materie *"
+                           Variant="Variant.Outlined"
+                           Adornment="Adornment.Start"
+                           AdornmentIcon="@Icons.Material.Filled.Category"
+                           AdornmentColor="Color.Primary">
+                    <MudSelectItem Value="SubjectType.Mathematics">
+                        <div style="display:flex; align-items:center; gap:8px;">
+                            <MudIcon Icon="@Icons.Material.Filled.Calculate" Style="color:#1976D2;" />
+                            Matematică
+                        </div>
+                    </MudSelectItem>
+                    <MudSelectItem Value="SubjectType.Romanian">
+                        <div style="display:flex; align-items:center; gap:8px;">
+                            <MudIcon Icon="@Icons.Material.Filled.MenuBook" Style="color:#388E3C;" />
+                            Română
+                        </div>
+                    </MudSelectItem>
+                    <MudSelectItem Value="SubjectType.Informatics">
+                        <div style="display:flex; align-items:center; gap:8px;">
+                            <MudIcon Icon="@Icons.Material.Filled.Code" Style="color:#7B1FA2;" />
+                            Informatică
+                        </div>
+                    </MudSelectItem>
+                </MudSelect>
+            </MudItem>
+
+            @if (!string.IsNullOrEmpty(_dialogError))
+            {
+                <MudItem xs="12">
+                    <MudAlert Severity="Severity.Error" Dense="true" Style="border-radius:8px;">@_dialogError</MudAlert>
+                </MudItem>
+            }
+        </MudGrid>
+    </DialogContent>
+    <DialogActions>
+        <MudButton OnClick="CloseDialog" Variant="Variant.Text" Color="Color.Default" Disabled="@_isSaving">
+            Anulează
+        </MudButton>
+        <MudButton OnClick="SaveSubject" Variant="Variant.Filled" Color="Color.Primary"
+                   Disabled="@_isSaving" Style="border-radius:8px; font-weight:700; min-width:120px;">
+            @if (_isSaving)
+            {
+                <MudProgressCircular Size="Size.Small" Indeterminate="true" Color="Color.Inherit" Class="mr-2" />
+                <span>Se salvează...</span>
+            }
+            else
+            {
+                <MudIcon Icon="@Icons.Material.Filled.Save" Class="mr-2" />
+                <span>Salvează</span>
+            }
+        </MudButton>
+    </DialogActions>
+</MudDialog>
+
+@code {
+    private bool _isLoading = true;
+    private bool _canManage = false;
+    private List<SubjectDto> _subjects = new();
+
+    // Dialog state
+    private bool _showDialog = false;
+    private bool _isSaving = false;
+    private string _newName = "";
+    private string _newDescription = "";
+    private SubjectType _newType = SubjectType.Mathematics;
+    private string _dialogError = "";
+
+    private DialogOptions _dialogOptions = new()
+    {
+        MaxWidth = MaxWidth.Small,
+        FullWidth = true,
+        CloseButton = true,
+        BackdropClick = false
+    };
+
+    protected override async Task OnInitializedAsync()
+    {
+        var role = await AuthService.GetCurrentUserRoleAsync();
+        _canManage = role == UserRole.Admin || role == UserRole.Teacher;
+
+        try
+        {
+            _subjects = await ApiService.GetSubjectsAsync();
+        }
+        catch
+        {
+            Snackbar.Add("Eroare la încărcarea materiilor.", Severity.Error);
+        }
+        _isLoading = false;
+    }
+
+    private void OpenAddDialog()
+    {
+        _newName = "";
+        _newDescription = "";
+        _newType = SubjectType.Mathematics;
+        _dialogError = "";
+        _showDialog = true;
+    }
+
+    private void CloseDialog()
+    {
+        _showDialog = false;
+        _dialogError = "";
+    }
+
+    private async Task SaveSubject()
+    {
+        _dialogError = "";
+
+        if (string.IsNullOrWhiteSpace(_newName))
+        {
+            _dialogError = "Numele materiei este obligatoriu!";
+            return;
+        }
+
+        if (string.IsNullOrWhiteSpace(_newDescription))
+        {
+            _dialogError = "Descrierea este obligatorie!";
+            return;
+        }
+
+        _isSaving = true;
+
+        try
+        {
+            var result = await ApiService.CreateSubjectAsync(new CreateSubjectRequest
+            {
+                Name = _newName.Trim(),
+                Description = _newDescription.Trim(),
+                Type = _newType
+            });
+
+            if (result != null)
+            {
+                // Add to local list immediately (optimistic UI)
+                _subjects.Add(new SubjectDto
+                {
+                    Id = result.Id,
+                    Name = _newName.Trim(),
+                    Description = _newDescription.Trim(),
+                    Type = _newType
+                });
+
+                Snackbar.Add($"Materia \"{_newName.Trim()}\" a fost adăugată cu succes! ✅", Severity.Success);
+                CloseDialog();
+            }
+            else
+            {
+                _dialogError = "Eroare la salvare. Verifică că ești autentificat ca Profesor sau Administrator.";
+            }
+        }
+        catch (Exception ex)
+        {
+            _dialogError = $"Eroare: {ex.Message}";
+        }
+        finally
+        {
+            _isSaving = false;
+        }
+    }
+
+    private SubjectConfig GetSubjectConfig(SubjectType type) => type switch
+    {
+        SubjectType.Mathematics => new("linear-gradient(135deg,#1976D2,#42A5F5)", "#E3F2FD", "#1565C0",
+            Icons.Material.Filled.Calculate),
+        SubjectType.Romanian => new("linear-gradient(135deg,#388E3C,#66BB6A)", "#E8F5E9", "#2E7D32",
+            Icons.Material.Filled.MenuBook),
+        SubjectType.Informatics => new("linear-gradient(135deg,#7B1FA2,#AB47BC)", "#F3E5F5", "#6A1B9A",
+            Icons.Material.Filled.Code),
+        _ => new("linear-gradient(135deg,#455A64,#90A4AE)", "#ECEFF1", "#37474F",
+            Icons.Material.Filled.School)
+    };
+
+    private record SubjectConfig(string Gradient, string BorderColor, string TextColor, string Icon);
+}

@@ -1,0 +1,149 @@
+@inherits Fluxor.Blazor.Web.Components.FluxorLayout
+@inject AuthService AuthService
+@inject NavigationManager Navigation
+@inject IDispatcher Dispatcher
+@inject IJSRuntime JS
+
+<MudThemeProvider @bind-IsDarkMode="@_isDarkMode" Theme="@_theme" />
+<MudPopoverProvider />
+<MudDialogProvider />
+<MudSnackbarProvider />
+
+<MudLayout>
+    <MudAppBar Elevation="1" Color="Color.Surface" Fixed="true">
+        <MudIconButton Icon="@Icons.Material.Filled.Menu" Color="Color.Inherit" Edge="Edge.Start"
+                       OnClick="@DrawerToggle" />
+
+        <MudText Typo="Typo.h6" Style="font-weight:700; color:#1976D2; display:flex; align-items:center; gap:4px;">
+            <MudIcon Icon="@Icons.Material.Filled.AutoAwesome" Style="color:#FF6B35;" />
+            AiTutor
+        </MudText>
+
+        <MudSpacer />
+
+        <!-- Dark Mode Toggle -->
+        <MudIconButton Icon="@(_isDarkMode ? Icons.Material.Filled.LightMode : Icons.Material.Filled.DarkMode)"
+                       Color="Color.Inherit" OnClick="ToggleDarkMode"
+                       Title="@(_isDarkMode ? "Mod luminos" : "Mod întunecat")" />
+
+        <!-- User Info + Logout -->
+        @if (_currentUser != null)
+        {
+            <MudMenu Icon="@Icons.Material.Filled.AccountCircle" Color="Color.Inherit"
+                     Direction="Direction.Bottom" OffsetY="true">
+                <MudMenuItem Disabled="true">
+                    <MudText Typo="Typo.body2" Style="font-weight:600;">@_currentUser.FullName</MudText>
+                    <MudText Typo="Typo.caption" Color="Color.Secondary">@_currentUser.Email</MudText>
+                </MudMenuItem>
+                <MudDivider />
+                <MudMenuItem OnClick="Logout" Icon="@Icons.Material.Filled.Logout">
+                    Deconectare
+                </MudMenuItem>
+            </MudMenu>
+        }
+    </MudAppBar>
+
+    <MudDrawer @bind-Open="_drawerOpen" ClipMode="DrawerClipMode.Always" Elevation="2" Variant="DrawerVariant.Responsive">
+        <MudDrawerHeader>
+            <div style="display:flex; align-items:center; gap:8px; padding:8px 0;">
+                <MudIcon Icon="@Icons.Material.Filled.AutoAwesome" Style="color:#FF6B35; font-size:28px;" />
+                <MudText Typo="Typo.h6" Style="font-weight:800; color:#1976D2;">AiTutor</MudText>
+            </div>
+        </MudDrawerHeader>
+        <NavMenu />
+    </MudDrawer>
+
+    <MudMainContent Style="padding-top:64px; background:#F0F4F8; min-height:100vh;">
+        <MudContainer MaxWidth="MaxWidth.ExtraLarge" Class="pa-4">
+            @Body
+        </MudContainer>
+    </MudMainContent>
+</MudLayout>
+
+@code {
+    private bool _drawerOpen = true;
+    private bool _isDarkMode = false;
+    private UserDto? _currentUser;
+
+    private MudTheme _theme = new MudTheme
+    {
+        PaletteLight = new PaletteLight
+        {
+            Primary = "#1976D2",
+            PrimaryLighten = "#42A5F5",
+            PrimaryDarken = "#1565C0",
+            Secondary = "#388E3C",
+            Tertiary = "#FF6B35",
+            Background = "#F0F4F8",
+            Surface = "#FFFFFF",
+            AppbarBackground = "#FFFFFF",
+            AppbarText = "#1A1A2E",
+            DrawerBackground = "#FFFFFF",
+            DrawerText = "#1A1A2E",
+            TextPrimary = "#1A1A2E",
+            TextSecondary = "#546E7A",
+        },
+        PaletteDark = new PaletteDark
+        {
+            Primary = "#42A5F5",
+            Secondary = "#66BB6A",
+            Tertiary = "#FF8C69",
+            Background = "#0D1117",
+            Surface = "#161B22",
+            AppbarBackground = "#161B22",
+            DrawerBackground = "#161B22",
+        },
+        Typography = new Typography
+        {
+            Default = new DefaultTypography
+            {
+                FontFamily = new[] { "Inter", "sans-serif" },
+            }
+        }
+    };
+
+    protected override async Task OnInitializedAsync()
+    {
+        try
+        {
+            var isAuth = await AuthService.IsAuthenticatedAsync();
+            if (!isAuth)
+            {
+                var uri = Navigation.Uri;
+                if (!uri.Contains("/login") && !uri.Contains("/register"))
+                {
+                    Navigation.NavigateTo("/login", forceLoad: false);
+                    return;
+                }
+            }
+            else
+            {
+                _currentUser = await AuthService.GetCurrentUserAsync();
+            }
+        }
+        catch { }
+
+        // Load saved theme preference
+        try
+        {
+            var theme = await JS.InvokeAsync<string>("getTheme");
+            _isDarkMode = theme == "dark";
+        }
+        catch { }
+    }
+
+    private void DrawerToggle() => _drawerOpen = !_drawerOpen;
+
+    private async Task ToggleDarkMode()
+    {
+        _isDarkMode = !_isDarkMode;
+        try { await JS.InvokeVoidAsync("setTheme", _isDarkMode); } catch { }
+    }
+
+    private async Task Logout()
+    {
+        await AuthService.LogoutAsync();
+        _currentUser = null;
+        Navigation.NavigateTo("/login", forceLoad: false);
+    }
+}

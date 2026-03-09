@@ -106,14 +106,41 @@ app.UseAuthentication();
 app.UseAuthorization();
 app.MapControllers();
 
-// Auto migrate on startup
+// Auto migrate + seed on startup
 using (var scope = app.Services.CreateScope())
 {
     var db = scope.ServiceProvider.GetRequiredService<ApplicationDbContext>();
     await db.Database.MigrateAsync();
+    await SeedDefaultDataAsync(db);
 }
 
 app.Run();
+
+static async Task SeedDefaultDataAsync(ApplicationDbContext db)
+{
+    // Seed default subjects if none exist
+    if (!db.Subjects.Any())
+    {
+        var subjects = new[]
+        {
+            AiTutor.Domain.Entities.Subject.Create(
+                "Matematică",
+                "Aritmetică, algebră, geometrie și analiză matematică pentru toate nivelurile.",
+                AiTutor.Domain.Enums.SubjectType.Mathematics),
+            AiTutor.Domain.Entities.Subject.Create(
+                "Limba Română",
+                "Gramatică, lectură, scriere creativă și literatura română.",
+                AiTutor.Domain.Enums.SubjectType.Romanian),
+            AiTutor.Domain.Entities.Subject.Create(
+                "Informatică",
+                "Algoritmi, programare, structuri de date și gândire computațională.",
+                AiTutor.Domain.Enums.SubjectType.Informatics),
+        };
+
+        db.Subjects.AddRange(subjects);
+        await db.SaveChangesAsync();
+    }
+}
 
 // Necesar pentru IntegrationTests
 public partial class Program { }

@@ -1,0 +1,367 @@
+@page "/lessons"
+@page "/lessons/{SubjectId:guid}"
+@inject ApiService ApiService
+@inject AuthService AuthService
+@inject NavigationManager Navigation
+@inject ISnackbar Snackbar
+
+<PageTitle>Lecții | AiTutor</PageTitle>
+
+<div class="page-fade-in">
+    <!-- Header -->
+    <div style="display:flex; align-items:center; gap:12px; margin-bottom:1.5rem;">
+        @if (SubjectId.HasValue)
+        {
+            <MudIconButton Icon="@Icons.Material.Filled.ArrowBack"
+                           OnClick="@(() => Navigation.NavigateTo("/subjects"))"
+                           Style="background:rgba(25,118,210,0.1); color:#1976D2;" />
+        }
+        <div class="hero-gradient" style="flex:1;">
+            <div style="display:flex; align-items:center; justify-content:space-between; flex-wrap:wrap; gap:1rem;">
+                <div>
+                    <MudText Typo="Typo.h4" Style="font-weight:800; color:white;">Lecții</MudText>
+                    <MudText Typo="Typo.body2" Style="color:rgba(255,255,255,0.85);">
+                        @(_subjectName != null ? $"Materia: {_subjectName}" : "Selectează o lecție pentru a începe")
+                    </MudText>
+                </div>
+                @if (_canManage && SubjectId.HasValue)
+                {
+                    <MudButton Variant="Variant.Filled"
+                               Style="background:rgba(255,255,255,0.2); color:white; border-radius:12px; font-weight:700; border:1px solid rgba(255,255,255,0.4);"
+                               StartIcon="@Icons.Material.Filled.Add"
+                               OnClick="OpenAddDialog">
+                        Adaugă Lecție
+                    </MudButton>
+                }
+            </div>
+        </div>
+    </div>
+
+    <!-- Difficulty Filter -->
+    <div style="display:flex; gap:8px; flex-wrap:wrap; margin-bottom:1.5rem;">
+        <MudChip T="string" OnClick="@(() => _filter = null)" Color="@(_filter == null ? Color.Primary : Color.Default)"
+                 Variant="@(_filter == null ? Variant.Filled : Variant.Outlined)">Toate</MudChip>
+        <MudChip T="string" OnClick="@(() => _filter = DifficultyLevel.Beginner)" Color="Color.Success"
+                 Variant="@(_filter == DifficultyLevel.Beginner ? Variant.Filled : Variant.Outlined)">Beginner</MudChip>
+        <MudChip T="string" OnClick="@(() => _filter = DifficultyLevel.Intermediate)" Color="Color.Warning"
+                 Variant="@(_filter == DifficultyLevel.Intermediate ? Variant.Filled : Variant.Outlined)">Intermediar</MudChip>
+        <MudChip T="string" OnClick="@(() => _filter = DifficultyLevel.Advanced)" Color="Color.Error"
+                 Variant="@(_filter == DifficultyLevel.Advanced ? Variant.Filled : Variant.Outlined)">Avansat</MudChip>
+    </div>
+
+    @if (_isLoading)
+    {
+        @for (int i = 0; i < 5; i++)
+        {
+            <MudPaper Class="pa-4 mb-3" Style="border-radius:12px;">
+                <div style="display:flex; align-items:center; gap:16px;">
+                    <MudSkeleton SkeletonType="SkeletonType.Circle" Width="48px" Height="48px" />
+                    <div style="flex:1;">
+                        <MudSkeleton Width="40%" Height="20px" Class="mb-2" />
+                        <MudSkeleton Width="70%" Height="14px" />
+                    </div>
+                    <MudSkeleton Width="80px" Height="28px" />
+                </div>
+            </MudPaper>
+        }
+    }
+    else
+    {
+        var filtered = _filter.HasValue ? _lessons.Where(l => l.Difficulty == _filter).ToList() : _lessons;
+
+        @if (filtered.Count == 0)
+        {
+            <MudPaper Class="pa-6" Style="border-radius:16px; text-align:center; background:#F8FAFC;">
+                <MudIcon Icon="@Icons.Material.Filled.MenuBook" Style="font-size:64px; color:#B0BEC5;" />
+                <MudText Typo="Typo.h6" Class="mt-3" Style="color:#546E7A;">Nu există lecții disponibile</MudText>
+                <MudText Typo="Typo.body2" Style="color:#90A4AE; margin-top:0.5rem;">
+                    @if (_canManage && SubjectId.HasValue)
+                    {
+                        <span>Adaugă prima lecție folosind butonul de mai sus.</span>
+                    }
+                    else if (!SubjectId.HasValue)
+                    {
+                        <span>Selectează o materie din pagina <MudLink Href="/subjects" Style="color:#1976D2;">Materii</MudLink> pentru a vedea lecțiile.</span>
+                    }
+                    else
+                    {
+                        <span>Nu există lecții pentru această materie.</span>
+                    }
+                </MudText>
+            </MudPaper>
+        }
+        else
+        {
+            @foreach (var (lesson, i) in filtered.Select((l, idx) => (l, idx)))
+            {
+                var completed = _progressMap.ContainsKey(lesson.Id) && _progressMap[lesson.Id].IsCompleted;
+                var score = _progressMap.ContainsKey(lesson.Id) ? _progressMap[lesson.Id].ScorePercentage : 0;
+
+                <div class="@($"slide-in-right stagger-{Math.Min(i + 1, 6)}")" style="margin-bottom:12px;">
+                    <MudPaper Elevation="1" Class="pa-4 card-hover" Style="border-radius:14px; cursor:pointer;"
+                              @onclick="@(() => Navigation.NavigateTo($"/lesson/{lesson.Id}"))">
+                        <div style="display:flex; align-items:center; gap:16px;">
+                            <div style="width:48px; height:48px; background:@GetDifficultyColor(lesson.Difficulty);
+                                        border-radius:12px; display:flex; align-items:center; justify-content:center; flex-shrink:0;">
+                                @if (completed)
+                                {
+                                    <MudIcon Icon="@Icons.Material.Filled.CheckCircle" Style="color:white; font-size:24px;" />
+                                }
+                                else
+                                {
+                                    <MudText Typo="Typo.body1" Style="font-weight:800; color:white;">@lesson.OrderIndex</MudText>
+                                }
+                            </div>
+
+                            <div style="flex:1; min-width:0;">
+                                <div style="display:flex; align-items:center; gap:8px; flex-wrap:wrap;">
+                                    <MudText Typo="Typo.body1" Style="font-weight:700;">@lesson.Title</MudText>
+                                    <MudChip T="string" Size="Size.Small" Color="@GetDifficultyMudColor(lesson.Difficulty)"
+                                             Variant="Variant.Filled" Style="height:20px; font-size:0.7rem;">
+                                        @GetDifficultyLabel(lesson.Difficulty)
+                                    </MudChip>
+                                </div>
+                                @if (completed)
+                                {
+                                    <div style="display:flex; align-items:center; gap:8px; margin-top:6px;">
+                                        <MudProgressLinear Value="@score" Color="Color.Success" Rounded="true"
+                                                           Size="Size.Small" Style="max-width:200px; flex:1;" />
+                                        <MudText Typo="Typo.caption" Style="color:#388E3C; font-weight:600;">@score%</MudText>
+                                    </div>
+                                }
+                            </div>
+
+                            <MudIcon Icon="@Icons.Material.Filled.ChevronRight" Style="color:#B0BEC5;" />
+                        </div>
+                    </MudPaper>
+                </div>
+            }
+        }
+    }
+</div>
+
+<!-- ── Dialog Adaugă Lecție ── -->
+<MudDialog @bind-Visible="_showDialog" Options="_dialogOptions">
+    <TitleContent>
+        <MudText Typo="Typo.h6" Style="font-weight:700;">
+            <MudIcon Icon="@Icons.Material.Filled.Add" Class="mr-2" Style="color:#1976D2;" />
+            Adaugă Lecție Nouă
+        </MudText>
+    </TitleContent>
+    <DialogContent>
+        <MudGrid>
+            <MudItem xs="12">
+                <MudTextField @bind-Value="_newTitle"
+                              Label="Titlul lecției *"
+                              Variant="Variant.Outlined"
+                              Adornment="Adornment.Start"
+                              AdornmentIcon="@Icons.Material.Filled.Title"
+                              AdornmentColor="Color.Primary"
+                              Placeholder="ex: Introducere în algebră..." />
+            </MudItem>
+            <MudItem xs="12">
+                <MudTextField @bind-Value="_newContent"
+                              Label="Conținut lecție *"
+                              Variant="Variant.Outlined"
+                              Lines="5"
+                              Placeholder="Scrie conținutul lecției sau o descriere detaliată..." />
+            </MudItem>
+            <MudItem xs="6">
+                <MudNumericField @bind-Value="_newOrderIndex"
+                                 Label="Ordine"
+                                 Variant="Variant.Outlined"
+                                 Min="1" Max="999" />
+            </MudItem>
+            <MudItem xs="6">
+                <MudSelect T="DifficultyLevel" @bind-Value="_newDifficulty"
+                           Label="Dificultate *"
+                           Variant="Variant.Outlined">
+                    <MudSelectItem Value="DifficultyLevel.Beginner">Beginner</MudSelectItem>
+                    <MudSelectItem Value="DifficultyLevel.Intermediate">Intermediar</MudSelectItem>
+                    <MudSelectItem Value="DifficultyLevel.Advanced">Avansat</MudSelectItem>
+                </MudSelect>
+            </MudItem>
+
+            @if (!string.IsNullOrEmpty(_dialogError))
+            {
+                <MudItem xs="12">
+                    <MudAlert Severity="Severity.Error" Dense="true" Style="border-radius:8px;">@_dialogError</MudAlert>
+                </MudItem>
+            }
+        </MudGrid>
+    </DialogContent>
+    <DialogActions>
+        <MudButton OnClick="CloseDialog" Variant="Variant.Text" Color="Color.Default" Disabled="@_isSaving">
+            Anulează
+        </MudButton>
+        <MudButton OnClick="SaveLesson" Variant="Variant.Filled" Color="Color.Primary"
+                   Disabled="@_isSaving" Style="border-radius:8px; font-weight:700; min-width:120px;">
+            @if (_isSaving)
+            {
+                <MudProgressCircular Size="Size.Small" Indeterminate="true" Color="Color.Inherit" Class="mr-2" />
+                <span>Se salvează...</span>
+            }
+            else
+            {
+                <MudIcon Icon="@Icons.Material.Filled.Save" Class="mr-2" />
+                <span>Salvează</span>
+            }
+        </MudButton>
+    </DialogActions>
+</MudDialog>
+
+@code {
+    [Parameter] public Guid? SubjectId { get; set; }
+
+    private bool _isLoading = true;
+    private bool _canManage = false;
+    private string? _subjectName = null;
+    private DifficultyLevel? _filter = null;
+    private List<LessonDto> _lessons = new();
+    private Dictionary<Guid, StudentProgressDto> _progressMap = new();
+
+    // Dialog state
+    private bool _showDialog = false;
+    private bool _isSaving = false;
+    private string _newTitle = "";
+    private string _newContent = "";
+    private int _newOrderIndex = 1;
+    private DifficultyLevel _newDifficulty = DifficultyLevel.Beginner;
+    private string _dialogError = "";
+
+    private DialogOptions _dialogOptions = new()
+    {
+        MaxWidth = MaxWidth.Small,
+        FullWidth = true,
+        CloseButton = true,
+        BackdropClick = false
+    };
+
+    protected override async Task OnInitializedAsync()
+    {
+        var role = await AuthService.GetCurrentUserRoleAsync();
+        _canManage = role == UserRole.Admin || role == UserRole.Teacher;
+
+        try
+        {
+            if (SubjectId.HasValue)
+            {
+                _lessons = await ApiService.GetLessonsBySubjectAsync(SubjectId.Value);
+                // Set next order index
+                _newOrderIndex = _lessons.Count > 0 ? _lessons.Max(l => l.OrderIndex) + 1 : 1;
+            }
+
+            var userId = await AuthService.GetCurrentUserIdAsync();
+            if (userId != Guid.Empty)
+            {
+                var progress = await ApiService.GetProgressAsync(userId);
+                _progressMap = progress.ToDictionary(p => p.LessonId);
+            }
+        }
+        catch
+        {
+            Snackbar.Add("Eroare la încărcarea lecțiilor.", Severity.Error);
+        }
+        _isLoading = false;
+    }
+
+    private void OpenAddDialog()
+    {
+        _newTitle = "";
+        _newContent = "";
+        _newOrderIndex = _lessons.Count > 0 ? _lessons.Max(l => l.OrderIndex) + 1 : 1;
+        _newDifficulty = DifficultyLevel.Beginner;
+        _dialogError = "";
+        _showDialog = true;
+    }
+
+    private void CloseDialog()
+    {
+        _showDialog = false;
+        _dialogError = "";
+    }
+
+    private async Task SaveLesson()
+    {
+        _dialogError = "";
+
+        if (string.IsNullOrWhiteSpace(_newTitle))
+        {
+            _dialogError = "Titlul lecției este obligatoriu!";
+            return;
+        }
+        if (string.IsNullOrWhiteSpace(_newContent))
+        {
+            _dialogError = "Conținutul lecției este obligatoriu!";
+            return;
+        }
+
+        _isSaving = true;
+
+        try
+        {
+            var result = await ApiService.CreateLessonAsync(new CreateLessonRequest
+            {
+                Title = _newTitle.Trim(),
+                Content = _newContent.Trim(),
+                OrderIndex = _newOrderIndex,
+                Difficulty = _newDifficulty,
+                SubjectId = SubjectId!.Value
+            });
+
+            if (result != null)
+            {
+                _lessons.Add(new LessonDto
+                {
+                    Id = result.Id,
+                    Title = _newTitle.Trim(),
+                    Content = _newContent.Trim(),
+                    OrderIndex = _newOrderIndex,
+                    Difficulty = _newDifficulty,
+                    SubjectId = SubjectId!.Value,
+                    CreatedAt = DateTime.UtcNow
+                });
+                _lessons = _lessons.OrderBy(l => l.OrderIndex).ToList();
+
+                Snackbar.Add($"Lecția \"{_newTitle.Trim()}\" a fost adăugată! ✅", Severity.Success);
+                CloseDialog();
+            }
+            else
+            {
+                _dialogError = "Eroare la salvare. Verifică că ești autentificat ca Profesor sau Administrator.";
+            }
+        }
+        catch (Exception ex)
+        {
+            _dialogError = $"Eroare: {ex.Message}";
+        }
+        finally
+        {
+            _isSaving = false;
+        }
+    }
+
+    private string GetDifficultyColor(DifficultyLevel level) => level switch
+    {
+        DifficultyLevel.Beginner => "#388E3C",
+        DifficultyLevel.Intermediate => "#F57C00",
+        DifficultyLevel.Advanced => "#d32f2f",
+        _ => "#546E7A"
+    };
+
+    private Color GetDifficultyMudColor(DifficultyLevel level) => level switch
+    {
+        DifficultyLevel.Beginner => Color.Success,
+        DifficultyLevel.Intermediate => Color.Warning,
+        DifficultyLevel.Advanced => Color.Error,
+        _ => Color.Default
+    };
+
+    private string GetDifficultyLabel(DifficultyLevel level) => level switch
+    {
+        DifficultyLevel.Beginner => "Beginner",
+        DifficultyLevel.Intermediate => "Intermediar",
+        DifficultyLevel.Advanced => "Avansat",
+        _ => "Necunoscut"
+    };
+}

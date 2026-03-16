@@ -1,0 +1,186 @@
+@page "/progress"
+@inject ApiService ApiService
+@inject AuthService AuthService
+@inject ISnackbar Snackbar
+
+<PageTitle>Progresul Meu | AiTutor</PageTitle>
+
+<div class="page-fade-in">
+    <!-- Header -->
+    <div class="hero-gradient mb-4">
+        <MudText Typo="Typo.h4" Style="font-weight:800; color:white;">Progresul Meu</MudText>
+        <MudText Typo="Typo.body1" Style="color:rgba(255,255,255,0.85); margin-top:0.25rem;">
+            Statistici detaliate despre activitatea ta
+        </MudText>
+    </div>
+
+    @if (_isLoading)
+    {
+        <MudGrid Class="mb-4">
+            @for (int i = 0; i < 3; i++)
+            {
+                <MudItem xs="12" sm="4">
+                    <MudPaper Class="pa-4" Style="border-radius:12px;">
+                        <MudSkeleton Width="50%" Height="18px" Class="mb-2" />
+                        <MudSkeleton Width="40%" Height="32px" />
+                    </MudPaper>
+                </MudItem>
+            }
+        </MudGrid>
+        <MudPaper Class="pa-4" Style="border-radius:16px;">
+            @for (int i = 0; i < 5; i++)
+            {
+                <MudSkeleton Height="52px" Class="mb-2" />
+            }
+        </MudPaper>
+    }
+    else
+    {
+        <!-- Global Stats -->
+        <MudGrid Class="mb-4">
+            <MudItem xs="12" sm="4">
+                <div class="stat-card stat-card-primary page-fade-in stagger-1">
+                    <MudText Typo="Typo.caption" Style="color:#546E7A; text-transform:uppercase; font-weight:600; letter-spacing:0.5px;">Total Lecții</MudText>
+                    <MudText Typo="Typo.h3" Style="font-weight:900; color:#1976D2;" Class="score-animate">@_totalLessons</MudText>
+                    <MudText Typo="Typo.caption" Style="color:#388E3C;">✓ @_completedLessons completate</MudText>
+                </div>
+            </MudItem>
+            <MudItem xs="12" sm="4">
+                <div class="stat-card stat-card-secondary page-fade-in stagger-2">
+                    <MudText Typo="Typo.caption" Style="color:#546E7A; text-transform:uppercase; font-weight:600; letter-spacing:0.5px;">Scor Mediu</MudText>
+                    <MudText Typo="Typo.h3" Style="font-weight:900; color:#388E3C;" Class="score-animate">@_averageScore%</MudText>
+                    <MudProgressLinear Value="@_averageScore" Color="Color.Success" Rounded="true" Size="Size.Small" Class="mt-1" />
+                </div>
+            </MudItem>
+            <MudItem xs="12" sm="4">
+                <div class="stat-card stat-card-accent page-fade-in stagger-3">
+                    <MudText Typo="Typo.caption" Style="color:#546E7A; text-transform:uppercase; font-weight:600; letter-spacing:0.5px;">Tentative Totale</MudText>
+                    <MudText Typo="Typo.h3" Style="font-weight:900; color:#FF6B35;" Class="score-animate">@_totalAttempts</MudText>
+                    <MudText Typo="Typo.caption" Style="color:#546E7A;">Pe toate lecțiile</MudText>
+                </div>
+            </MudItem>
+        </MudGrid>
+
+        <!-- Filter Chips -->
+        <div style="display:flex; gap:8px; flex-wrap:wrap; margin-bottom:1rem;">
+            <MudText Typo="Typo.body2" Style="color:#546E7A; align-self:center; font-weight:600;">Filtrare:</MudText>
+            <MudChip T="string" OnClick="@(() => _filter = null)"
+                     Color="@(_filter == null ? Color.Primary : Color.Default)"
+                     Variant="@(_filter == null ? Variant.Filled : Variant.Outlined)">Toate</MudChip>
+            <MudChip T="string" OnClick="@(() => _filter = "completed")"
+                     Color="Color.Success"
+                     Variant="@(_filter == "completed" ? Variant.Filled : Variant.Outlined)">Completate</MudChip>
+            <MudChip T="string" OnClick="@(() => _filter = "pending")"
+                     Color="Color.Warning"
+                     Variant="@(_filter == "pending" ? Variant.Filled : Variant.Outlined)">În progres</MudChip>
+        </div>
+
+        <!-- Progress Table -->
+        <MudPaper Elevation="1" Style="border-radius:16px; overflow:hidden;">
+            <div style="padding:1.25rem 1.5rem; border-bottom:1px solid #F0F0F0;">
+                <MudText Typo="Typo.h6" Style="font-weight:700;">Detalii Progres</MudText>
+            </div>
+
+            @if (_filteredProgress.Count == 0)
+            {
+                <div style="text-align:center; padding:4rem; color:#546E7A;">
+                    <MudIcon Icon="@Icons.Material.Filled.TrendingUp" Style="font-size:64px; opacity:0.3;" />
+                    <MudText Typo="Typo.h6" Class="mt-3">Nu ai activitate înregistrată</MudText>
+                    <MudText Typo="Typo.body2" Class="mt-1">Începe prima lecție pentru a vedea progresul tău!</MudText>
+                    <MudButton Variant="Variant.Filled" Color="Color.Primary" Href="/subjects" Class="mt-3"
+                               Style="border-radius:12px; font-weight:700;">
+                        Explorează Materiile
+                    </MudButton>
+                </div>
+            }
+            else
+            {
+                <MudDataGrid T="StudentProgressDto" Items="@_filteredProgress" Dense="true"
+                             Filterable="false" SortMode="SortMode.Single"
+                             Style="border:none;">
+                    <Columns>
+                        <PropertyColumn Property="x => x.LessonTitle" Title="Lecție" />
+                        <TemplateColumn Title="Status">
+                            <CellTemplate>
+                                @if (context.Item.IsCompleted)
+                                {
+                                    <MudChip T="string" Color="Color.Success" Size="Size.Small" Variant="Variant.Filled">
+                                        ✓ Completat
+                                    </MudChip>
+                                }
+                                else
+                                {
+                                    <MudChip T="string" Color="Color.Warning" Size="Size.Small" Variant="Variant.Outlined">
+                                        În progres
+                                    </MudChip>
+                                }
+                            </CellTemplate>
+                        </TemplateColumn>
+                        <TemplateColumn Title="Scor">
+                            <CellTemplate>
+                                <div style="display:flex; align-items:center; gap:8px;">
+                                    <MudText Typo="Typo.body2" Style="@($"font-weight:700; color:{GetScoreColor(context.Item.ScorePercentage)};")">
+                                        @context.Item.ScorePercentage%
+                                    </MudText>
+                                    <MudProgressLinear Value="@context.Item.ScorePercentage"
+                                                       Color="@GetScoreMudColor(context.Item.ScorePercentage)"
+                                                       Rounded="true" Size="Size.Small"
+                                                       Style="width:80px; height:6px;" />
+                                </div>
+                            </CellTemplate>
+                        </TemplateColumn>
+                        <PropertyColumn Property="x => x.AttemptsCount" Title="Tentative" />
+                        <TemplateColumn Title="Data Completării">
+                            <CellTemplate>
+                                @if (context.Item.CompletedAt.HasValue)
+                                {
+                                    <MudText Typo="Typo.body2">@context.Item.CompletedAt.Value.ToString("dd MMM yyyy")</MudText>
+                                }
+                                else
+                                {
+                                    <MudText Typo="Typo.body2" Style="color:#B0BEC5;">-</MudText>
+                                }
+                            </CellTemplate>
+                        </TemplateColumn>
+                    </Columns>
+                </MudDataGrid>
+            }
+        </MudPaper>
+    }
+</div>
+
+@code {
+    private bool _isLoading = true;
+    private string? _filter = null;
+    private List<StudentProgressDto> _progressList = new();
+
+    private List<StudentProgressDto> _filteredProgress => _filter switch
+    {
+        "completed" => _progressList.Where(p => p.IsCompleted).ToList(),
+        "pending" => _progressList.Where(p => !p.IsCompleted).ToList(),
+        _ => _progressList
+    };
+
+    private int _totalLessons => _progressList.Count;
+    private int _completedLessons => _progressList.Count(p => p.IsCompleted);
+    private int _averageScore => _progressList.Count > 0 ? (int)_progressList.Average(p => p.ScorePercentage) : 0;
+    private int _totalAttempts => _progressList.Sum(p => p.AttemptsCount);
+
+    protected override async Task OnInitializedAsync()
+    {
+        try
+        {
+            var userId = await AuthService.GetCurrentUserIdAsync();
+            _progressList = await ApiService.GetProgressAsync(userId);
+            _progressList = _progressList.OrderByDescending(p => p.CompletedAt).ToList();
+        }
+        catch
+        {
+            Snackbar.Add("Eroare la încărcarea progresului.", Severity.Error);
+        }
+        _isLoading = false;
+    }
+
+    private string GetScoreColor(int score) => score >= 80 ? "#388E3C" : score >= 50 ? "#F57C00" : "#d32f2f";
+    private Color GetScoreMudColor(int score) => score >= 80 ? Color.Success : score >= 50 ? Color.Warning : Color.Error;
+}

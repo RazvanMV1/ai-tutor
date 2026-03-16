@@ -1,0 +1,21 @@
+@using AiTutor.Web.Shared
+
+<Router AppAssembly="typeof(App).Assembly">
+    <Found Context="routeData">
+        <RouteView RouteData="routeData" DefaultLayout="typeof(MainLayout)" />
+        <FocusOnNavigate RouteData="routeData" Selector="h1" />
+    </Found>
+    <NotFound>
+        <PageTitle>Pagina negăsită | AiTutor</PageTitle>
+        <LayoutView Layout="typeof(MainLayout)">
+            <MudContainer MaxWidth="MaxWidth.Small" Class="d-flex flex-column align-center justify-center" Style="min-height:60vh;">
+                <MudIcon Icon="@Icons.Material.Filled.SearchOff" Style="font-size:80px; color:#1976D2; opacity:0.5;" />
+                <MudText Typo="Typo.h4" Class="mt-4" Style="font-weight:700;">Pagina nu a fost găsită</MudText>
+                <MudText Color="Color.Secondary" Class="mt-2">Pagina pe care o cauți nu există.</MudText>
+                <MudButton Variant="Variant.Filled" Color="Color.Primary" Href="/dashboard" Class="mt-4" Style="border-radius:25px;">
+                    Înapoi la Panou
+                </MudButton>
+            </MudContainer>
+        </LayoutView>
+    </NotFound>
+</Router>

@@ -1,0 +1,362 @@
+@page "/quiz/{QuizId:guid}"
+@inject ApiService ApiService
+@inject AuthService AuthService
+@inject NavigationManager Navigation
+@inject ISnackbar Snackbar
+@inject IJSRuntime JS
+
+<PageTitle>Quiz | AiTutor</PageTitle>
+
+<div class="page-fade-in">
+    @if (_isLoading)
+    {
+        <div style="display:flex; flex-direction:column; align-items:center; justify-content:center; min-height:60vh; gap:1rem;">
+            <MudProgressCircular Indeterminate="true" Color="Color.Primary" Size="Size.Large" />
+            <MudText Style="color:#546E7A;">Se încarcă quiz-ul...</MudText>
+        </div>
+    }
+    else if (_showResult)
+    {
+        <!-- Result Screen -->
+        <div class="scale-in" style="max-width:600px; margin:0 auto; text-align:center; padding:2rem 0;">
+            <div style="width:120px; height:120px; margin:0 auto 1.5rem; position:relative;">
+                <svg width="120" height="120" viewBox="0 0 120 120">
+                    <circle cx="60" cy="60" r="54" fill="none" stroke="#e0e0e0" stroke-width="8" />
+                    <circle cx="60" cy="60" r="54" fill="none"
+                            stroke="@(_result!.ScorePercentage >= 80 ? "#388E3C" : _result.ScorePercentage >= 50 ? "#F57C00" : "#d32f2f")"
+                            stroke-width="8"
+                            stroke-dasharray="@(339.29 * _result.ScorePercentage / 100) 339.29"
+                            stroke-dashoffset="0"
+                            transform="rotate(-90 60 60)"
+                            style="transition: stroke-dasharray 1.5s ease-out;" />
+                </svg>
+                <div style="position:absolute; top:50%; left:50%; transform:translate(-50%,-50%);">
+                    <MudText Typo="Typo.h4" Style="@($"font-weight:900; color:{(_result.ScorePercentage >= 80 ? "#388E3C" : _result.ScorePercentage >= 50 ? "#F57C00" : "#d32f2f")};")">
+                        @_result.ScorePercentage%
+                    </MudText>
+                </div>
+            </div>
+
+            <MudText Typo="Typo.h4" Style="font-weight:800; margin-bottom:0.5rem;">
+                @if (_result.ScorePercentage >= 80)
+                { <span>🎉 Excelent!</span> }
+                else if (_result.ScorePercentage >= 50)
+                { <span>👍 Bine!</span> }
+                else
+                { <span>💪 Mai încearcă!</span> }
+            </MudText>
+
+            <MudText Typo="Typo.body1" Style="color:#546E7A; margin-bottom:2rem;">
+                Ai răspuns corect la <strong>@_result.CorrectAnswers</strong> din <strong>@_result.TotalQuestions</strong> întrebări
+            </MudText>
+
+            <!-- Answer Review -->
+            @foreach (var r in _result.Results)
+            {
+                <MudPaper Elevation="1" Class="pa-3 mb-2 text-left" Style="@($"border-radius:12px; border-left:4px solid {(r.IsCorrect ? "#388E3C" : "#d32f2f")};")">
+                    <MudText Typo="Typo.body2" Style="font-weight:600; margin-bottom:4px;">@r.QuestionText</MudText>
+                    <MudText Typo="Typo.caption" Style="@($"color:{(r.IsCorrect ? "#388E3C" : "#d32f2f")};")">
+                        <MudIcon Icon="@(r.IsCorrect ? Icons.Material.Filled.CheckCircle : Icons.Material.Filled.Cancel)"
+                                 Style="font-size:14px; vertical-align:middle;" />
+                        Răspunsul tău: @r.UserAnswer
+                    </MudText>
+                    @if (!r.IsCorrect)
+                    {
+                        <MudText Typo="Typo.caption" Style="color:#388E3C; display:block;">
+                            Răspuns corect: @r.CorrectAnswer
+                        </MudText>
+                    }
+                    @if (!string.IsNullOrEmpty(r.Explanation))
+                    {
+                        <MudText Typo="Typo.caption" Style="color:#546E7A; display:block; margin-top:4px; font-style:italic;">
+                            💡 @r.Explanation
+                        </MudText>
+                    }
+                </MudPaper>
+            }
+
+            <div style="display:flex; gap:12px; justify-content:center; margin-top:2rem; flex-wrap:wrap;">
+                <MudButton Variant="Variant.Filled" Color="Color.Primary" OnClick="RestartQuiz"
+                           Style="border-radius:12px; font-weight:700;" Class="btn-bounce">
+                    <MudIcon Icon="@Icons.Material.Filled.Replay" Class="mr-2" />
+                    Încearcă din nou
+                </MudButton>
+                <MudButton Variant="Variant.Outlined" Color="Color.Primary" Href="/lessons"
+                           Style="border-radius:12px; font-weight:700;">
+                    <MudIcon Icon="@Icons.Material.Filled.ArrowBack" Class="mr-2" />
+                    Înapoi la lecții
+                </MudButton>
+            </div>
+        </div>
+    }
+    else if (_quiz != null)
+    {
+        <!-- Quiz Header -->
+        <div style="background:var(--gradient-primary); border-radius:16px; padding:1.25rem 1.5rem; 
+                    margin-bottom:1.5rem; color:white; display:flex; align-items:center; justify-content:space-between; flex-wrap:wrap; gap:12px;">
+            <div>
+                <MudText Typo="Typo.h6" Style="font-weight:700; color:white;">@_quiz.Title</MudText>
+                <MudText Typo="Typo.caption" Style="color:rgba(255,255,255,0.8);">
+                    Întrebarea @(_currentIndex + 1) din @_quiz.Questions.Count
+                </MudText>
+            </div>
+            <!-- Timer -->
+            <div class="timer-circle @GetTimerClass()" style="background:rgba(255,255,255,0.15); border-color:white; color:white;">
+                @_timerSeconds
+            </div>
+        </div>
+
+        <!-- Progress Bar -->
+        <MudProgressLinear Value="@((_currentIndex + 1.0) / _quiz.Questions.Count * 100)"
+                           Color="Color.Primary" Rounded="true" Size="Size.Medium"
+                           Style="margin-bottom:1.5rem; height:8px; border-radius:4px;" />
+
+        @if (_currentQuestion != null)
+        {
+            <!-- Question Card -->
+            <div class="scale-in" style="max-width:760px; margin:0 auto;">
+                <MudPaper Elevation="2" Class="pa-5 mb-4" Style="border-radius:20px;">
+                    <div style="display:flex; align-items:flex-start; gap:12px; margin-bottom:2rem;">
+                        <div style="width:40px; height:40px; background:linear-gradient(135deg,#1976D2,#42A5F5); 
+                                    border-radius:10px; display:flex; align-items:center; justify-content:center; 
+                                    flex-shrink:0; color:white; font-weight:800;">
+                            @(_currentIndex + 1)
+                        </div>
+                        <MudText Typo="Typo.h6" Style="font-weight:600; line-height:1.5; flex:1;">
+                            @_currentQuestion.Text
+                        </MudText>
+                    </div>
+
+                    <!-- Options -->
+                    @foreach (var (option, idx) in _currentQuestion.Options.Select((o, i) => (o, i)))
+                    {
+                        var optClass = GetOptionClass(option);
+                        <div class="quiz-option-card @optClass"
+                             @onclick="@(() => SelectAnswer(option))"
+                             style="@GetOptionStyle(option)">
+                            <div style="display:flex; align-items:center; gap:12px;">
+                                <div style="width:32px; height:32px; border-radius:50%; border:2px solid; 
+                                            display:flex; align-items:center; justify-content:center; font-weight:700;
+                                            @GetOptionCircleStyle(option)">
+                                    @((char)('A' + idx))
+                                </div>
+                                <MudText Typo="Typo.body1">@option</MudText>
+                                @if (_submitted)
+                                {
+                                    @if (option == _currentQuestion.Options[0] && GetOptionClass(option).Contains("correct"))
+                                    {
+                                        <MudIcon Icon="@Icons.Material.Filled.CheckCircle" Style="color:#388E3C; margin-left:auto;" />
+                                    }
+                                    else if (option == _selectedAnswer && !GetOptionClass(option).Contains("correct"))
+                                    {
+                                        <MudIcon Icon="@Icons.Material.Filled.Cancel" Style="color:#d32f2f; margin-left:auto;" />
+                                    }
+                                }
+                            </div>
+                        </div>
+                    }
+                </MudPaper>
+
+                <!-- Action Buttons -->
+                <div style="display:flex; justify-content:space-between; align-items:center; flex-wrap:wrap; gap:12px;">
+                    @if (!_submitted)
+                    {
+                        <MudButton Variant="Variant.Filled" Color="Color.Primary"
+                                   OnClick="SubmitAnswer" Disabled="@string.IsNullOrEmpty(_selectedAnswer)"
+                                   Style="border-radius:12px; height:48px; min-width:180px; font-weight:700;" Class="btn-bounce">
+                            <MudIcon Icon="@Icons.Material.Filled.Check" Class="mr-2" />
+                            Confirmă Răspunsul
+                        </MudButton>
+                    }
+                    else
+                    {
+                        <MudButton Variant="Variant.Filled" Color="Color.Primary"
+                                   OnClick="NextQuestion"
+                                   Style="border-radius:12px; height:48px; min-width:180px; font-weight:700;" Class="btn-bounce">
+                            @if (_currentIndex < _quiz.Questions.Count - 1)
+                            {
+                                <span>Următoarea Întrebare</span>
+                                <MudIcon Icon="@Icons.Material.Filled.ArrowForward" Class="ml-2" />
+                            }
+                            else
+                            {
+                                <span>Finalizează Quiz</span>
+                                <MudIcon Icon="@Icons.Material.Filled.Done" Class="ml-2" />
+                            }
+                        </MudButton>
+                    }
+                    <MudText Typo="Typo.body2" Style="color:#546E7A;">
+                        @_points puncte acumulate
+                    </MudText>
+                </div>
+            </div>
+        }
+    }
+    else
+    {
+        <div style="text-align:center; padding:4rem; color:#546E7A;">
+            <MudIcon Icon="@Icons.Material.Filled.ErrorOutline" Style="font-size:64px; opacity:0.3;" />
+            <MudText Typo="Typo.h6" Class="mt-3">Quiz-ul nu a fost găsit</MudText>
+            <MudButton Variant="Variant.Filled" Color="Color.Primary" Href="/lessons" Class="mt-3">
+                Înapoi la lecții
+            </MudButton>
+        </div>
+    }
+</div>
+
+@code {
+    [Parameter] public Guid QuizId { get; set; }
+
+    private bool _isLoading = true;
+    private bool _showResult = false;
+    private bool _submitted = false;
+    private QuizDetailDto? _quiz;
+    private QuizResultResponse? _result;
+    private int _currentIndex = 0;
+    private string _selectedAnswer = "";
+    private int _points = 0;
+    private int _timerSeconds = 30;
+    private System.Threading.Timer? _timer;
+    private List<QuizAnswerDto> _answers = new();
+
+    private QuestionDto? _currentQuestion =>
+        _quiz?.Questions.ElementAtOrDefault(_currentIndex);
+
+    protected override async Task OnInitializedAsync()
+    {
+        try
+        {
+            _quiz = await ApiService.GetQuizByIdAsync(QuizId);
+            StartTimer();
+        }
+        catch
+        {
+            Snackbar.Add("Eroare la încărcarea quiz-ului.", Severity.Error);
+        }
+        _isLoading = false;
+    }
+
+    private void StartTimer()
+    {
+        _timerSeconds = 30;
+        _timer?.Dispose();
+        _timer = new System.Threading.Timer(async _ =>
+        {
+            _timerSeconds--;
+            if (_timerSeconds <= 0)
+            {
+                _timer?.Dispose();
+                await InvokeAsync(() =>
+                {
+                    if (!_submitted) SubmitAnswer();
+                    StateHasChanged();
+                });
+            }
+            await InvokeAsync(StateHasChanged);
+        }, null, 1000, 1000);
+    }
+
+    private void SelectAnswer(string option)
+    {
+        if (_submitted) return;
+        _selectedAnswer = option;
+    }
+
+    private void SubmitAnswer()
+    {
+        if (_currentQuestion == null) return;
+        _submitted = true;
+        _timer?.Dispose();
+
+        var answer = string.IsNullOrEmpty(_selectedAnswer) ? "" : _selectedAnswer;
+        _answers.Add(new QuizAnswerDto { QuestionId = _currentQuestion.Id, Answer = answer });
+
+        // Check locally if correct (we don't have the correct answer from this DTO)
+        // Points tracking based on selection
+        StateHasChanged();
+    }
+
+    private async Task NextQuestion()
+    {
+        if (_currentIndex < (_quiz?.Questions.Count ?? 0) - 1)
+        {
+            _currentIndex++;
+            _selectedAnswer = "";
+            _submitted = false;
+            StartTimer();
+        }
+        else
+        {
+            await FinishQuiz();
+        }
+    }
+
+    private async Task FinishQuiz()
+    {
+        _timer?.Dispose();
+        _isLoading = true;
+        try
+        {
+            var userId = await AuthService.GetCurrentUserIdAsync();
+            _result = await ApiService.SubmitQuizAsync(QuizId, new SubmitQuizCommand
+            {
+                QuizId = QuizId,
+                UserId = userId,
+                Answers = _answers
+            });
+
+            if (_result != null && _result.ScorePercentage >= 80)
+            {
+                await JS.InvokeVoidAsync("launchConfetti");
+            }
+        }
+        catch
+        {
+            Snackbar.Add("Eroare la trimiterea răspunsurilor.", Severity.Error);
+        }
+        _isLoading = false;
+        _showResult = true;
+    }
+
+    private void RestartQuiz()
+    {
+        _currentIndex = 0;
+        _selectedAnswer = "";
+        _submitted = false;
+        _showResult = false;
+        _result = null;
+        _answers.Clear();
+        _points = 0;
+        StartTimer();
+    }
+
+    private string GetOptionClass(string option)
+    {
+        if (!_submitted) return _selectedAnswer == option ? "selected" : "";
+        // Without knowing correct answer from DTO, just show selected
+        return _selectedAnswer == option ? "selected" : "";
+    }
+
+    private string GetOptionStyle(string option)
+    {
+        if (!_submitted && _selectedAnswer == option)
+            return "border-color: #1976D2; background: rgba(25,118,210,0.06);";
+        return "";
+    }
+
+    private string GetOptionCircleStyle(string option)
+    {
+        if (_selectedAnswer == option && !_submitted)
+            return "border-color:#1976D2; background:#1976D2; color:white;";
+        return "border-color:#B0BEC5; color:#546E7A;";
+    }
+
+    private string GetTimerClass()
+    {
+        if (_timerSeconds > 15) return "timer-green";
+        if (_timerSeconds > 7) return "timer-yellow";
+        return "timer-red";
+    }
+
+    public void Dispose() => _timer?.Dispose();
+}

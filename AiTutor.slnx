@@ -6,6 +6,9 @@
     <Project Path="src/backend/AiTutor.Domain/AiTutor.Domain.csproj" />
     <Project Path="src/backend/AiTutor.Infrastructure/AiTutor.Infrastructure.csproj" />
   </Folder>
+  <Folder Name="/src/frontend/">
+    <Project Path="src/frontend/AiTutor.Web/AiTutor.Web.csproj" />
+  </Folder>
   <Folder Name="/tests/">
     <Project Path="tests/AiTutor.IntegrationTests/AiTutor.IntegrationTests.csproj" />
     <Project Path="tests/AiTutor.UnitTests/AiTutor.UnitTests.csproj" />

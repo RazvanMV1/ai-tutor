@@ -1,0 +1,274 @@
+@page "/ai/problems"
+@inject AiService AiService
+@inject ISnackbar Snackbar
+
+<PageTitle>Probleme AI | AiTutor</PageTitle>
+
+<div class="page-fade-in">
+    <!-- Hero Header -->
+    <div class="hero-ai mb-4">
+        <div style="position:relative; z-index:1; display:flex; align-items:center; gap:12px;">
+            <div style="width:48px; height:48px; background:rgba(255,255,255,0.2); border-radius:12px; 
+                        display:flex; align-items:center; justify-content:center;">
+                <MudIcon Icon="@Icons.Material.Filled.EditNote" Style="color:white; font-size:28px;" />
+            </div>
+            <div>
+                <MudText Typo="Typo.h4" Style="font-weight:800; color:white;">Probleme AI</MudText>
+                <MudText Typo="Typo.caption" Style="color:rgba(255,255,255,0.8);">Generează probleme de exersare</MudText>
+            </div>
+        </div>
+    </div>
+
+    <MudGrid>
+        <!-- Form -->
+        <MudItem xs="12" md="4">
+            <MudPaper Elevation="1" Class="pa-4" Style="border-radius:16px;">
+                <MudText Typo="Typo.h6" Style="font-weight:700; margin-bottom:1.25rem;">Generează Probleme</MudText>
+
+                <MudTextField @bind-Value="_topic" Label="Temă / Subiect" Variant="Variant.Outlined"
+                              Placeholder="ex: Frații, Progresii aritmetice..."
+                              AdornmentIcon="@Icons.Material.Filled.Edit"
+                              Adornment="Adornment.Start" AdornmentColor="Color.Tertiary"
+                              Class="mb-3" Style="border-radius:12px;" />
+
+                <!-- Subject Selector -->
+                <MudText Typo="Typo.body2" Style="font-weight:600; color:#546E7A; margin-bottom:8px;">Materie</MudText>
+                <div style="display:grid; grid-template-columns:repeat(3,1fr); gap:6px; margin-bottom:14px;">
+                    @foreach (var sub in _subjectOptions)
+                    {
+                        <div @onclick="@(() => _selectedSubject = sub.Value)"
+                             style="@($"border:2px solid {(_selectedSubject == sub.Value ? sub.Color : "#e0e0e0")}; " +
+                                    $"border-radius:10px; padding:0.5rem; text-align:center; cursor:pointer; " +
+                                    $"background:{(_selectedSubject == sub.Value ? sub.BgColor : "white")}; transition:all 0.2s;")">
+                            <MudIcon Icon="@sub.Icon" Style="@($"color:{sub.Color}; font-size:20px; display:block; margin:0 auto 2px;")" />
+                            <MudText Typo="Typo.caption" Style="@($"font-weight:700; color:{sub.Color};")">@sub.Name</MudText>
+                        </div>
+                    }
+                </div>
+
+                <!-- Difficulty -->
+                <MudText Typo="Typo.body2" Style="font-weight:600; color:#546E7A; margin-bottom:8px;">Dificultate</MudText>
+                <div style="display:grid; grid-template-columns:repeat(3,1fr); gap:6px; margin-bottom:14px;">
+                    @foreach (var diff in _difficultyOptions)
+                    {
+                        <div @onclick="@(() => _selectedDifficulty = diff.Value)"
+                             style="@($"border:2px solid {(_selectedDifficulty == diff.Value ? diff.Color : "#e0e0e0")}; " +
+                                    $"border-radius:8px; padding:0.5rem; text-align:center; cursor:pointer; " +
+                                    $"background:{(_selectedDifficulty == diff.Value ? diff.BgColor : "white")}; transition:all 0.2s;")">
+                            <MudText Typo="Typo.caption" Style="@($"font-weight:700; color:{diff.Color};")">@diff.Name</MudText>
+                        </div>
+                    }
+                </div>
+
+                <MudNumericField @bind-Value="_studentAge" Label="Vârsta Elevului" Variant="Variant.Outlined"
+                                 Min="6" Max="19" Adornment="Adornment.Start"
+                                 AdornmentIcon="@Icons.Material.Filled.Person"
+                                 AdornmentColor="Color.Primary" Class="mb-3" Style="border-radius:12px;" />
+
+                <!-- Number of Problems Slider -->
+                <MudText Typo="Typo.body2" Style="font-weight:600; color:#546E7A; margin-bottom:4px;">
+                    Număr Probleme: <span style="color:#FF6B35; font-weight:800;">@_count</span>
+                </MudText>
+                <MudSlider @bind-Value="_count" Min="1" Max="10" Step="1" Color="Color.Tertiary" Class="mb-4">
+                    @_count
+                </MudSlider>
+
+                <MudButton Variant="Variant.Filled" FullWidth="true" OnClick="GenerateProblems"
+                           Disabled="_isLoading || string.IsNullOrWhiteSpace(_topic)"
+                           Class="btn-bounce"
+                           Style="background:var(--gradient-accent); color:white; border-radius:12px; 
+                                  height:52px; font-size:1rem; font-weight:700; position:relative; overflow:hidden;">
+                    @if (_isLoading)
+                    {
+                        <div class="shimmer" style="position:absolute; inset:0; border-radius:12px; opacity:0.4;"></div>
+                        <MudProgressCircular Size="Size.Small" Indeterminate="true" Color="Color.Inherit" Class="mr-2" />
+                        <span>Generează probleme...</span>
+                    }
+                    else
+                    {
+                        <div class="@(_spinIcon ? "rotate-icon spinning" : "rotate-icon")">
+                            <MudIcon Icon="@Icons.Material.Filled.Refresh" Class="mr-2" />
+                        </div>
+                        <span>Generează Probleme</span>
+                    }
+                </MudButton>
+            </MudPaper>
+        </MudItem>
+
+        <!-- Problems List -->
+        <MudItem xs="12" md="8">
+            @if (_problems == null && !_isLoading)
+            {
+                <div style="display:flex; flex-direction:column; align-items:center; justify-content:center;
+                            min-height:300px; color:#546E7A; text-align:center;">
+                    <div style="width:100px; height:100px; background:rgba(255,107,53,0.08); border-radius:50%;
+                                display:flex; align-items:center; justify-content:center; margin-bottom:1.5rem;">
+                        <MudIcon Icon="@Icons.Material.Filled.EditNote" Style="font-size:48px; color:rgba(255,107,53,0.4);" />
+                    </div>
+                    <MudText Typo="Typo.h6" Style="font-weight:600; color:#1A1A2E;">Nicio problemă generată</MudText>
+                    <MudText Typo="Typo.body2" Class="mt-1" Style="max-width:300px;">
+                        Completează formularul și generează probleme de exersare personalizate.
+                    </MudText>
+                </div>
+            }
+            else if (_isLoading)
+            {
+                @for (int i = 0; i < 3; i++)
+                {
+                    <MudPaper Elevation="1" Class="pa-4 mb-3" Style="border-radius:14px;">
+                        <MudSkeleton Width="20%" Height="24px" Class="mb-3" />
+                        <MudSkeleton Width="100%" Height="16px" Class="mb-2" />
+                        <MudSkeleton Width="80%" Height="16px" />
+                    </MudPaper>
+                }
+            }
+            else if (_problems != null)
+            {
+                <div style="display:flex; align-items:center; justify-content:space-between; margin-bottom:1rem; flex-wrap:wrap; gap:8px;">
+                    <MudText Typo="Typo.h6" Style="font-weight:700;">
+                        @_problems.Problems.Count Probleme Generate
+                    </MudText>
+                    <div style="display:flex; gap:6px;">
+                        <span style="background:rgba(255,107,53,0.1); color:#FF6B35; border:1px solid rgba(255,107,53,0.3);
+                                     padding:3px 12px; border-radius:20px; font-size:0.8rem; font-weight:600;">
+                            @GetSubjectLabel(_problems.Subject)
+                        </span>
+                        <span class="@GetDifficultyClass(_problems.DifficultyLevel)">@GetDifficultyLabel(_problems.DifficultyLevel)</span>
+                    </div>
+                </div>
+
+                @foreach (var (problem, idx) in _problems.Problems.Select((p, i) => (p, i)))
+                {
+                    <div class="@($"page-fade-in stagger-{Math.Min(idx + 1, 6)}")" style="margin-bottom:12px;">
+                        <MudPaper Elevation="1" Style="border-radius:14px; overflow:hidden;">
+                            <!-- Problem Header -->
+                            <div style="display:flex; align-items:center; gap:12px; padding:1rem 1.25rem; 
+                                        background:linear-gradient(135deg,rgba(255,107,53,0.06),rgba(255,140,105,0.03));">
+                                <div style="width:40px; height:40px; background:var(--gradient-accent); border-radius:10px; 
+                                            display:flex; align-items:center; justify-content:center; flex-shrink:0;">
+                                    <MudText Typo="Typo.body1" Style="font-weight:800; color:white;">@(idx + 1)</MudText>
+                                </div>
+                                <MudText Typo="Typo.body1" Style="font-weight:600; flex:1; line-height:1.5;">@problem</MudText>
+                            </div>
+
+                            <!-- Hint & Solution Accordion -->
+                            <MudExpansionPanels MultiExpansion="true" Elevation="0">
+                                @if (idx < _problems.Hints.Count)
+                                {
+                                    <MudExpansionPanel>
+                                        <TitleContent>
+                                            <div style="display:flex; align-items:center; gap:8px;">
+                                                <MudIcon Icon="@Icons.Material.Filled.Lightbulb" Style="color:#F57C00; font-size:18px;" />
+                                                <MudText Style="font-weight:600; color:#F57C00; font-size:0.9rem;">Indiciu</MudText>
+                                            </div>
+                                        </TitleContent>
+                                        <ChildContent>
+                                            <div style="background:#FFF8E1; border-radius:8px; padding:0.75rem; margin:-4px -12px 4px;">
+                                                <MudText Typo="Typo.body2" Style="color:#E65100; line-height:1.6;">
+                                                    💡 @_problems.Hints[idx]
+                                                </MudText>
+                                            </div>
+                                        </ChildContent>
+                                    </MudExpansionPanel>
+                                }
+                                @if (idx < _problems.Solutions.Count)
+                                {
+                                    <MudExpansionPanel>
+                                        <TitleContent>
+                                            <div style="display:flex; align-items:center; gap:8px;">
+                                                <MudIcon Icon="@Icons.Material.Filled.CheckCircle" Style="color:#388E3C; font-size:18px;" />
+                                                <MudText Style="font-weight:600; color:#388E3C; font-size:0.9rem;">Soluție</MudText>
+                                            </div>
+                                        </TitleContent>
+                                        <ChildContent>
+                                            <div style="background:#E8F5E9; border-radius:8px; padding:0.75rem; margin:-4px -12px 4px;">
+                                                <MudText Typo="Typo.body2" Style="color:#2E7D32; line-height:1.6; white-space:pre-line;">
+                                                    ✅ @_problems.Solutions[idx]
+                                                </MudText>
+                                            </div>
+                                        </ChildContent>
+                                    </MudExpansionPanel>
+                                }
+                            </MudExpansionPanels>
+                        </MudPaper>
+                    </div>
+                }
+            }
+        </MudItem>
+    </MudGrid>
+</div>
+
+@code {
+    private bool _isLoading = false;
+    private bool _spinIcon = false;
+    private string _topic = "";
+    private int _studentAge = 14;
+    private int _count = 3;
+    private SubjectType _selectedSubject = SubjectType.Mathematics;
+    private DifficultyLevel _selectedDifficulty = DifficultyLevel.Beginner;
+    private ProblemResponse? _problems;
+
+    private List<(SubjectType Value, string Name, string Icon, string Color, string BgColor)> _subjectOptions = new()
+    {
+        (SubjectType.Mathematics, "Matematică", Icons.Material.Filled.Calculate, "#1976D2", "rgba(25,118,210,0.08)"),
+        (SubjectType.Romanian, "Română", Icons.Material.Filled.MenuBook, "#388E3C", "rgba(56,142,60,0.08)"),
+        (SubjectType.Informatics, "Informatică", Icons.Material.Filled.Code, "#7B1FA2", "rgba(123,31,162,0.08)"),
+    };
+
+    private List<(DifficultyLevel Value, string Name, string Color, string BgColor)> _difficultyOptions = new()
+    {
+        (DifficultyLevel.Beginner, "Beginner", "#388E3C", "rgba(56,142,60,0.08)"),
+        (DifficultyLevel.Intermediate, "Intermediar", "#F57C00", "rgba(245,124,0,0.08)"),
+        (DifficultyLevel.Advanced, "Avansat", "#d32f2f", "rgba(211,47,47,0.08)"),
+    };
+
+    private async Task GenerateProblems()
+    {
+        if (string.IsNullOrWhiteSpace(_topic)) return;
+        _isLoading = true;
+        _spinIcon = true;
+        _problems = null;
+        try
+        {
+            _problems = await AiService.GenerateProblemsAsync(new ProblemsRequest
+            {
+                Topic = _topic,
+                Subject = _selectedSubject,
+                DifficultyLevel = _selectedDifficulty,
+                StudentAge = _studentAge,
+                Count = _count
+            });
+            if (_problems == null)
+                Snackbar.Add("Nu s-au putut genera problemele.", Severity.Error);
+        }
+        catch
+        {
+            Snackbar.Add("Eroare la generarea problemelor.", Severity.Error);
+        }
+        _isLoading = false;
+        await Task.Delay(600);
+        _spinIcon = false;
+    }
+
+    private string GetDifficultyClass(DifficultyLevel l) => l switch
+    {
+        DifficultyLevel.Beginner => "badge-beginner",
+        DifficultyLevel.Intermediate => "badge-intermediate",
+        DifficultyLevel.Advanced => "badge-advanced",
+        _ => "badge-beginner"
+    };
+    private string GetDifficultyLabel(DifficultyLevel l) => l switch
+    {
+        DifficultyLevel.Beginner => "Beginner",
+        DifficultyLevel.Intermediate => "Intermediar",
+        DifficultyLevel.Advanced => "Avansat",
+        _ => "Necunoscut"
+    };
+    private string GetSubjectLabel(SubjectType s) => s switch
+    {
+        SubjectType.Mathematics => "Matematică",
+        SubjectType.Romanian => "Română",
+        SubjectType.Informatics => "Informatică",
+        _ => "Altele"
+    };
+}

@@ -263,4 +263,225 @@ public class ApiService
             return false;
         }
     }
+
+    // Classrooms
+    public async Task<List<ClassroomDto>> GetMyClassroomsAsync(Guid userId)
+    {
+        await AttachTokenAsync();
+        try
+        {
+            var content = await _httpClient.GetStringAsync($"api/Classrooms/my?userId={userId}");
+            return JsonSerializer.Deserialize<List<ClassroomDto>>(content, _jsonOptions) ?? new();
+        }
+        catch { return new(); }
+    }
+
+    public async Task<ClassroomDto?> GetClassroomByIdAsync(Guid id, Guid userId)
+    {
+        await AttachTokenAsync();
+        try
+        {
+            var content = await _httpClient.GetStringAsync($"api/Classrooms/{id}?userId={userId}");
+            return JsonSerializer.Deserialize<ClassroomDto>(content, _jsonOptions);
+        }
+        catch { return null; }
+    }
+
+    public async Task<ClassroomDto?> CreateClassroomAsync(CreateClassroomRequest request, Guid teacherId)
+    {
+        await AttachTokenAsync();
+        try
+        {
+            var response = await _httpClient.PostAsJsonAsync($"api/Classrooms?teacherId={teacherId}", request);
+            if (response.IsSuccessStatusCode)
+            {
+                var content = await response.Content.ReadAsStringAsync();
+                return JsonSerializer.Deserialize<ClassroomDto>(content, _jsonOptions);
+            }
+            return null;
+        }
+        catch { return null; }
+    }
+
+    public async Task<bool> DeleteClassroomAsync(Guid id, Guid teacherId)
+    {
+        await AttachTokenAsync();
+        try
+        {
+            var response = await _httpClient.DeleteAsync($"api/Classrooms/{id}?teacherId={teacherId}");
+            return response.IsSuccessStatusCode;
+        }
+        catch { return false; }
+    }
+
+    public async Task<bool> JoinClassroomAsync(JoinClassroomRequest request)
+    {
+        await AttachTokenAsync();
+        try
+        {
+            var response = await _httpClient.PostAsJsonAsync("api/Classrooms/join", request);
+            return response.IsSuccessStatusCode;
+        }
+        catch { return false; }
+    }
+
+    public async Task<List<ClassroomMemberDto>> GetClassroomMembersAsync(Guid classroomId, Guid teacherId)
+    {
+        await AttachTokenAsync();
+        try
+        {
+            var content = await _httpClient.GetStringAsync($"api/Classrooms/{classroomId}/members?teacherId={teacherId}");
+            return JsonSerializer.Deserialize<List<ClassroomMemberDto>>(content, _jsonOptions) ?? new();
+        }
+        catch { return new(); }
+    }
+
+    public async Task<bool> AddMemberAsync(Guid classroomId, Guid teacherId, string studentEmail)
+    {
+        await AttachTokenAsync();
+        try
+        {
+            var response = await _httpClient.PostAsJsonAsync(
+                $"api/Classrooms/{classroomId}/members?teacherId={teacherId}",
+                new { StudentEmail = studentEmail });
+            return response.IsSuccessStatusCode;
+        }
+        catch { return false; }
+    }
+
+    public async Task<bool> RemoveMemberAsync(Guid classroomId, Guid studentId, Guid teacherId)
+    {
+        await AttachTokenAsync();
+        try
+        {
+            var response = await _httpClient.DeleteAsync($"api/Classrooms/{classroomId}/members/{studentId}?teacherId={teacherId}");
+            return response.IsSuccessStatusCode;
+        }
+        catch { return false; }
+    }
+
+    public async Task<List<ClassroomLessonDto>> GetClassroomLessonsAsync(Guid classroomId, Guid userId)
+    {
+        await AttachTokenAsync();
+        try
+        {
+            var content = await _httpClient.GetStringAsync($"api/Classrooms/{classroomId}/lessons?userId={userId}");
+            return JsonSerializer.Deserialize<List<ClassroomLessonDto>>(content, _jsonOptions) ?? new();
+        }
+        catch { return new(); }
+    }
+
+    public async Task<ClassroomLessonDto?> CreateClassroomLessonAsync(Guid classroomId, Guid teacherId, CreateClassroomLessonRequest request)
+    {
+        await AttachTokenAsync();
+        try
+        {
+            var response = await _httpClient.PostAsJsonAsync($"api/Classrooms/{classroomId}/lessons?teacherId={teacherId}", request);
+            if (response.IsSuccessStatusCode)
+            {
+                var content = await response.Content.ReadAsStringAsync();
+                return JsonSerializer.Deserialize<ClassroomLessonDto>(content, _jsonOptions);
+            }
+            return null;
+        }
+        catch { return null; }
+    }
+
+    public async Task<ClassroomQuizDto?> CreateClassroomQuizAsync(Guid classroomId, Guid lessonId, Guid teacherId, CreateClassroomQuizRequest request)
+    {
+        await AttachTokenAsync();
+        try
+        {
+            var response = await _httpClient.PostAsJsonAsync($"api/Classrooms/{classroomId}/lessons/{lessonId}/quizzes?teacherId={teacherId}", request);
+            if (response.IsSuccessStatusCode)
+            {
+                var content = await response.Content.ReadAsStringAsync();
+                return JsonSerializer.Deserialize<ClassroomQuizDto>(content, _jsonOptions);
+            }
+            return null;
+        }
+        catch { return null; }
+    }
+
+    public async Task<ClassroomQuestionDto?> AddClassroomQuestionAsync(Guid classroomId, Guid quizId, Guid teacherId, AddClassroomQuestionRequest request)
+    {
+        await AttachTokenAsync();
+        try
+        {
+            var response = await _httpClient.PostAsJsonAsync($"api/Classrooms/{classroomId}/lessons/any/quizzes/{quizId}/questions?teacherId={teacherId}", request);
+            if (response.IsSuccessStatusCode)
+            {
+                var content = await response.Content.ReadAsStringAsync();
+                return JsonSerializer.Deserialize<ClassroomQuestionDto>(content, _jsonOptions);
+            }
+            return null;
+        }
+        catch { return null; }
+    }
+
+    public async Task<ClassroomQuizResultResponse?> SubmitClassroomQuizAsync(Guid classroomId, Guid quizId, Guid studentId, SubmitClassroomQuizRequest request)
+    {
+        await AttachTokenAsync();
+        try
+        {
+            var response = await _httpClient.PostAsJsonAsync($"api/Classrooms/{classroomId}/lessons/any/quizzes/{quizId}/submit?studentId={studentId}", request);
+            if (response.IsSuccessStatusCode)
+            {
+                var content = await response.Content.ReadAsStringAsync();
+                return JsonSerializer.Deserialize<ClassroomQuizResultResponse>(content, _jsonOptions);
+            }
+            return null;
+        }
+        catch { return null; }
+    }
+
+    public async Task<List<ClassroomProgressDto>> GetClassroomProgressAsync(Guid classroomId, Guid userId)
+    {
+        await AttachTokenAsync();
+        try
+        {
+            var content = await _httpClient.GetStringAsync($"api/Classrooms/{classroomId}/progress?userId={userId}");
+            return JsonSerializer.Deserialize<List<ClassroomProgressDto>>(content, _jsonOptions) ?? new();
+        }
+        catch { return new(); }
+    }
+
+    public async Task<List<GradeDto>> GetClassroomGradesAsync(Guid classroomId, Guid userId, bool isTeacher)
+    {
+        await AttachTokenAsync();
+        try
+        {
+            var content = await _httpClient.GetStringAsync($"api/Classrooms/{classroomId}/grades?userId={userId}&isTeacher={isTeacher}");
+            return JsonSerializer.Deserialize<List<GradeDto>>(content, _jsonOptions) ?? new();
+        }
+        catch { return new(); }
+    }
+
+    public async Task<GradeDto?> AddGradeAsync(Guid classroomId, Guid teacherId, AddGradeRequest request)
+    {
+        await AttachTokenAsync();
+        try
+        {
+            var response = await _httpClient.PostAsJsonAsync($"api/Classrooms/{classroomId}/grades?teacherId={teacherId}", request);
+            if (response.IsSuccessStatusCode)
+            {
+                var content = await response.Content.ReadAsStringAsync();
+                return JsonSerializer.Deserialize<GradeDto>(content, _jsonOptions);
+            }
+            return null;
+        }
+        catch { return null; }
+    }
+
+    public async Task<bool> DeleteGradeAsync(Guid classroomId, Guid gradeId, Guid teacherId)
+    {
+        await AttachTokenAsync();
+        try
+        {
+            var response = await _httpClient.DeleteAsync($"api/Classrooms/{classroomId}/grades/{gradeId}?teacherId={teacherId}");
+            return response.IsSuccessStatusCode;
+        }
+        catch { return false; }
+    }
+
 }

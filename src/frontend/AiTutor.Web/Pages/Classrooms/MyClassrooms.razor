@@ -1,0 +1,375 @@
+@page "/classrooms"
+@inject ApiService ApiService
+@inject AuthService AuthService
+@inject NavigationManager Navigation
+@inject ISnackbar Snackbar
+
+<PageTitle>Clasele Mele | AiTutor</PageTitle>
+
+<div class="page-fade-in" style="padding: 24px; max-width: 1200px; margin: 0 auto;">
+
+    <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:32px;">
+        <div>
+            <MudText Typo="Typo.h4" Style="font-weight:700; color:#1976D2;">
+                <MudIcon Icon="@Icons.Material.Filled.Groups" Style="margin-right:8px; vertical-align:middle;" />
+                Clasele Mele
+            </MudText>
+            <MudText Typo="Typo.body2" Style="color:#546E7A; margin-top:4px;">
+                @if (_isTeacher)
+                {
+                    <span>Gestionează clasele tale și elevii înscriși</span>
+                }
+                else
+                {
+                    <span>Clasele în care ești înscris</span>
+                }
+            </MudText>
+        </div>
+        <div style="display:flex; gap:12px;">
+            @if (_isTeacher)
+            {
+                <MudButton Variant="Variant.Filled" Color="Color.Primary"
+                           StartIcon="@Icons.Material.Filled.Add"
+                           OnClick="OpenCreateDialog"
+                           Style="border-radius:12px;">
+                    Clasă Nouă
+                </MudButton>
+            }
+            else
+            {
+                <MudButton Variant="Variant.Outlined" Color="Color.Primary"
+                           StartIcon="@Icons.Material.Filled.Login"
+                           OnClick="OpenJoinDialog"
+                           Style="border-radius:12px;">
+                    Înscrie-te cu Cod
+                </MudButton>
+            }
+        </div>
+    </div>
+
+    @if (_isLoading)
+    {
+        <MudGrid>
+            @for (int i = 0; i < 3; i++)
+            {
+                <MudItem xs="12" sm="6" md="4">
+                    <MudSkeleton SkeletonType="SkeletonType.Rectangle" Height="200px" Style="border-radius:16px;" />
+                </MudItem>
+            }
+        </MudGrid>
+    }
+    else if (_classrooms.Count == 0)
+    {
+        <MudPaper Class="pa-8" Style="text-align:center; border-radius:16px; border:2px dashed #E0E0E0;">
+            <MudIcon Icon="@Icons.Material.Filled.Groups" Style="font-size:64px; color:#B0BEC5; margin-bottom:16px;" />
+            <MudText Typo="Typo.h6" Style="color:#546E7A; margin-bottom:8px;">
+                @if (_isTeacher)
+                {
+                    <span>Nu ai creat nicio clasă încă</span>
+                }
+                else
+                {
+                    <span>Nu ești înscris în nicio clasă</span>
+                }
+            </MudText>
+            <MudText Typo="Typo.body2" Style="color:#90A4AE; margin-bottom:24px;">
+                @if (_isTeacher)
+                {
+                    <span>Creează prima ta clasă și invită elevii</span>
+                }
+                else
+                {
+                    <span>Cere codul clasei de la profesorul tău</span>
+                }
+            </MudText>
+            @if (_isTeacher)
+            {
+                <MudButton Variant="Variant.Filled" Color="Color.Primary" OnClick="OpenCreateDialog">
+                    Creează Prima Clasă
+                </MudButton>
+            }
+            else
+            {
+                <MudButton Variant="Variant.Filled" Color="Color.Primary" OnClick="OpenJoinDialog">
+                    Înscrie-te cu Cod
+                </MudButton>
+            }
+        </MudPaper>
+    }
+    else
+    {
+        <MudGrid>
+            @foreach (var classroom in _classrooms)
+            {
+                var cls = classroom;
+                <MudItem xs="12" sm="6" md="4">
+                    <MudCard Class="card-hover" Style="border-radius:16px; cursor:pointer; height:100%;"
+                             @onclick="() => NavigateToClassroom(cls.Id)">
+                        <MudCardContent>
+                            <div style="display:flex; justify-content:space-between; align-items:flex-start; margin-bottom:12px;">
+                                <MudChip T="string" Size="Size.Small"
+                                         Style="@GetSubjectStyle(cls.SubjectType)">
+                                    @GetSubjectName(cls.SubjectType)
+                                </MudChip>
+                                @if (_isTeacher)
+                                {
+                                    <MudChip T="string" Size="Size.Small"
+                                             Style="background:#E3F2FD; color:#1976D2; font-weight:600;">
+                                        @cls.ClassCode
+                                    </MudChip>
+                                }
+                            </div>
+                            <MudText Typo="Typo.h6" Style="font-weight:700; color:#263238; margin-bottom:8px;">
+                                @cls.Name
+                            </MudText>
+                            @if (!string.IsNullOrEmpty(cls.Description))
+                            {
+                                <MudText Typo="Typo.body2" Style="color:#546E7A; margin-bottom:16px;">
+                                    @cls.Description
+                                </MudText>
+                            }
+                            <div style="display:flex; gap:16px; margin-top:auto;">
+                                <div style="display:flex; align-items:center; gap:4px;">
+                                    <MudIcon Icon="@Icons.Material.Filled.People" Style="font-size:16px; color:#1976D2;" />
+                                    <MudText Typo="Typo.caption" Style="color:#546E7A;">@cls.MemberCount elevi</MudText>
+                                </div>
+                                <div style="display:flex; align-items:center; gap:4px;">
+                                    <MudIcon Icon="@Icons.Material.Filled.MenuBook" Style="font-size:16px; color:#388E3C;" />
+                                    <MudText Typo="Typo.caption" Style="color:#546E7A;">@cls.LessonCount lecții</MudText>
+                                </div>
+                            </div>
+                        </MudCardContent>
+                        <MudCardActions>
+                            <MudButton Variant="Variant.Text" Color="Color.Primary"
+                                       EndIcon="@Icons.Material.Filled.ArrowForward">
+                                Deschide
+                            </MudButton>
+                            @if (_isTeacher)
+                            {
+                                <MudButton Variant="Variant.Text" Color="Color.Error"
+                                           StartIcon="@Icons.Material.Filled.Delete"
+                                           OnClick="@(() => DeleteClassroom(cls.Id))">
+                                    Șterge
+                                </MudButton>
+                            }
+                        </MudCardActions>
+                    </MudCard>
+                </MudItem>
+            }
+        </MudGrid>
+    }
+</div>
+
+<MudDialog @bind-Visible="_showCreateDialog">
+    <TitleContent>
+        <MudText Typo="Typo.h6">
+            <MudIcon Icon="@Icons.Material.Filled.Add" Class="mr-2" />
+            Clasă Nouă
+        </MudText>
+    </TitleContent>
+    <DialogContent>
+        <MudTextField @bind-Value="_newClassroom.Name" Label="Numele clasei"
+                      Placeholder="Ex: Matematică 9A" Required="true"
+                      Variant="Variant.Outlined" Class="mb-3" />
+        <MudTextField @bind-Value="_newClassroom.Description" Label="Descriere (opțional)"
+                      Placeholder="Ex: Clasa de matematică pentru anul 9"
+                      Variant="Variant.Outlined" Lines="3" Class="mb-3" />
+        <MudSelect T="SubjectType" @bind-Value="_newClassroom.SubjectType"
+                   Label="Materia" Variant="Variant.Outlined">
+            <MudSelectItem Value="SubjectType.Mathematics">Matematică</MudSelectItem>
+            <MudSelectItem Value="SubjectType.Romanian">Limba Română</MudSelectItem>
+            <MudSelectItem Value="SubjectType.Informatics">Informatică</MudSelectItem>
+        </MudSelect>
+        @if (!string.IsNullOrEmpty(_createError))
+        {
+            <MudAlert Severity="Severity.Error" Class="mt-3">@_createError</MudAlert>
+        }
+    </DialogContent>
+    <DialogActions>
+        <MudButton OnClick="CloseCreateDialog">Anulează</MudButton>
+        <MudButton Variant="Variant.Filled" Color="Color.Primary"
+                   OnClick="CreateClassroom" Disabled="_isSaving">
+            @if (_isSaving)
+            {
+                <MudProgressCircular Size="Size.Small" Indeterminate="true" Class="mr-2" />
+            }
+            Creează
+        </MudButton>
+    </DialogActions>
+</MudDialog>
+
+<MudDialog @bind-Visible="_showJoinDialog">
+    <TitleContent>
+        <MudText Typo="Typo.h6">
+            <MudIcon Icon="@Icons.Material.Filled.Login" Class="mr-2" />
+            Înscrie-te în Clasă
+        </MudText>
+    </TitleContent>
+    <DialogContent>
+        <MudText Typo="Typo.body2" Style="color:#546E7A; margin-bottom:16px;">
+            Introdu codul clasei primit de la profesorul tău.
+        </MudText>
+        <MudTextField @bind-Value="_joinCode" Label="Cod clasă"
+                      Placeholder="Ex: MAT-AB12" Required="true"
+                      Variant="Variant.Outlined" />
+        @if (!string.IsNullOrEmpty(_joinError))
+        {
+            <MudAlert Severity="Severity.Error" Class="mt-3">@_joinError</MudAlert>
+        }
+    </DialogContent>
+    <DialogActions>
+        <MudButton OnClick="CloseJoinDialog">Anulează</MudButton>
+        <MudButton Variant="Variant.Filled" Color="Color.Primary"
+                   OnClick="JoinClassroom" Disabled="_isSaving">
+            @if (_isSaving)
+            {
+                <MudProgressCircular Size="Size.Small" Indeterminate="true" Class="mr-2" />
+            }
+            Înscrie-te
+        </MudButton>
+    </DialogActions>
+</MudDialog>
+
+@code {
+    private List<ClassroomDto> _classrooms = new();
+    private bool _isLoading = true;
+    private bool _isTeacher = false;
+    private Guid _userId;
+    private bool _showCreateDialog = false;
+    private bool _showJoinDialog = false;
+    private bool _isSaving = false;
+    private string _createError = string.Empty;
+    private string _joinError = string.Empty;
+    private string _joinCode = string.Empty;
+    private CreateClassroomRequest _newClassroom = new();
+
+    protected override async Task OnInitializedAsync()
+    {
+        var userId = await AuthService.GetCurrentUserIdAsync();
+        var role = await AuthService.GetCurrentUserRoleAsync();
+        if (userId == Guid.Empty)
+        {
+            Navigation.NavigateTo("/login");
+            return;
+        }
+        _userId = userId;
+        _isTeacher = role == UserRole.Teacher || role == UserRole.Admin;
+        await LoadClassrooms();
+    }
+
+    private async Task LoadClassrooms()
+    {
+        _isLoading = true;
+        _classrooms = await ApiService.GetMyClassroomsAsync(_userId);
+        _isLoading = false;
+    }
+
+    private void NavigateToClassroom(Guid id) =>
+        Navigation.NavigateTo($"/classrooms/{id}");
+
+    private void OpenCreateDialog()
+    {
+        _newClassroom = new CreateClassroomRequest();
+        _createError = string.Empty;
+        _showCreateDialog = true;
+    }
+
+    private void CloseCreateDialog()
+    {
+        _showCreateDialog = false;
+        _createError = string.Empty;
+    }
+
+    private void OpenJoinDialog()
+    {
+        _joinCode = string.Empty;
+        _joinError = string.Empty;
+        _showJoinDialog = true;
+    }
+
+    private void CloseJoinDialog()
+    {
+        _showJoinDialog = false;
+        _joinError = string.Empty;
+    }
+
+    private async Task CreateClassroom()
+    {
+        if (string.IsNullOrWhiteSpace(_newClassroom.Name))
+        {
+            _createError = "Numele clasei este obligatoriu.";
+            return;
+        }
+        _isSaving = true;
+        _createError = string.Empty;
+        var result = await ApiService.CreateClassroomAsync(_newClassroom, _userId);
+        _isSaving = false;
+        if (result != null)
+        {
+            _showCreateDialog = false;
+            Snackbar.Add("Clasa a fost creată cu succes!", Severity.Success);
+            await LoadClassrooms();
+        }
+        else
+        {
+            _createError = "Eroare la crearea clasei. Verifică dacă ai abonament activ și mai puțin de 5 clase.";
+        }
+    }
+
+    private async Task JoinClassroom()
+    {
+        if (string.IsNullOrWhiteSpace(_joinCode))
+        {
+            _joinError = "Codul clasei este obligatoriu.";
+            return;
+        }
+        _isSaving = true;
+        _joinError = string.Empty;
+        var result = await ApiService.JoinClassroomAsync(new JoinClassroomRequest
+        {
+            ClassCode = _joinCode.Trim().ToUpper(),
+            StudentId = _userId
+        });
+        _isSaving = false;
+        if (result)
+        {
+            _showJoinDialog = false;
+            Snackbar.Add("Te-ai înscris în clasă cu succes!", Severity.Success);
+            await LoadClassrooms();
+        }
+        else
+        {
+            _joinError = "Cod invalid sau clasa este plină.";
+        }
+    }
+
+    private async Task DeleteClassroom(Guid id)
+    {
+        var result = await ApiService.DeleteClassroomAsync(id, _userId);
+        if (result)
+        {
+            Snackbar.Add("Clasa a fost ștearsă.", Severity.Info);
+            await LoadClassrooms();
+        }
+        else
+        {
+            Snackbar.Add("Eroare la ștergerea clasei.", Severity.Error);
+        }
+    }
+
+    private string GetSubjectName(SubjectType type) => type switch
+    {
+        SubjectType.Mathematics => "Matematică",
+        SubjectType.Romanian => "Română",
+        SubjectType.Informatics => "Informatică",
+        _ => "General"
+    };
+
+    private string GetSubjectStyle(SubjectType type) => type switch
+    {
+        SubjectType.Mathematics => "background:#E3F2FD; color:#1565C0; font-weight:600;",
+        SubjectType.Romanian => "background:#FCE4EC; color:#C62828; font-weight:600;",
+        SubjectType.Informatics => "background:#E8F5E9; color:#2E7D32; font-weight:600;",
+        _ => "background:#F3E5F5; color:#6A1B9A; font-weight:600;"
+    };
+}

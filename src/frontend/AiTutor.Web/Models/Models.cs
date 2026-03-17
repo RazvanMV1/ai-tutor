@@ -256,3 +256,150 @@ public class AuthState
     public string? Token { get; set; }
     public UserDto? User { get; set; }
 }
+
+// Classroom Models
+public class ClassroomDto
+{
+    public Guid Id { get; set; }
+    public string Name { get; set; } = string.Empty;
+    public string? Description { get; set; }
+    public SubjectType SubjectType { get; set; }
+    public Guid TeacherId { get; set; }
+    public string ClassCode { get; set; } = string.Empty;
+    public int MaxStudents { get; set; }
+    public bool IsActive { get; set; }
+    public int MemberCount { get; set; }
+    public int LessonCount { get; set; }
+    public DateTime CreatedAt { get; set; }
+}
+
+public class CreateClassroomRequest
+{
+    public string Name { get; set; } = string.Empty;
+    public string Description { get; set; } = string.Empty;
+    public SubjectType SubjectType { get; set; } = SubjectType.Mathematics;
+}
+
+public class ClassroomMemberDto
+{
+    public Guid StudentId { get; set; }
+    public string FullName { get; set; } = string.Empty;
+    public string Email { get; set; } = string.Empty;
+    public DateTime JoinedAt { get; set; }
+}
+
+public class ClassroomLessonDto
+{
+    public Guid Id { get; set; }
+    public Guid ClassroomId { get; set; }
+    public string Title { get; set; } = string.Empty;
+    public string Content { get; set; } = string.Empty;
+    public int OrderIndex { get; set; }
+    public DifficultyLevel Difficulty { get; set; }
+    public DateTime CreatedAt { get; set; }
+}
+
+public class CreateClassroomLessonRequest
+{
+    public string Title { get; set; } = string.Empty;
+    public string Content { get; set; } = string.Empty;
+    public int OrderIndex { get; set; } = 1;
+    public DifficultyLevel Difficulty { get; set; } = DifficultyLevel.Beginner;
+}
+
+public class ClassroomQuizDto
+{
+    public Guid Id { get; set; }
+    public Guid ClassroomLessonId { get; set; }
+    public Guid ClassroomId { get; set; }
+    public string Title { get; set; } = string.Empty;
+    public DifficultyLevel Difficulty { get; set; }
+    public int TimeLimitMinutes { get; set; }
+    public int QuestionCount { get; set; }
+    public DateTime CreatedAt { get; set; }
+}
+
+public class CreateClassroomQuizRequest
+{
+    public string Title { get; set; } = string.Empty;
+    public DifficultyLevel Difficulty { get; set; } = DifficultyLevel.Beginner;
+    public int TimeLimitMinutes { get; set; } = 30;
+}
+
+public class ClassroomQuestionDto
+{
+    public Guid Id { get; set; }
+    public Guid ClassroomQuizId { get; set; }
+    public string Text { get; set; } = string.Empty;
+    public List<string> Options { get; set; } = new();
+    public int Points { get; set; }
+    public DateTime CreatedAt { get; set; }
+}
+
+public class AddClassroomQuestionRequest
+{
+    public string Text { get; set; } = string.Empty;
+    public string CorrectAnswer { get; set; } = string.Empty;
+    public List<string> Options { get; set; } = new();
+    public int Points { get; set; } = 10;
+    public string? Explanation { get; set; }
+}
+
+public class ClassroomProgressDto
+{
+    public Guid StudentId { get; set; }
+    public string StudentName { get; set; } = string.Empty;
+    public Guid ClassroomLessonId { get; set; }
+    public string LessonTitle { get; set; } = string.Empty;
+    public bool IsCompleted { get; set; }
+    public double ScorePercentage { get; set; }
+    public int AttemptsCount { get; set; }
+    public DateTime? CompletedAt { get; set; }
+}
+
+public class GradeDto
+{
+    public Guid Id { get; set; }
+    public Guid ClassroomId { get; set; }
+    public Guid StudentId { get; set; }
+    public string StudentName { get; set; } = string.Empty;
+    public Guid TeacherId { get; set; }
+    public int Value { get; set; }
+    public string? Description { get; set; }
+    public DateTime GradedAt { get; set; }
+}
+
+public class AddGradeRequest
+{
+    public Guid StudentId { get; set; }
+    public int Value { get; set; }
+    public string? Description { get; set; }
+}
+
+public class UpdateGradeRequest
+{
+    public int Value { get; set; }
+    public string? Description { get; set; }
+}
+
+public class JoinClassroomRequest
+{
+    public string ClassCode { get; set; } = string.Empty;
+    public Guid StudentId { get; set; }
+}
+
+public class SubmitClassroomQuizRequest
+{
+    public List<QuizAnswerDto> Answers { get; set; } = new();
+}
+
+public class ClassroomQuizResultResponse
+{
+    public Guid QuizId { get; set; }
+    public Guid StudentId { get; set; }
+    public int TotalQuestions { get; set; }
+    public int CorrectAnswers { get; set; }
+    public double ScorePercentage { get; set; }
+    public List<QuestionResultDto> Results { get; set; } = new();
+}
+

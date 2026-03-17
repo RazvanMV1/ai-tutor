@@ -13,5 +13,14 @@ public interface IApplicationDbContext
     DbSet<StudentProgress> StudentProgresses { get; }
     DbSet<Subscription> Subscriptions { get; }
 
-    Task<int> SaveChangesAsync(CancellationToken cancellationToken);
+    // Classroom
+    DbSet<Classroom> Classrooms { get; }
+    DbSet<ClassroomMember> ClassroomMembers { get; }
+    DbSet<ClassroomLesson> ClassroomLessons { get; }
+    DbSet<ClassroomQuiz> ClassroomQuizzes { get; }
+    DbSet<ClassroomQuestion> ClassroomQuestions { get; }
+    DbSet<ClassroomProgress> ClassroomProgresses { get; }
+    DbSet<Grade> Grades { get; }
+
+    Task<int> SaveChangesAsync(CancellationToken cancellationToken = default);
 }

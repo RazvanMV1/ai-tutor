@@ -25,6 +25,14 @@ public class ApplicationDbContext : IdentityDbContext<ApplicationUser>, IApplica
     public DbSet<Question> Questions => Set<Question>();
     public DbSet<StudentProgress> StudentProgresses => Set<StudentProgress>();
     public DbSet<Subscription> Subscriptions => Set<Subscription>();
+    public DbSet<Classroom> Classrooms => Set<Classroom>();
+    public DbSet<ClassroomMember> ClassroomMembers => Set<ClassroomMember>();
+    public DbSet<ClassroomLesson> ClassroomLessons => Set<ClassroomLesson>();
+    public DbSet<ClassroomQuiz> ClassroomQuizzes => Set<ClassroomQuiz>();
+    public DbSet<ClassroomQuestion> ClassroomQuestions => Set<ClassroomQuestion>();
+    public DbSet<ClassroomProgress> ClassroomProgresses => Set<ClassroomProgress>();
+    public DbSet<Grade> Grades => Set<Grade>();
+
 
     protected override void OnModelCreating(ModelBuilder builder)
     {

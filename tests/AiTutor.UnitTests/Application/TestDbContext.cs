@@ -26,21 +26,21 @@ public class TestDbContext : DbContext, IApplicationDbContext
     protected override void OnModelCreating(ModelBuilder modelBuilder)
     {
         base.OnModelCreating(modelBuilder);
+
         modelBuilder.Entity<User>().Property(u => u.Email)
             .HasConversion(e => e.Value, v => AiTutor.Domain.ValueObjects.Email.Create(v));
+
         modelBuilder.Entity<Question>().Property(q => q.Options)
             .HasConversion(
                 o => string.Join("||", o),
                 v => v.Split("||", StringSplitOptions.RemoveEmptyEntries).ToList());
+
         modelBuilder.Entity<ClassroomQuestion>().Property(q => q.Options)
             .HasConversion(
                 o => string.Join("||", o),
                 v => v.Split("||", StringSplitOptions.RemoveEmptyEntries).ToList());
     }
 
-    public Task<int> SaveChangesAsync(CancellationToken cancellationToken = default)
-        => base.SaveChangesAsync(cancellationToken)
-;
-
+    public override Task<int> SaveChangesAsync(CancellationToken cancellationToken = default)
+        => base.SaveChangesAsync(cancellationToken);
 }
-

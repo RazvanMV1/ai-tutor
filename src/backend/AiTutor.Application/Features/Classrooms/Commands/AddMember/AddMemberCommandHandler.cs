@@ -24,8 +24,9 @@ public class AddMemberCommandHandler : IRequestHandler<AddMemberCommand, Result<
         if (classroom.TeacherId != request.TeacherId)
             throw new ForbiddenAccessException();
 
-        var student = await _context.Users
-            .FirstOrDefaultAsync(u => EF.Property<string>(u, "Email") == request.StudentEmail.ToLowerInvariant(), ct);
+        var emailLower = request.StudentEmail.ToLowerInvariant();
+        var allUsers = await _context.Users.ToListAsync(ct);
+        var student = allUsers.FirstOrDefault(u => u.Email.Value == emailLower);
         if (student is null)
             return Result<bool>.Failure("Nu există niciun utilizator cu acest email.", 404);
 

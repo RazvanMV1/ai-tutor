@@ -29,13 +29,15 @@ jobs:
       - name: Run pytest
         working-directory: src/ai-module
         env:
+          GEMINI_API_KEY: "test-key"
           OPENAI_API_KEY: "test-key"
           DOTNET_API_BASE_URL: "http://localhost:5000"
+          ENVIRONMENT: "test"
         run: |
           pytest tests/ -v --tb=short
 
   docker-build:
-    name: Docker Build & Push
+    name: Docker Build & Push to ACR
     runs-on: ubuntu-latest
     needs: build-and-test
     if: github.ref == 'refs/heads/main'
@@ -44,11 +46,12 @@ jobs:
       - name: Checkout code
         uses: actions/checkout@v4
 
-      - name: Login to Docker Hub
+      - name: Login to Azure Container Registry
         uses: docker/login-action@v3
         with:
-          username: ${{ secrets.DOCKERHUB_USERNAME }}
-          password: ${{ secrets.DOCKERHUB_TOKEN }}
+          registry: aitutorrazvan2026.azurecr.io
+          username: ${{ secrets.ACR_USERNAME }}
+          password: ${{ secrets.ACR_PASSWORD }}
 
       - name: Build and push AI Module image
         uses: docker/build-push-action@v5
@@ -56,4 +59,23 @@ jobs:
           context: src/ai-module
           file: src/ai-module/Dockerfile
           push: true
-          tags: ${{ secrets.DOCKERHUB_USERNAME }}/aitutor-ai-module:latest
+          tags: aitutorrazvan2026.azurecr.io/ai-module:latest
+
+  deploy-azure:
+    name: Deploy to Azure Container Apps
+    runs-on: ubuntu-latest
+    needs: docker-build
+    if: github.ref == 'refs/heads/main'
+
+    steps:
+      - name: Login to Azure
+        uses: azure/login@v1
+        with:
+          creds: ${{ secrets.AZURE_CREDENTIALS }}
+
+      - name: Deploy AI Module to Container Apps
+        run: |
+          az containerapp update \
+            --name "aitutor-ai-module" \
+            --resource-group "aitutor-rg" \
+            --image "aitutorrazvan2026.azurecr.io/ai-module:latest"

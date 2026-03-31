@@ -1,7 +1,9 @@
 using System.Net;
+using System.Net.Http.Json;
 using System.Text.Json;
 using AiTutor.IntegrationTests.Setup;
 using FluentAssertions;
+using Xunit;
 
 namespace AiTutor.IntegrationTests.Controllers;
 
@@ -12,54 +14,52 @@ public class AuthControllerTests : BaseIntegrationTest
     [Fact]
     public async Task Register_WithValidData_ShouldReturn201()
     {
-        // Arrange
         var content = CreateJsonContent(new
         {
             firstName = "John",
             lastName = "Doe",
-            email = "john.doe@example.com",
-            password = "Password123!",
+            email = $"john{Guid.NewGuid():N}@test.com",
+            password = "Test123!@",
             role = 1
         });
 
-        // Act
         var response = await Client.PostAsync("/api/Auth/register", content);
 
-        // Assert
         response.StatusCode.Should().Be(HttpStatusCode.Created);
+        var body = await response.Content.ReadAsStringAsync();
+        var data = JsonSerializer.Deserialize<JsonElement>(body, JsonOptions);
+        data.GetProperty("id").GetString().Should().NotBeNullOrEmpty();
     }
 
     [Fact]
-    public async Task Register_WithInvalidEmail_ShouldReturn400()
+    public async Task Register_WithDuplicateEmail_ShouldReturnBadRequest()
     {
-        // Arrange
+        var email = $"dup{Guid.NewGuid():N}@test.com";
         var content = CreateJsonContent(new
         {
-            firstName = "John",
-            lastName = "Doe",
-            email = "notanemail",
-            password = "Password123!",
+            firstName = "Test",
+            lastName = "User",
+            email,
+            password = "Test123!@",
             role = 1
         });
 
-        // Act
+        await Client.PostAsync("/api/Auth/register", content);
         var response = await Client.PostAsync("/api/Auth/register", content);
 
-        // Assert
         response.StatusCode.Should().Be(HttpStatusCode.BadRequest);
     }
 
     [Fact]
     public async Task Login_WithValidCredentials_ShouldReturnToken()
     {
-        // Arrange
-        var email = "login.test@example.com";
-        var password = "Password123!";
+        var email = $"login{Guid.NewGuid():N}@test.com";
+        var password = "Test123!@";
 
         var registerContent = CreateJsonContent(new
         {
-            firstName = "Login",
-            lastName = "Test",
+            firstName = "Test",
+            lastName = "User",
             email,
             password,
             role = 1
@@ -67,31 +67,45 @@ public class AuthControllerTests : BaseIntegrationTest
         await Client.PostAsync("/api/Auth/register", registerContent);
 
         var loginContent = CreateJsonContent(new { email, password });
-
-        // Act
         var response = await Client.PostAsync("/api/Auth/login", loginContent);
+
+        response.StatusCode.Should().Be(HttpStatusCode.OK);
         var body = await response.Content.ReadAsStringAsync();
         var data = JsonSerializer.Deserialize<JsonElement>(body, JsonOptions);
-
-        // Assert
-        response.StatusCode.Should().Be(HttpStatusCode.OK);
         data.GetProperty("token").GetString().Should().NotBeNullOrEmpty();
+    }
+
+    [Fact]
+    public async Task Login_WithInvalidCredentials_ShouldReturn401()
+    {
+        var content = CreateJsonContent(new
+        {
+            email = "nonexistent@test.com",
+            password = "WrongPass1!@"
+        });
+
+        var response = await Client.PostAsync("/api/Auth/login", content);
+
+        response.StatusCode.Should().Be(HttpStatusCode.Unauthorized);
     }
 
     [Fact]
     public async Task Login_WithWrongPassword_ShouldReturn401()
     {
-        // Arrange
-        var content = CreateJsonContent(new
+        var email = $"wrongpw{Guid.NewGuid():N}@test.com";
+        var registerContent = CreateJsonContent(new
         {
-            email = "wrong@example.com",
-            password = "WrongPassword123!"
+            firstName = "Test",
+            lastName = "User",
+            email,
+            password = "Test123!@",
+            role = 1
         });
+        await Client.PostAsync("/api/Auth/register", registerContent);
 
-        // Act
-        var response = await Client.PostAsync("/api/Auth/login", content);
+        var loginContent = CreateJsonContent(new { email, password = "WrongPass1!@" });
+        var response = await Client.PostAsync("/api/Auth/login", loginContent);
 
-        // Assert
         response.StatusCode.Should().Be(HttpStatusCode.Unauthorized);
     }
 }

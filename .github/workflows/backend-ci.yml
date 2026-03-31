@@ -60,8 +60,8 @@ jobs:
             /d:sonar.token="${{ secrets.SONAR_TOKEN }}" \
             /d:sonar.host.url="https://sonarcloud.io" \
             /d:sonar.cs.opencover.reportsPaths="**/coverage.opencover.xml" \
-            /d:sonar.exclusions="**/Migrations/**,**/bin/**,**/obj/**" \
-            /d:sonar.coverage.exclusions="**/Migrations/**,**/Program.cs,**/AiTutor.API/**,**/AiTutor.Infrastructure/**"
+            /d:sonar.exclusions="**/Migrations/**,**/bin/**,**/obj/**,**/wwwroot/**,src/frontend/**,src/ai-module/**" \
+            /d:sonar.coverage.exclusions="**/Migrations/**,**/Program.cs,**/DependencyInjection.cs,**/AiTutor.API/**,**/AiTutor.Infrastructure/**,**/tests/**"
 
       - name: Build
         run: dotnet build --no-restore

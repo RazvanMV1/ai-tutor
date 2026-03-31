@@ -87,7 +87,7 @@ jobs:
         run: dotnet-sonarscanner end /d:sonar.token=${{ secrets.SONAR_TOKEN }}
 
   docker-build:
-    name: Docker Build & Push
+    name: Docker Build & Push to ACR
     runs-on: ubuntu-latest
     needs: build-and-test
     if: github.ref == 'refs/heads/main'
@@ -96,11 +96,12 @@ jobs:
       - name: Checkout code
         uses: actions/checkout@v4
 
-      - name: Login to Docker Hub
+      - name: Login to Azure Container Registry
         uses: docker/login-action@v3
         with:
-          username: ${{ secrets.DOCKERHUB_USERNAME }}
-          password: ${{ secrets.DOCKERHUB_TOKEN }}
+          registry: aitutorrazvan2026.azurecr.io
+          username: ${{ secrets.ACR_USERNAME }}
+          password: ${{ secrets.ACR_PASSWORD }}
 
       - name: Build and push Backend image
         uses: docker/build-push-action@v5
@@ -108,4 +109,23 @@ jobs:
           context: .
           file: src/backend/AiTutor.API/Dockerfile
           push: true
-          tags: ${{ secrets.DOCKERHUB_USERNAME }}/aitutor-backend:latest
+          tags: aitutorrazvan2026.azurecr.io/backend:latest
+
+  deploy-azure:
+    name: Deploy to Azure Container Apps
+    runs-on: ubuntu-latest
+    needs: docker-build
+    if: github.ref == 'refs/heads/main'
+
+    steps:
+      - name: Login to Azure
+        uses: azure/login@v1
+        with:
+          creds: ${{ secrets.AZURE_CREDENTIALS }}
+
+      - name: Deploy Backend to Container Apps
+        run: |
+          az containerapp update \
+            --name "aitutor-backend" \
+            --resource-group "aitutor-rg" \
+            --image "aitutorrazvan2026.azurecr.io/backend:latest"

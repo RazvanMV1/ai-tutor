@@ -17,10 +17,21 @@ public class JwtService : IJwtService
         _configuration = configuration;
     }
 
+    private byte[] GetSigningKey()
+    {
+        var jwtSettings = _configuration.GetSection("JwtSettings");
+        var secretKey = jwtSettings["SecretKey"];
+
+        if (string.IsNullOrWhiteSpace(secretKey))
+            throw new InvalidOperationException("JWT SecretKey is not configured.");
+
+        return Encoding.UTF8.GetBytes(secretKey);
+    }
+
     public string GenerateToken(User user)
     {
         var jwtSettings = _configuration.GetSection("JwtSettings");
-        var key = Encoding.UTF8.GetBytes(jwtSettings["SecretKey"]!);
+        var key = GetSigningKey();
 
         var claims = new List<Claim>
         {
@@ -53,7 +64,7 @@ public class JwtService : IJwtService
         try
         {
             var jwtSettings = _configuration.GetSection("JwtSettings");
-            var key = Encoding.UTF8.GetBytes(jwtSettings["SecretKey"]!);
+            var key = GetSigningKey();
             var tokenHandler = new JwtSecurityTokenHandler();
 
             tokenHandler.ValidateToken(token, new TokenValidationParameters
@@ -73,7 +84,11 @@ public class JwtService : IJwtService
 
             return userId;
         }
-        catch
+        catch (SecurityTokenException)
+        {
+            return null;
+        }
+        catch (Exception)
         {
             return null;
         }

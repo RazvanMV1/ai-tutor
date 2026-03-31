@@ -251,7 +251,7 @@ public class ClassroomExtendedTests : IDisposable
 
         var handler = new AddClassroomQuestionCommandHandler(_context);
         var command = new AddClassroomQuestionCommand(
-            quizId, classroom.Id, teacher.Id,
+            classroom.Id, quizId, teacher.Id,
             "Care este 2+2?", "4",
             new List<string> { "2", "3", "4", "5" }, 10, "Matematica de baza");
 
@@ -260,6 +260,7 @@ public class ClassroomExtendedTests : IDisposable
         result.IsSuccess.Should().BeTrue();
         result.Data!.Text.Should().Be("Care este 2+2?");
     }
+
 
     // ── SubmitClassroomQuiz ────────────────────────────────────────────
     [Fact]

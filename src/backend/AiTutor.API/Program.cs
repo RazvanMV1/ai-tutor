@@ -1,13 +1,14 @@
 using System.Text;
 using AiTutor.Application;
 using AiTutor.Infrastructure;
+using AiTutor.Infrastructure.Identity;
 using AiTutor.Infrastructure.Persistence;
 using AiTutor.API.Middleware;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
+using Microsoft.AspNetCore.Identity;
 using Microsoft.IdentityModel.Tokens;
 using Microsoft.OpenApi.Models;
 using Microsoft.EntityFrameworkCore;
-
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -111,36 +112,12 @@ using (var scope = app.Services.CreateScope())
 {
     var db = scope.ServiceProvider.GetRequiredService<ApplicationDbContext>();
     await db.Database.MigrateAsync();
-    await SeedDefaultDataAsync(db);
+
+    var userManager = scope.ServiceProvider.GetRequiredService<UserManager<ApplicationUser>>();
+    await SeedData.SeedAsync(db, userManager);
 }
 
 app.Run();
-
-static async Task SeedDefaultDataAsync(ApplicationDbContext db)
-{
-    // Seed default subjects if none exist
-    if (!db.Subjects.Any())
-    {
-        var subjects = new[]
-        {
-            AiTutor.Domain.Entities.Subject.Create(
-                "Matematică",
-                "Aritmetică, algebră, geometrie și analiză matematică pentru toate nivelurile.",
-                AiTutor.Domain.Enums.SubjectType.Mathematics),
-            AiTutor.Domain.Entities.Subject.Create(
-                "Limba Română",
-                "Gramatică, lectură, scriere creativă și literatura română.",
-                AiTutor.Domain.Enums.SubjectType.Romanian),
-            AiTutor.Domain.Entities.Subject.Create(
-                "Informatică",
-                "Algoritmi, programare, structuri de date și gândire computațională.",
-                AiTutor.Domain.Enums.SubjectType.Informatics),
-        };
-
-        db.Subjects.AddRange(subjects);
-        await db.SaveChangesAsync();
-    }
-}
 
 // Necesar pentru IntegrationTests
 public partial class Program { }

@@ -75,6 +75,8 @@ services:
     restart: unless-stopped
     ports:
       - "3000:80"
+    volumes:
+      - ./src/frontend/AiTutor.Web/nginx.dev.conf:/etc/nginx/nginx.conf:ro
     depends_on:
       - backend
 

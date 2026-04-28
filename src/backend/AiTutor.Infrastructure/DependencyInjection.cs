@@ -2,6 +2,7 @@ using AiTutor.Application.Common.Interfaces;
 using AiTutor.Infrastructure.Identity;
 using AiTutor.Infrastructure.Persistence;
 using AiTutor.Infrastructure.Services;
+using AiTutor.Infrastructure.Services.Stripe;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
@@ -38,6 +39,10 @@ public static class DependencyInjection
         services.AddScoped<ICurrentUserService, CurrentUserService>();
         services.AddHttpContextAccessor();
         services.AddHttpClient<IAiTutorService, AiTutorService>();
+
+        // ===== Stripe =====
+        services.Configure<StripeOptions>(configuration.GetSection(StripeOptions.SectionName));
+        services.AddSingleton<IStripeService, StripeService>();
 
         return services;
     }

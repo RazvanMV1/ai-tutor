@@ -1,0 +1,61 @@
+[1mdiff --git a/src/backend/AiTutor.API/Program.cs b/src/backend/AiTutor.API/Program.cs[m
+[1mindex dccd66a..7972ba3 100644[m
+[1m--- a/src/backend/AiTutor.API/Program.cs[m
+[1m+++ b/src/backend/AiTutor.API/Program.cs[m
+[36m@@ -1,14 +1,15 @@[m
+ using System.Text;[m
+ using AiTutor.Application;[m
+ using AiTutor.Infrastructure;[m
+[32m+[m[32musing AiTutor.Infrastructure.Identity;[m
+ using AiTutor.Infrastructure.Persistence;[m
+ using AiTutor.API.Middleware;[m
+ using Microsoft.AspNetCore.Authentication.JwtBearer;[m
+[32m+[m[32musing Microsoft.AspNetCore.Identity;[m
+ using Microsoft.IdentityModel.Tokens;[m
+ using Microsoft.OpenApi.Models;[m
+ using Microsoft.EntityFrameworkCore;[m
+ [m
+[31m-[m
+ var builder = WebApplication.CreateBuilder(args);[m
+ [m
+ // Application + Infrastructure[m
+[36m@@ -111,36 +112,12 @@[m [musing (var scope = app.Services.CreateScope())[m
+ {[m
+     var db = scope.ServiceProvider.GetRequiredService<ApplicationDbContext>();[m
+     await db.Database.MigrateAsync();[m
+[31m-    await SeedDefaultDataAsync(db);[m
+[32m+[m
+[32m+[m[32m    var userManager = scope.ServiceProvider.GetRequiredService<UserManager<ApplicationUser>>();[m
+[32m+[m[32m    await SeedData.SeedAsync(db, userManager);[m
+ }[m
+ [m
+ app.Run();[m
+ [m
+[31m-static async Task SeedDefaultDataAsync(ApplicationDbContext db)[m
+[31m-{[m
+[31m-    // Seed default subjects if none exist[m
+[31m-    if (!db.Subjects.Any())[m
+[31m-    {[m
+[31m-        var subjects = new[][m
+[31m-        {[m
+[31m-            AiTutor.Domain.Entities.Subject.Create([m
+[31m-                "Matematică",[m
+[31m-                "Aritmetică, algebră, geometrie și analiză matematică pentru toate nivelurile.",[m
+[31m-                AiTutor.Domain.Enums.SubjectType.Mathematics),[m
+[31m-            AiTutor.Domain.Entities.Subject.Create([m
+[31m-                "Limba Română",[m
+[31m-                "Gramatică, lectură, scriere creativă și literatura română.",[m
+[31m-                AiTutor.Domain.Enums.SubjectType.Romanian),[m
+[31m-            AiTutor.Domain.Entities.Subject.Create([m
+[31m-                "Informatică",[m
+[31m-                "Algoritmi, programare, structuri de date și gândire computațională.",[m
+[31m-                AiTutor.Domain.Enums.SubjectType.Informatics),[m
+[31m-        };[m
+[31m-[m
+[31m-        db.Subjects.AddRange(subjects);[m
+[31m-        await db.SaveChangesAsync();[m
+[31m-    }[m
+[31m-}[m
+[31m-[m
+ // Necesar pentru IntegrationTests[m
+ public partial class Program { }[m

@@ -1,5 +1,7 @@
 using AiTutor.Application.Features.Subscriptions.Commands.CancelSubscription;
+using AiTutor.Application.Features.Subscriptions.Commands.CreateCheckoutSession;
 using AiTutor.Application.Features.Subscriptions.Commands.CreateSubscription;
+using AiTutor.Application.Features.Subscriptions.Commands.HandleStripeWebhook;
 using AiTutor.Application.Features.Subscriptions.Queries.GetAllSubscriptions;
 using AiTutor.Application.Features.Subscriptions.Queries.GetSubscriptionByUser;
 using AiTutor.Domain.Enums;
@@ -23,6 +25,11 @@ public class SubscriptionsController : ControllerBase
         decimal Price,
         DateTime StartDate,
         DateTime EndDate
+    );
+
+    public record CreateCheckoutSessionRequest(
+        Guid UserId,
+        SubscriptionType SubscriptionType
     );
 
     [HttpGet]
@@ -61,5 +68,56 @@ public class SubscriptionsController : ControllerBase
     {
         var result = await _mediator.Send(new CancelSubscriptionCommand(id, userId));
         return result.IsSuccess ? Ok() : BadRequest(result.Error);
+    }
+
+    /// <summary>
+    /// Pornește un Stripe Checkout pentru utilizatorul curent.
+    /// Returnează URL-ul la care frontend-ul redirectează user-ul.
+    /// </summary>
+    [HttpPost("checkout-session")]
+    public async Task<IActionResult> CreateCheckoutSession(
+        [FromBody] CreateCheckoutSessionRequest request)
+    {
+        var command = new CreateCheckoutSessionCommand(
+            request.UserId,
+            request.SubscriptionType);
+
+        var result = await _mediator.Send(command);
+
+        return result.IsSuccess
+            ? StatusCode(result.StatusCode, result.Data)
+            : StatusCode(result.StatusCode, new { error = result.Error });
+    }
+
+    /// <summary>
+    /// Endpoint apelat de Stripe pentru a notifica eventuri (plată reușită, anulare, etc.).
+    /// IMPORTANT:
+    ///  - Anonim (Stripe nu trimite JWT)
+    ///  - Citim body-ul RAW (necesar pentru validarea HMAC a semnăturii)
+    ///  - Răspundem 200 OK pentru orice eveniment procesat (chiar dacă-l ignorăm)
+    ///    ca Stripe să nu retrimită inutil
+    /// </summary>
+    [HttpPost("webhook")]
+    [AllowAnonymous]
+    public async Task<IActionResult> StripeWebhook()
+    {
+        // Citim body-ul exact așa cum a venit, fără model binding.
+        // Semnătura Stripe este HMAC peste payload-ul raw + timestamp.
+        using var reader = new StreamReader(Request.Body);
+        var payload = await reader.ReadToEndAsync();
+
+        var signatureHeader = Request.Headers["Stripe-Signature"].ToString();
+
+        if (string.IsNullOrWhiteSpace(signatureHeader))
+        {
+            return BadRequest(new { error = "Missing Stripe-Signature header." });
+        }
+
+        var command = new HandleStripeWebhookCommand(payload, signatureHeader);
+        var result = await _mediator.Send(command);
+
+        return result.IsSuccess
+            ? Ok()
+            : StatusCode(result.StatusCode, new { error = result.Error });
     }
 }

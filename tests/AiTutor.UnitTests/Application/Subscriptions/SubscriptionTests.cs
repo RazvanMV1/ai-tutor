@@ -1,4 +1,5 @@
 using AiTutor.Application.Common.Exceptions;
+using AiTutor.Application.Common.Interfaces;
 using AiTutor.Application.Features.Subscriptions.Commands.CancelSubscription;
 using AiTutor.Application.Features.Subscriptions.Commands.CreateSubscription;
 using AiTutor.Application.Features.Subscriptions.Queries.GetAllSubscriptions;
@@ -8,6 +9,8 @@ using AiTutor.Domain.Enums;
 using AiTutor.UnitTests.Application;
 using FluentAssertions;
 using Microsoft.EntityFrameworkCore;
+using Microsoft.Extensions.Logging;
+using Moq;
 using Xunit;
 
 namespace AiTutor.UnitTests.Application.Subscriptions;
@@ -15,6 +18,8 @@ namespace AiTutor.UnitTests.Application.Subscriptions;
 public class SubscriptionTests : IDisposable
 {
     private readonly TestDbContext _context;
+    private readonly Mock<IStripeService> _stripeMock;
+    private readonly Mock<ILogger<CancelSubscriptionCommandHandler>> _cancelLoggerMock;
 
     public SubscriptionTests()
     {
@@ -22,9 +27,15 @@ public class SubscriptionTests : IDisposable
             .UseInMemoryDatabase(Guid.NewGuid().ToString())
             .Options;
         _context = new TestDbContext(options);
+
+        _stripeMock = new Mock<IStripeService>();
+        _cancelLoggerMock = new Mock<ILogger<CancelSubscriptionCommandHandler>>();
     }
 
     public void Dispose() => _context.Dispose();
+
+    private CancelSubscriptionCommandHandler CreateCancelHandler() =>
+        new(_context, _stripeMock.Object, _cancelLoggerMock.Object);
 
     private async Task<User> CreateUserAsync()
     {
@@ -44,7 +55,7 @@ public class SubscriptionTests : IDisposable
         return sub;
     }
 
-    // ── CreateSubscription ─────────────────────────────────────────────
+    // ── CreateSubscription ──────────────────────────────────────────────
     [Fact]
     public async Task CreateSubscription_WithValidData_ShouldSucceed()
     {
@@ -113,25 +124,34 @@ public class SubscriptionTests : IDisposable
         result.Errors.Should().Contain(e => e.PropertyName == "StartDate");
     }
 
-    // ── CancelSubscription ─────────────────────────────────────────────
+    // ── CancelSubscription ──────────────────────────────────────────────
     [Fact]
     public async Task CancelSubscription_WithValidData_ShouldSucceed()
     {
         var user = await CreateUserAsync();
         var sub = await CreateSubscriptionAsync(user.Id);
-        var handler = new CancelSubscriptionCommandHandler(_context);
+        var handler = CreateCancelHandler();
         var command = new CancelSubscriptionCommand(sub.Id, user.Id);
 
         var result = await handler.Handle(command, CancellationToken.None);
 
         result.IsSuccess.Should().BeTrue();
         result.Data.Should().BeTrue();
+
+        // Subscription-ul nu are StripeSubscriptionId (e legacy/seed-uit),
+        // deci handler-ul NU trebuie să apeleze Stripe.
+        _stripeMock.Verify(
+            x => x.CancelSubscriptionAsync(
+                It.IsAny<string>(),
+                It.IsAny<bool>(),
+                It.IsAny<CancellationToken>()),
+            Times.Never);
     }
 
     [Fact]
     public async Task CancelSubscription_WithNonExistentSubscription_ShouldThrowNotFoundException()
     {
-        var handler = new CancelSubscriptionCommandHandler(_context);
+        var handler = CreateCancelHandler();
         var command = new CancelSubscriptionCommand(Guid.NewGuid(), Guid.NewGuid());
 
         var act = async () => await handler.Handle(command, CancellationToken.None);
@@ -144,7 +164,7 @@ public class SubscriptionTests : IDisposable
     {
         var user = await CreateUserAsync();
         var sub = await CreateSubscriptionAsync(user.Id);
-        var handler = new CancelSubscriptionCommandHandler(_context);
+        var handler = CreateCancelHandler();
         var command = new CancelSubscriptionCommand(sub.Id, Guid.NewGuid());
 
         var act = async () => await handler.Handle(command, CancellationToken.None);
@@ -152,7 +172,7 @@ public class SubscriptionTests : IDisposable
         await act.Should().ThrowAsync<ForbiddenAccessException>();
     }
 
-    // ── GetAllSubscriptions ────────────────────────────────────────────
+    // ── GetAllSubscriptions ─────────────────────────────────────────────
     [Fact]
     public async Task GetAllSubscriptions_WithData_ShouldReturnPaginatedList()
     {
@@ -199,7 +219,7 @@ public class SubscriptionTests : IDisposable
         result.Data!.TotalCount.Should().Be(0);
     }
 
-    // ── GetSubscriptionByUser ──────────────────────────────────────────
+    // ── GetSubscriptionByUser ───────────────────────────────────────────
     [Fact]
     public async Task GetSubscriptionByUser_WithSubscriptions_ShouldReturnList()
     {

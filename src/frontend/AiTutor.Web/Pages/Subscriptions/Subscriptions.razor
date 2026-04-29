@@ -42,58 +42,84 @@
             }
         </MudGrid>
     }
-    else if (_activeSubscription != null && _activeSubscription.IsActive)
+    else if (_currentSubscription != null)
     {
-        <!-- Active Subscription View -->
-        <MudPaper Elevation="2" Class="pa-5 mb-4" Style="border-radius:20px; border:2px solid #388E3C;">
+        <!-- Subscription View (Active sau Pending) -->
+        <MudPaper Elevation="2" Class="pa-5 mb-4"
+                  Style="@($"border-radius:20px; border:2px solid {(_currentSubscription.IsActive ? "#388E3C" : "#FF9800")};")">
             <div style="display:flex; align-items:flex-start; justify-content:space-between; flex-wrap:wrap; gap:16px;">
                 <div>
                     <div style="display:flex; align-items:center; gap:12px; margin-bottom:0.75rem;">
-                        <div style="width:52px; height:52px; background:rgba(56,142,60,0.1); border-radius:12px;
-                                    display:flex; align-items:center; justify-content:center;">
-                            <MudIcon Icon="@Icons.Material.Filled.CheckCircle" Style="color:#388E3C; font-size:30px;" />
+                        <div style="@($"width:52px; height:52px; background:rgba({(_currentSubscription.IsActive ? "56,142,60" : "255,152,0")},0.1); border-radius:12px; display:flex; align-items:center; justify-content:center;")">
+                            <MudIcon Icon="@(_currentSubscription.IsActive ? Icons.Material.Filled.CheckCircle : Icons.Material.Filled.Schedule)"
+                                     Style="@($"color:{(_currentSubscription.IsActive ? "#388E3C" : "#FF9800")}; font-size:30px;")" />
                         </div>
                         <div>
-                            <div class="active-badge pulse">
-                                <div class="active-dot"></div>
-                                Abonament Activ
-                            </div>
+                            @if (_currentSubscription.IsActive)
+                            {
+                                <div class="active-badge pulse">
+                                    <div class="active-dot"></div>
+                                    Abonament Activ
+                                </div>
+                            }
+                            else
+                            {
+                                <div class="active-badge pulse"
+                                     style="background:rgba(255,152,0,0.15); color:#F57C00;">
+                                    <div class="active-dot" style="background:#FF9800;"></div>
+                                    În Procesare
+                                </div>
+                            }
                             <MudText Typo="Typo.h5" Style="font-weight:800; color:#1A1A2E; margin-top:4px;">
-                                @GetSubscriptionName(_activeSubscription.Type)
+                                @GetSubscriptionName(_currentSubscription.Type)
                             </MudText>
                         </div>
                     </div>
 
                     <MudGrid Spacing="2">
                         <MudItem xs="12" sm="6">
-                            <div style="background:#F8FFF8; border-radius:10px; padding:0.75rem 1rem;">
+                            <div style="@($"background:{(_currentSubscription.IsActive ? "#F8FFF8" : "#FFF8E1")}; border-radius:10px; padding:0.75rem 1rem;")">
                                 <MudText Typo="Typo.caption" Style="color:#546E7A; font-weight:600;">Data Start</MudText>
                                 <MudText Typo="Typo.body1" Style="font-weight:700;">
-                                    @_activeSubscription.StartDate.ToString("dd MMMM yyyy")
+                                    @_currentSubscription.StartDate.ToString("dd MMMM yyyy")
                                 </MudText>
                             </div>
                         </MudItem>
                         <MudItem xs="12" sm="6">
-                            <div style="background:#F8FFF8; border-radius:10px; padding:0.75rem 1rem;">
+                            <div style="@($"background:{(_currentSubscription.IsActive ? "#F8FFF8" : "#FFF8E1")}; border-radius:10px; padding:0.75rem 1rem;")">
                                 <MudText Typo="Typo.caption" Style="color:#546E7A; font-weight:600;">Data Expirare</MudText>
-                                <MudText Typo="Typo.body1" Style="font-weight:700; color:#388E3C;">
-                                    @_activeSubscription.EndDate.ToString("dd MMMM yyyy")
+                                <MudText Typo="Typo.body1" Style="@($"font-weight:700; color:{(_currentSubscription.IsActive ? "#388E3C" : "#F57C00")};")">
+                                    @if (_currentSubscription.IsActive)
+                                    {
+                                        @_currentSubscription.EndDate.ToString("dd MMMM yyyy")
+                                    }
+                                    else
+                                    {
+                                        <span>În procesare...</span>
+                                    }
                                 </MudText>
                             </div>
                         </MudItem>
                         <MudItem xs="12" sm="6">
-                            <div style="background:#F8FFF8; border-radius:10px; padding:0.75rem 1rem;">
+                            <div style="@($"background:{(_currentSubscription.IsActive ? "#F8FFF8" : "#FFF8E1")}; border-radius:10px; padding:0.75rem 1rem;")">
                                 <MudText Typo="Typo.caption" Style="color:#546E7A; font-weight:600;">Preț Plătit</MudText>
                                 <MudText Typo="Typo.body1" Style="font-weight:700;">
-                                    @_activeSubscription.Price.ToString("F2") RON
+                                    @_currentSubscription.Price.ToString("F2") RON
                                 </MudText>
                             </div>
                         </MudItem>
                         <MudItem xs="12" sm="6">
-                            <div style="background:#F8FFF8; border-radius:10px; padding:0.75rem 1rem;">
+                            <div style="@($"background:{(_currentSubscription.IsActive ? "#F8FFF8" : "#FFF8E1")}; border-radius:10px; padding:0.75rem 1rem;")">
                                 <MudText Typo="Typo.caption" Style="color:#546E7A; font-weight:600;">Zile Rămase</MudText>
                                 <MudText Typo="Typo.body1" Style="font-weight:700; color:#1976D2;">
-                                    @Math.Max(0, (int)(_activeSubscription.EndDate - DateTime.UtcNow).TotalDays) zile
+                                    @if (_currentSubscription.IsActive)
+                                    {
+                                        @($"{Math.Max(0, (int)(_currentSubscription.EndDate - DateTime.UtcNow).TotalDays)} zile")
+                                    }
+                                    else
+                                    {
+                                        <span>—</span>
+                                    }
                                 </MudText>
                             </div>
                         </MudItem>
@@ -103,30 +129,56 @@
 
             <MudDivider Class="my-3" />
 
-            <div style="display:flex; gap:12px; flex-wrap:wrap;">
-                <MudButton Variant="Variant.Outlined" Color="Color.Error"
-                           OnClick="CancelSubscription" Disabled="_isCancelling"
-                           Style="border-radius:10px; font-weight:700;">
-                    @if (_isCancelling)
-                    {
-                        <MudProgressCircular Size="Size.Small" Indeterminate="true" Class="mr-2" />
-                    }
-                    <MudIcon Icon="@Icons.Material.Filled.Cancel" Class="mr-2" />
-                    Anulează Abonamentul
-                </MudButton>
-            </div>
+            @if (_currentSubscription.IsActive)
+            {
+                <div style="display:flex; gap:12px; flex-wrap:wrap;">
+                    <MudButton Variant="Variant.Outlined" Color="Color.Error"
+                               OnClick="CancelSubscription" Disabled="_isCancelling"
+                               Style="border-radius:10px; font-weight:700;">
+                        @if (_isCancelling)
+                        {
+                            <MudProgressCircular Size="Size.Small" Indeterminate="true" Class="mr-2" />
+                        }
+                        else
+                        {
+                            <MudIcon Icon="@Icons.Material.Filled.Cancel" Class="mr-2" />
+                        }
+                        <span>Anulează Abonamentul</span>
+                    </MudButton>
+                </div>
+            }
+            else
+            {
+                <MudAlert Severity="Severity.Info" Class="mb-3" Style="border-radius:12px;">
+                    <MudText Typo="Typo.body2">
+                        Abonamentul tău este în curs de activare. De obicei devine activ în câteva secunde
+                        după plată. Reîmprospătează pagina dacă status-ul nu se actualizează automat.
+                    </MudText>
+                </MudAlert>
+                <div style="display:flex; gap:12px; flex-wrap:wrap;">
+                    <MudButton Variant="Variant.Filled" Color="Color.Primary"
+                               OnClick="LoadSubscriptionsAsync" Disabled="_isLoading"
+                               Style="border-radius:10px; font-weight:700;">
+                        <MudIcon Icon="@Icons.Material.Filled.Refresh" Class="mr-2" />
+                        Reîmprospătează
+                    </MudButton>
+                </div>
+            }
         </MudPaper>
 
-        <MudAlert Severity="Severity.Info" Style="border-radius:12px;">
-            <MudText Typo="Typo.body2">
-                Dacă anulezi abonamentul, vei pierde accesul la funcțiile premium la expirare.
-                Poți cumpăra un nou abonament oricând.
-            </MudText>
-        </MudAlert>
+        @if (_currentSubscription.IsActive)
+        {
+            <MudAlert Severity="Severity.Info" Style="border-radius:12px;">
+                <MudText Typo="Typo.body2">
+                    Dacă anulezi abonamentul, vei pierde accesul la funcțiile premium la expirare.
+                    Poți cumpăra un nou abonament oricând.
+                </MudText>
+            </MudAlert>
+        }
     }
     else
     {
-        <!-- Plans Grid -->
+        <!-- Plans Grid (utilizatorul nu are nicio subscripție) -->
         <MudText Typo="Typo.h5" Style="font-weight:700; text-align:center; margin-bottom:2rem;">
             Alege Planul Tău
         </MudText>
@@ -226,7 +278,7 @@
     private bool _isLoading = true;
     private bool _isCancelling = false;
     private SubscriptionType? _processingType = null;
-    private SubscriptionDto? _activeSubscription;
+    private SubscriptionDto? _currentSubscription;
     private List<SubscriptionDto> _allSubscriptions = new();
 
     private List<PlanInfo> _plans = new()
@@ -314,7 +366,16 @@
             }
 
             _allSubscriptions = await ApiService.GetUserSubscriptionsAsync(userId);
-            _activeSubscription = _allSubscriptions.FirstOrDefault(s => s.IsActive);
+
+            // Caută cea mai recentă subscripție:
+            //  - Activă (IsActive=true) → afișează Active View
+            //  - Pending recentă (IsActive=false, dar creată în ultimele 30 min cu StartDate ≈ EndDate)
+            //    → afișează Pending View cu buton de Refresh
+            // Restul (cancelate, expirate vechi) → ignorăm și arătăm Plans Grid
+            _currentSubscription = _allSubscriptions
+                .Where(s => s.IsActive || IsRecentlyCreatedPending(s))
+                .OrderByDescending(s => s.StartDate)
+                .FirstOrDefault();
         }
         catch (Exception ex)
         {
@@ -324,6 +385,19 @@
         {
             _isLoading = false;
         }
+    }
+
+    /// <summary>
+    /// O subscripție Pending = creată recent dar nu încă marcată Active de webhook.
+    /// Detectăm prin: StartDate ≈ EndDate (handler-ul setează același timestamp la creare)
+    /// + creată în ultimele 30 min.
+    /// </summary>
+    private static bool IsRecentlyCreatedPending(SubscriptionDto s)
+    {
+        if (s.IsActive) return false;
+        var startsEndsSame = Math.Abs((s.EndDate - s.StartDate).TotalMinutes) < 1;
+        var recentlyCreated = (DateTime.UtcNow - s.StartDate).TotalMinutes < 30;
+        return startsEndsSame && recentlyCreated;
     }
 
     private async Task StartCheckout(SubscriptionType type)
@@ -350,7 +424,6 @@
             if (response != null && !string.IsNullOrEmpty(response.CheckoutUrl))
             {
                 Snackbar.Add("Te redirectăm către Stripe...", Severity.Info);
-                // forceLoad: true → navigare în afara aplicației Blazor (la Stripe)
                 Navigation.NavigateTo(response.CheckoutUrl, forceLoad: true);
             }
             else
@@ -368,13 +441,13 @@
 
     private async Task CancelSubscription()
     {
-        if (_activeSubscription == null || _isCancelling) return;
+        if (_currentSubscription == null || !_currentSubscription.IsActive || _isCancelling) return;
 
         _isCancelling = true;
         try
         {
             var userId = await AuthService.GetCurrentUserIdAsync();
-            var success = await ApiService.CancelSubscriptionAsync(_activeSubscription.Id, userId);
+            var success = await ApiService.CancelSubscriptionAsync(_currentSubscription.Id, userId);
 
             if (success)
             {

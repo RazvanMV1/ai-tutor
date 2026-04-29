@@ -229,14 +229,15 @@ public class ApiService
         try
         {
             var content = await _httpClient.GetStringAsync($"api/Subscriptions/user/{userId}");
-            var wrapper = JsonSerializer.Deserialize<SubscriptionListResponse>(content, _jsonOptions);
-            return wrapper?.Value ?? new();
+            // Backend returnează direct un array JSON: [{ ... }, { ... }]
+            return JsonSerializer.Deserialize<List<SubscriptionDto>>(content, _jsonOptions) ?? new();
         }
         catch
         {
             return new();
         }
     }
+
 
     /// <summary>
     /// Compatibility wrapper: returnează prima subscripție activă, sau prima din listă, sau null.

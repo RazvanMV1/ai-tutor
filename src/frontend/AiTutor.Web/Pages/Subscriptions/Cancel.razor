@@ -1,0 +1,58 @@
+@page "/subscriptions/cancel"
+@inject NavigationManager Navigation
+
+<PageTitle>Plată anulată | AiTutor</PageTitle>
+
+<div class="page-fade-in" style="min-height:80vh; display:flex; align-items:center; justify-content:center; padding:2rem;">
+    <MudPaper Elevation="3" Class="pa-5" Style="border-radius:24px; max-width:560px; width:100%; text-align:center;">
+
+        <div style="margin:2rem 0;">
+            <div style="width:96px; height:96px; margin:0 auto 1.5rem; border-radius:50%;
+                        background:linear-gradient(135deg,#FF9800,#FFB74D);
+                        display:flex; align-items:center; justify-content:center;
+                        box-shadow:0 12px 40px rgba(255,152,0,0.3);">
+                <MudIcon Icon="@Icons.Material.Filled.ShoppingCartCheckout"
+                         Style="color:white; font-size:56px;" />
+            </div>
+
+            <MudText Typo="Typo.h4" Style="font-weight:800; color:#1A1A2E; margin-bottom:0.5rem;">
+                Plata a fost anulată
+            </MudText>
+            <MudText Typo="Typo.body1" Style="color:#546E7A; margin-bottom:1.5rem;">
+                Nu te-am taxat cu nimic. Poți relua procesul de abonare oricând dorești.
+            </MudText>
+
+            <MudPaper Elevation="0" Class="pa-3 mb-4"
+                      Style="background:#FFF8E1; border-radius:12px; border:1px solid #FFE082; text-align:left;">
+                <div style="display:flex; align-items:flex-start; gap:12px;">
+                    <MudIcon Icon="@Icons.Material.Filled.Lightbulb"
+                             Style="color:#F57C00; font-size:24px; flex-shrink:0; margin-top:2px;" />
+                    <div>
+                        <MudText Typo="Typo.body2" Style="font-weight:700; color:#1A1A2E; margin-bottom:4px;">
+                            De ce să te abonezi?
+                        </MudText>
+                        <MudText Typo="Typo.body2" Style="color:#546E7A;">
+                            Cu un abonament premium primești acces nelimitat la toate lecțiile,
+                            quiz-urile, asistentul AI Gemini și urmărirea progresului detaliat.
+                        </MudText>
+                    </div>
+                </div>
+            </MudPaper>
+
+            <div style="display:flex; gap:12px; flex-wrap:wrap; justify-content:center;">
+                <MudButton Variant="Variant.Filled" Color="Color.Primary"
+                           OnClick="@(() => Navigation.NavigateTo("/subscriptions"))"
+                           Style="border-radius:12px; height:48px; font-weight:700; padding:0 24px;">
+                    <MudIcon Icon="@Icons.Material.Filled.ArrowBack" Class="mr-2" />
+                    Înapoi la Abonamente
+                </MudButton>
+                <MudButton Variant="Variant.Outlined" Color="Color.Default"
+                           OnClick="@(() => Navigation.NavigateTo("/dashboard"))"
+                           Style="border-radius:12px; height:48px; font-weight:700; padding:0 24px;">
+                    <MudIcon Icon="@Icons.Material.Filled.Dashboard" Class="mr-2" />
+                    Mergi la Panou
+                </MudButton>
+            </div>
+        </div>
+    </MudPaper>
+</div>

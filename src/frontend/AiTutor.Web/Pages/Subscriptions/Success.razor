@@ -1,0 +1,290 @@
+@page "/subscriptions/success"
+@inject ApiService ApiService
+@inject AuthService AuthService
+@inject NavigationManager Navigation
+@inject ISnackbar Snackbar
+
+<PageTitle>Plată reușită | AiTutor</PageTitle>
+
+<div class="page-fade-in" style="min-height:80vh; display:flex; align-items:center; justify-content:center; padding:2rem;">
+    <MudPaper Elevation="3" Class="pa-5" Style="border-radius:24px; max-width:560px; width:100%; text-align:center;">
+
+        @if (_state == State.Polling)
+        {
+            <!-- Loading state -->
+            <div style="margin:2rem 0;">
+                <div style="width:96px; height:96px; margin:0 auto 1.5rem; border-radius:50%;
+                            background:linear-gradient(135deg,#7B1FA2,#AB47BC);
+                            display:flex; align-items:center; justify-content:center;
+                            box-shadow:0 12px 40px rgba(123,31,162,0.3);">
+                    <MudProgressCircular Size="Size.Large" Indeterminate="true"
+                                         Color="Color.Inherit" Style="color:white;" />
+                </div>
+                <MudText Typo="Typo.h5" Style="font-weight:800; color:#1A1A2E; margin-bottom:0.5rem;">
+                    Procesăm plata ta...
+                </MudText>
+                <MudText Typo="Typo.body1" Style="color:#546E7A; margin-bottom:1.5rem;">
+                    Confirmăm abonamentul cu Stripe. Acest lucru durează doar câteva secunde.
+                </MudText>
+                <MudText Typo="Typo.caption" Style="color:#90A4AE;">
+                    Încercarea @_attempt din @MaxAttempts
+                </MudText>
+            </div>
+        }
+        else if (_state == State.Success)
+        {
+            <!-- Success state -->
+            <div style="margin:2rem 0;">
+                <div style="width:96px; height:96px; margin:0 auto 1.5rem; border-radius:50%;
+                            background:linear-gradient(135deg,#388E3C,#66BB6A);
+                            display:flex; align-items:center; justify-content:center;
+                            box-shadow:0 12px 40px rgba(56,142,60,0.3);">
+                    <MudIcon Icon="@Icons.Material.Filled.CheckCircle"
+                             Style="color:white; font-size:56px;" />
+                </div>
+
+                <MudText Typo="Typo.h4" Style="font-weight:800; color:#1A1A2E; margin-bottom:0.5rem;">
+                    🎉 Felicitări!
+                </MudText>
+                <MudText Typo="Typo.h6" Style="font-weight:600; color:#388E3C; margin-bottom:1rem;">
+                    Abonamentul tău este activ
+                </MudText>
+
+                @if (_activeSubscription != null)
+                {
+                    <MudPaper Elevation="0" Class="pa-3 mb-3"
+                              Style="background:#F8FFF8; border-radius:12px; border:1px solid #C8E6C9;">
+                        <MudGrid Spacing="2">
+                            <MudItem xs="6">
+                                <MudText Typo="Typo.caption" Style="color:#546E7A; font-weight:600;">PLAN</MudText>
+                                <MudText Typo="Typo.body1" Style="font-weight:700; color:#1A1A2E;">
+                                    @GetSubscriptionName(_activeSubscription.Type)
+                                </MudText>
+                            </MudItem>
+                            <MudItem xs="6">
+                                <MudText Typo="Typo.caption" Style="color:#546E7A; font-weight:600;">PREȚ</MudText>
+                                <MudText Typo="Typo.body1" Style="font-weight:700; color:#1A1A2E;">
+                                    @_activeSubscription.Price.ToString("F2") RON
+                                </MudText>
+                            </MudItem>
+                            <MudItem xs="6">
+                                <MudText Typo="Typo.caption" Style="color:#546E7A; font-weight:600;">START</MudText>
+                                <MudText Typo="Typo.body1" Style="font-weight:700; color:#1A1A2E;">
+                                    @_activeSubscription.StartDate.ToString("dd MMM yyyy")
+                                </MudText>
+                            </MudItem>
+                            <MudItem xs="6">
+                                <MudText Typo="Typo.caption" Style="color:#546E7A; font-weight:600;">EXPIRARE</MudText>
+                                <MudText Typo="Typo.body1" Style="font-weight:700; color:#388E3C;">
+                                    @_activeSubscription.EndDate.ToString("dd MMM yyyy")
+                                </MudText>
+                            </MudItem>
+                        </MudGrid>
+                    </MudPaper>
+                }
+
+                <MudText Typo="Typo.body2" Style="color:#546E7A; margin-bottom:1.5rem;">
+                    Ai acum acces la toate funcțiile premium AiTutor. Începe să înveți!
+                </MudText>
+
+                <div style="display:flex; gap:12px; flex-wrap:wrap; justify-content:center;">
+                    <MudButton Variant="Variant.Filled" Color="Color.Primary"
+                               OnClick="@(() => Navigation.NavigateTo("/dashboard"))"
+                               Style="border-radius:12px; height:48px; font-weight:700; padding:0 24px;">
+                        <MudIcon Icon="@Icons.Material.Filled.Dashboard" Class="mr-2" />
+                        Mergi la Panou Principal
+                    </MudButton>
+                    <MudButton Variant="Variant.Outlined" Color="Color.Primary"
+                               OnClick="@(() => Navigation.NavigateTo("/subscriptions"))"
+                               Style="border-radius:12px; height:48px; font-weight:700; padding:0 24px;">
+                        Vezi abonamentul
+                    </MudButton>
+                </div>
+            </div>
+        }
+        else if (_state == State.Pending)
+        {
+            <!-- Pending state (webhook întârziat) -->
+            <div style="margin:2rem 0;">
+                <div style="width:96px; height:96px; margin:0 auto 1.5rem; border-radius:50%;
+                            background:linear-gradient(135deg,#FF9800,#FFB74D);
+                            display:flex; align-items:center; justify-content:center;
+                            box-shadow:0 12px 40px rgba(255,152,0,0.3);">
+                    <MudIcon Icon="@Icons.Material.Filled.Schedule"
+                             Style="color:white; font-size:56px;" />
+                </div>
+
+                <MudText Typo="Typo.h5" Style="font-weight:800; color:#1A1A2E; margin-bottom:0.5rem;">
+                    Plata este în procesare
+                </MudText>
+                <MudText Typo="Typo.body1" Style="color:#546E7A; margin-bottom:1rem;">
+                    Plata ta a fost primită cu succes, dar confirmarea finală mai durează câteva momente.
+                    Abonamentul va deveni activ în scurt timp.
+                </MudText>
+
+                <MudAlert Severity="Severity.Info" Class="mb-3" Style="border-radius:12px; text-align:left;">
+                    <MudText Typo="Typo.body2">
+                        Nu te îngrijora — plata a fost procesată cu succes de Stripe.
+                        Sistemul nostru sincronizează abonamentul în background.
+                    </MudText>
+                </MudAlert>
+
+                <div style="display:flex; gap:12px; flex-wrap:wrap; justify-content:center;">
+                    <MudButton Variant="Variant.Filled" Color="Color.Primary"
+                               OnClick="RetryPolling" Disabled="_isRetrying"
+                               Style="border-radius:12px; height:48px; font-weight:700; padding:0 24px;">
+                        @if (_isRetrying)
+                        {
+                            <MudProgressCircular Size="Size.Small" Indeterminate="true" Class="mr-2" />
+                        }
+                        else
+                        {
+                            <MudIcon Icon="@Icons.Material.Filled.Refresh" Class="mr-2" />
+                        }
+                        <span>Reîncearcă verificarea</span>
+                    </MudButton>
+                    <MudButton Variant="Variant.Outlined" Color="Color.Primary"
+                               OnClick="@(() => Navigation.NavigateTo("/dashboard"))"
+                               Style="border-radius:12px; height:48px; font-weight:700; padding:0 24px;">
+                        Mergi la Panou Principal
+                    </MudButton>
+                </div>
+            </div>
+        }
+        else // State.Error
+        {
+            <!-- Error state -->
+            <div style="margin:2rem 0;">
+                <div style="width:96px; height:96px; margin:0 auto 1.5rem; border-radius:50%;
+                            background:linear-gradient(135deg,#D32F2F,#EF5350);
+                            display:flex; align-items:center; justify-content:center;
+                            box-shadow:0 12px 40px rgba(211,47,47,0.3);">
+                    <MudIcon Icon="@Icons.Material.Filled.ErrorOutline"
+                             Style="color:white; font-size:56px;" />
+                </div>
+
+                <MudText Typo="Typo.h5" Style="font-weight:800; color:#1A1A2E; margin-bottom:0.5rem;">
+                    A apărut o problemă
+                </MudText>
+                <MudText Typo="Typo.body1" Style="color:#546E7A; margin-bottom:1.5rem;">
+                    Nu am putut verifica statusul abonamentului. Te rugăm să încerci din nou
+                    sau să contactezi suportul dacă problema persistă.
+                </MudText>
+
+                <div style="display:flex; gap:12px; flex-wrap:wrap; justify-content:center;">
+                    <MudButton Variant="Variant.Filled" Color="Color.Primary"
+                               OnClick="@(() => Navigation.NavigateTo("/subscriptions"))"
+                               Style="border-radius:12px; height:48px; font-weight:700; padding:0 24px;">
+                        <MudIcon Icon="@Icons.Material.Filled.ArrowBack" Class="mr-2" />
+                        Înapoi la Abonamente
+                    </MudButton>
+                </div>
+            </div>
+        }
+
+        @if (!string.IsNullOrEmpty(_sessionId))
+        {
+            <MudDivider Class="my-3" />
+            <MudText Typo="Typo.caption" Style="color:#B0BEC5; font-family:monospace;">
+                Session: @_sessionId.Substring(0, Math.Min(20, _sessionId.Length))...
+            </MudText>
+        }
+    </MudPaper>
+</div>
+
+@code {
+    private const int MaxAttempts = 5;
+    private const int DelayBetweenAttemptsMs = 2000;
+
+    private enum State { Polling, Success, Pending, Error }
+
+    private State _state = State.Polling;
+    private int _attempt = 0;
+    private bool _isRetrying = false;
+    private string _sessionId = string.Empty;
+    private SubscriptionDto? _activeSubscription;
+
+    protected override async Task OnInitializedAsync()
+    {
+        // Extrage session_id din query string
+        var uri = new Uri(Navigation.Uri);
+        var query = System.Web.HttpUtility.ParseQueryString(uri.Query);
+        _sessionId = query["session_id"] ?? string.Empty;
+
+        await PollForActiveSubscription();
+    }
+
+    private async Task PollForActiveSubscription()
+    {
+        _state = State.Polling;
+        _attempt = 0;
+
+        var userId = await AuthService.GetCurrentUserIdAsync();
+        if (userId == Guid.Empty)
+        {
+            _state = State.Error;
+            Snackbar.Add("Sesiunea ta a expirat. Te rugăm să te autentifici din nou.", Severity.Warning);
+            return;
+        }
+
+        for (_attempt = 1; _attempt <= MaxAttempts; _attempt++)
+        {
+            StateHasChanged();
+
+            try
+            {
+                var subscriptions = await ApiService.GetUserSubscriptionsAsync(userId);
+
+                // Caută cea mai recentă subscripție activă (cea creată acum)
+                var active = subscriptions
+                    .Where(s => s.IsActive)
+                    .OrderByDescending(s => s.StartDate)
+                    .FirstOrDefault();
+
+                if (active != null)
+                {
+                    _activeSubscription = active;
+                    _state = State.Success;
+                    StateHasChanged();
+                    return;
+                }
+            }
+            catch
+            {
+                // Ignorăm și continuăm polling-ul
+            }
+
+            if (_attempt < MaxAttempts)
+            {
+                await Task.Delay(DelayBetweenAttemptsMs);
+            }
+        }
+
+        // După MaxAttempts încercări fără succes → state Pending (webhook întârziat)
+        _state = State.Pending;
+        StateHasChanged();
+    }
+
+    private async Task RetryPolling()
+    {
+        if (_isRetrying) return;
+        _isRetrying = true;
+        try
+        {
+            await PollForActiveSubscription();
+        }
+        finally
+        {
+            _isRetrying = false;
+        }
+    }
+
+    private string GetSubscriptionName(SubscriptionType type) => type switch
+    {
+        SubscriptionType.Free => "Gratuit",
+        SubscriptionType.ParentMonthly => "Parent Monthly",
+        SubscriptionType.ParentYearly => "Parent Yearly",
+        SubscriptionType.School => "School",
+        _ => type.ToString()
+    };
+}

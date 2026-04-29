@@ -403,3 +403,35 @@ public class ClassroomQuizResultResponse
     public List<QuestionResultDto> Results { get; set; } = new();
 }
 
+// Stripe Subscription Status (mirror al SubscriptionStatus din backend)
+public enum SubscriptionStatus
+{
+    Pending = 1,
+    Active = 2,
+    PastDue = 3,
+    Canceled = 4,
+    Incomplete = 5
+}
+
+// Checkout Session DTOs
+public class CreateCheckoutSessionRequest
+{
+    public Guid UserId { get; set; }
+    public SubscriptionType SubscriptionType { get; set; }
+}
+
+public class CheckoutSessionResponse
+{
+    public string SessionId { get; set; } = string.Empty;
+    public string CheckoutUrl { get; set; } = string.Empty;
+}
+
+// Wrapper pentru răspunsul paginat de la GET /api/Subscriptions/user/{userId}
+// Backend-ul returnează { "value": [...], "Count": N }
+public class SubscriptionListResponse
+{
+    public List<SubscriptionDto> Value { get; set; } = new();
+    public int Count { get; set; }
+}
+
+

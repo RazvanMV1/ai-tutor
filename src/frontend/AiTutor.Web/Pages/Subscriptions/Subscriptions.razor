@@ -1,15 +1,16 @@
 @page "/subscriptions"
 @inject ApiService ApiService
 @inject AuthService AuthService
+@inject NavigationManager Navigation
 @inject ISnackbar Snackbar
 
 <PageTitle>Abonamente | AiTutor</PageTitle>
 
 <div class="page-fade-in">
     <!-- Header -->
-    <div style="background:linear-gradient(135deg,#7B1FA2,#AB47BC); border-radius:20px; padding:2rem; 
+    <div style="background:linear-gradient(135deg,#7B1FA2,#AB47BC); border-radius:20px; padding:2rem;
                 margin-bottom:2rem; position:relative; overflow:hidden;">
-        <div style="position:absolute; top:-30px; right:-30px; width:160px; height:160px; 
+        <div style="position:absolute; top:-30px; right:-30px; width:160px; height:160px;
                     background:rgba(255,255,255,0.07); border-radius:50%;"></div>
         <div style="position:relative; z-index:1;">
             <div style="display:flex; align-items:center; gap:10px; margin-bottom:0.5rem;">
@@ -118,7 +119,7 @@
 
         <MudAlert Severity="Severity.Info" Style="border-radius:12px;">
             <MudText Typo="Typo.body2">
-                Dacă anulezi abonamentul, vei pierde accesul la funcțiile premium la expirare. 
+                Dacă anulezi abonamentul, vei pierde accesul la funcțiile premium la expirare.
                 Poți cumpăra un nou abonament oricând.
             </MudText>
         </MudAlert>
@@ -134,202 +135,288 @@
             @foreach (var plan in _plans)
             {
                 <MudItem xs="12" sm="6" md="4">
-                    <div class="@($"plan-card flip-in stagger-{plan.Index} {(plan.IsRecommended ? "recommended" : "")}")"
-                         style="@($"background:{(plan.IsRecommended ? "linear-gradient(135deg,#7B1FA2,#AB47BC)" : "white")}; " +
+                    <div style="@($"position:relative; border-radius:20px; padding:2rem; height:100%; " +
+                                $"background:{(plan.IsRecommended ? "linear-gradient(135deg,#7B1FA2,#AB47BC)" : "white")}; " +
                                 $"box-shadow:{(plan.IsRecommended ? "0 12px 40px rgba(123,31,162,0.3)" : "0 2px 12px rgba(0,0,0,0.08)")}; " +
                                 $"border:{(plan.IsRecommended ? "none" : "2px solid #F0F0F0")};")">
 
                         @if (plan.IsRecommended)
                         {
-                            <div style="position:absolute; top:-14px; left:50%; transform:translateX(-50%);">
-                                <span class="popular-badge">⭐ Popular</span>
+                            <div style="position:absolute; top:-14px; left:50%; transform:translateX(-50%);
+                                        background:#FFD700; color:#1A1A2E; padding:4px 14px; border-radius:12px;
+                                        font-weight:800; font-size:0.75rem; letter-spacing:0.5px;">
+                                ⭐ POPULAR
                             </div>
                         }
 
-                        @if (!string.IsNullOrEmpty(plan.Badge))
-                        {
-                            <div style="@($"background:{(plan.IsRecommended ? "rgba(255,255,255,0.15)" : "rgba(56,142,60,0.1)")}; " +
-                                        $"color:{(plan.IsRecommended ? "white" : "#388E3C")}; " +
-                                        $"padding:4px 12px; border-radius:20px; font-size:0.8rem; font-weight:700; " +
-                                        $"display:inline-block; margin-bottom:1rem;")">
-                                @plan.Badge
+                        <div style="text-align:center; margin-bottom:1.5rem;">
+                            <div style="@($"width:64px; height:64px; border-radius:16px; margin:0 auto 1rem; " +
+                                          $"background:{(plan.IsRecommended ? "rgba(255,255,255,0.2)" : plan.IconBg)}; " +
+                                          $"display:flex; align-items:center; justify-content:center;")">
+                                <MudIcon Icon="@plan.Icon"
+                                         Style="@($"color:{(plan.IsRecommended ? "white" : plan.IconColor)}; font-size:34px;")" />
                             </div>
-                        }
+                            <MudText Typo="Typo.h6" Style="@($"font-weight:800; color:{(plan.IsRecommended ? "white" : "#1A1A2E")};")">
+                                @plan.Name
+                            </MudText>
+                            <MudText Typo="Typo.body2" Style="@($"color:{(plan.IsRecommended ? "rgba(255,255,255,0.85)" : "#546E7A")}; margin-top:4px;")">
+                                @plan.Tagline
+                            </MudText>
+                        </div>
 
-                        <MudText Typo="Typo.h6" Style="@($"font-weight:700; color:{(plan.IsRecommended ? "rgba(255,255,255,0.85)" : "#546E7A")}; " +
-                                                         $"text-transform:uppercase; letter-spacing:1px; font-size:0.85rem; margin-bottom:0.5rem;")">
-                            @plan.Name
-                        </MudText>
+                        <div style="text-align:center; margin-bottom:1.5rem;">
+                            <MudText Typo="Typo.h3" Style="@($"font-weight:800; color:{(plan.IsRecommended ? "white" : "#1A1A2E")};")">
+                                @plan.Price.ToString("F2")
+                                <span style="@($"font-size:1rem; font-weight:600; color:{(plan.IsRecommended ? "rgba(255,255,255,0.85)" : "#546E7A")};")">
+                                    RON
+                                </span>
+                            </MudText>
+                            <MudText Typo="Typo.caption" Style="@($"color:{(plan.IsRecommended ? "rgba(255,255,255,0.75)" : "#90A4AE")};")">
+                                @plan.Period
+                            </MudText>
+                        </div>
 
                         <div style="margin-bottom:1.5rem;">
-                            <span style="@($"font-size:2.5rem; font-weight:900; color:{(plan.IsRecommended ? "white" : "#1A1A2E")};")">
-                                @plan.Price.ToString("F0")
-                            </span>
-                            <span style="@($"color:{(plan.IsRecommended ? "rgba(255,255,255,0.7)" : "#546E7A")}; font-size:0.9rem;")">
-                                RON/@plan.Period
-                            </span>
+                            @foreach (var feature in plan.Features)
+                            {
+                                <div style="display:flex; align-items:center; gap:8px; margin-bottom:8px;">
+                                    <MudIcon Icon="@Icons.Material.Filled.CheckCircle"
+                                             Style="@($"color:{(plan.IsRecommended ? "#FFD700" : "#388E3C")}; font-size:18px;")" />
+                                    <MudText Typo="Typo.body2"
+                                             Style="@($"color:{(plan.IsRecommended ? "rgba(255,255,255,0.95)" : "#1A1A2E")};")">
+                                        @feature
+                                    </MudText>
+                                </div>
+                            }
                         </div>
 
-                        <MudDivider Style="@($"border-color:{(plan.IsRecommended ? "rgba(255,255,255,0.2)" : "#F0F0F0")}; margin-bottom:1rem;")" />
-
-                        @foreach (var feature in plan.Features)
-                        {
-                            <div style="display:flex; align-items:center; gap:8px; margin-bottom:8px;">
-                                <MudIcon Icon="@Icons.Material.Filled.CheckCircle"
-                                         Style="@($"color:{(plan.IsRecommended ? "#FFD700" : "#388E3C")}; font-size:18px; flex-shrink:0;")" />
-                                <MudText Typo="Typo.body2" Style="@($"color:{(plan.IsRecommended ? "rgba(255,255,255,0.9)" : "#37474F")};")">
-                                    @feature
-                                </MudText>
-                            </div>
-                        }
-
-                        <div style="margin-top:1.5rem;">
-                            <MudButton Variant="Variant.Filled" FullWidth="true"
-                                       OnClick="@(() => PurchasePlan(plan))"
-                                       Disabled="_isPurchasing"
-                                       Class="btn-bounce"
-                                       Style="@($"border-radius:12px; height:48px; font-weight:700; font-size:0.95rem; " +
-                                              $"background:{(plan.IsRecommended ? "white" : "linear-gradient(135deg,#7B1FA2,#AB47BC)")}; " +
-                                              $"color:{(plan.IsRecommended ? "#7B1FA2" : "white")};")">
-                                @if (_isPurchasing && _purchasingPlan == plan.Type)
-                                {
-                                    <MudProgressCircular Size="Size.Small" Indeterminate="true" Class="mr-2"
-                                                         Color="@(plan.IsRecommended ? Color.Secondary : Color.Inherit)" />
-                                }
-                                Cumpără Acum
-                            </MudButton>
-                        </div>
+                        <MudButton Variant="Variant.Filled"
+                                   FullWidth="true"
+                                   OnClick="@(() => StartCheckout(plan.Type))"
+                                   Disabled="@(_processingType == plan.Type || _processingType != null)"
+                                   Style="@($"border-radius:12px; height:48px; font-weight:700; " +
+                                            $"background:{(plan.IsRecommended ? "white" : "#7B1FA2")}; " +
+                                            $"color:{(plan.IsRecommended ? "#7B1FA2" : "white")};")">
+                            @if (_processingType == plan.Type)
+                            {
+                                <MudProgressCircular Size="Size.Small" Indeterminate="true" Class="mr-2" />
+                                <span>Se redirecționează...</span>
+                            }
+                            else
+                            {
+                                <MudIcon Icon="@Icons.Material.Filled.ShoppingCart" Class="mr-2" />
+                                <span>Abonează-te</span>
+                            }
+                        </MudButton>
                     </div>
                 </MudItem>
             }
         </MudGrid>
 
-        <div style="text-align:center; margin-top:2rem; color:#546E7A;">
-            <MudIcon Icon="@Icons.Material.Filled.Security" Style="vertical-align:middle; margin-right:6px; color:#388E3C;" />
-            <MudText Typo="Typo.body2" Style="display:inline;">
-                Plată securizată · Poți anula oricând · Suport 24/7
+        <MudAlert Severity="Severity.Info" Class="mt-4" Style="border-radius:12px;">
+            <MudText Typo="Typo.body2">
+                <strong>Plată securizată prin Stripe.</strong> Pentru testare, folosește cardul
+                <code>4242 4242 4242 4242</code>, orice dată viitoare și orice CVC.
             </MudText>
-        </div>
+        </MudAlert>
     }
 </div>
 
 @code {
     private bool _isLoading = true;
-    private bool _isPurchasing = false;
     private bool _isCancelling = false;
-    private SubscriptionType _purchasingPlan;
+    private SubscriptionType? _processingType = null;
     private SubscriptionDto? _activeSubscription;
+    private List<SubscriptionDto> _allSubscriptions = new();
 
     private List<PlanInfo> _plans = new()
     {
-        new(1, "Lunar", 29.99m, "lună", SubscriptionType.ParentMonthly, false, "", new()
+        new PlanInfo
         {
-            "Explicații AI nelimitate",
-            "Acces la toate quiz-urile",
-            "Urmărire progres",
-            "Lecții complete",
-            "Suport email"
-        }),
-        new(2, "Anual", 249.99m, "an", SubscriptionType.ParentYearly, true, "🎉 Economisești 110 RON", new()
+            Index = 1,
+            Type = SubscriptionType.ParentMonthly,
+            Name = "Parent Monthly",
+            Tagline = "Pentru părinți, lunar",
+            Price = 49.99m,
+            Period = "pe lună",
+            Icon = Icons.Material.Filled.FamilyRestroom,
+            IconBg = "rgba(25,118,210,0.1)",
+            IconColor = "#1976D2",
+            IsRecommended = false,
+            Features = new()
+            {
+                "Acces la toate lecțiile",
+                "Quiz-uri nelimitate",
+                "Asistent AI Gemini",
+                "Urmărire progres detaliat",
+                "Suport email"
+            }
+        },
+        new PlanInfo
         {
-            "Tot ce include Lunar",
-            "Economii de 30%",
-            "Statistici avansate",
-            "Export rapoarte",
-            "Suport prioritar"
-        }),
-        new(3, "Școală", 999.99m, "an", SubscriptionType.School, false, "Licență multi-utilizator", new()
+            Index = 2,
+            Type = SubscriptionType.ParentYearly,
+            Name = "Parent Yearly",
+            Tagline = "Cea mai bună valoare",
+            Price = 499.99m,
+            Period = "pe an (economisești 100 RON)",
+            Icon = Icons.Material.Filled.Star,
+            IconBg = "rgba(255,215,0,0.1)",
+            IconColor = "#FFD700",
+            IsRecommended = true,
+            Features = new()
+            {
+                "Tot ce include Monthly",
+                "2 luni gratuite",
+                "Suport prioritar",
+                "Conținut premium exclusiv",
+                "Acces beta la noi funcții"
+            }
+        },
+        new PlanInfo
         {
-            "Licență pentru 30 elevi",
-            "Panou administrator",
-            "Rapoarte detaliate",
-            "Integrare Google Workspace",
-            "Suport dedicat"
-        }),
+            Index = 3,
+            Type = SubscriptionType.School,
+            Name = "School",
+            Tagline = "Pentru școli și instituții",
+            Price = 999.99m,
+            Period = "pe lună",
+            Icon = Icons.Material.Filled.School,
+            IconBg = "rgba(123,31,162,0.1)",
+            IconColor = "#7B1FA2",
+            IsRecommended = false,
+            Features = new()
+            {
+                "Până la 100 elevi",
+                "Dashboard profesori",
+                "Rapoarte avansate",
+                "Clase virtuale nelimitate",
+                "Suport dedicat 24/7"
+            }
+        }
     };
 
     protected override async Task OnInitializedAsync()
     {
-        try
-        {
-            var userId = await AuthService.GetCurrentUserIdAsync();
-            _activeSubscription = await ApiService.GetSubscriptionByUserAsync(userId);
-        }
-        catch { }
-        _isLoading = false;
+        await LoadSubscriptionsAsync();
     }
 
-    private async Task PurchasePlan(PlanInfo plan)
+    private async Task LoadSubscriptionsAsync()
     {
-        _isPurchasing = true;
-        _purchasingPlan = plan.Type;
+        _isLoading = true;
         try
         {
             var userId = await AuthService.GetCurrentUserIdAsync();
-            var startDate = DateTime.UtcNow;
-            var endDate = plan.Type == SubscriptionType.ParentMonthly
-                ? startDate.AddMonths(1)
-                : startDate.AddYears(1);
+            if (userId == Guid.Empty)
+            {
+                Navigation.NavigateTo("/login", forceLoad: false);
+                return;
+            }
 
-            var result = await ApiService.CreateSubscriptionAsync(new CreateSubscriptionRequest
+            _allSubscriptions = await ApiService.GetUserSubscriptionsAsync(userId);
+            _activeSubscription = _allSubscriptions.FirstOrDefault(s => s.IsActive);
+        }
+        catch (Exception ex)
+        {
+            Snackbar.Add($"Eroare la încărcarea abonamentelor: {ex.Message}", Severity.Error);
+        }
+        finally
+        {
+            _isLoading = false;
+        }
+    }
+
+    private async Task StartCheckout(SubscriptionType type)
+    {
+        if (_processingType != null) return;
+
+        _processingType = type;
+        try
+        {
+            var userId = await AuthService.GetCurrentUserIdAsync();
+            if (userId == Guid.Empty)
+            {
+                Snackbar.Add("Trebuie să fii autentificat pentru a te abona.", Severity.Warning);
+                Navigation.NavigateTo("/login", forceLoad: false);
+                return;
+            }
+
+            var response = await ApiService.CreateCheckoutSessionAsync(new CreateCheckoutSessionRequest
             {
                 UserId = userId,
-                Type = plan.Type,
-                Price = plan.Price,
-                StartDate = startDate,
-                EndDate = endDate
+                SubscriptionType = type
             });
 
-            if (result != null)
+            if (response != null && !string.IsNullOrEmpty(response.CheckoutUrl))
             {
-                _activeSubscription = result;
-                Snackbar.Add("Abonament activat cu succes! 🎉", Severity.Success);
+                Snackbar.Add("Te redirectăm către Stripe...", Severity.Info);
+                // forceLoad: true → navigare în afara aplicației Blazor (la Stripe)
+                Navigation.NavigateTo(response.CheckoutUrl, forceLoad: true);
             }
             else
             {
-                Snackbar.Add("Eroare la activarea abonamentului.", Severity.Error);
+                Snackbar.Add("Nu s-a putut crea sesiunea de plată. Verifică dacă ai deja un abonament activ.", Severity.Error);
+                _processingType = null;
             }
         }
-        catch
+        catch (Exception ex)
         {
-            Snackbar.Add("Eroare la procesarea plății.", Severity.Error);
+            Snackbar.Add($"Eroare: {ex.Message}", Severity.Error);
+            _processingType = null;
         }
-        _isPurchasing = false;
     }
 
     private async Task CancelSubscription()
     {
-        if (_activeSubscription == null) return;
+        if (_activeSubscription == null || _isCancelling) return;
+
         _isCancelling = true;
         try
         {
             var userId = await AuthService.GetCurrentUserIdAsync();
             var success = await ApiService.CancelSubscriptionAsync(_activeSubscription.Id, userId);
+
             if (success)
             {
-                _activeSubscription = null;
-                Snackbar.Add("Abonamentul a fost anulat.", Severity.Info);
+                Snackbar.Add("Abonamentul a fost anulat. Accesul rămâne activ până la expirare.", Severity.Success);
+                await LoadSubscriptionsAsync();
             }
             else
             {
-                Snackbar.Add("Eroare la anularea abonamentului.", Severity.Error);
+                Snackbar.Add("Nu s-a putut anula abonamentul. Încearcă din nou.", Severity.Error);
             }
         }
-        catch
+        catch (Exception ex)
         {
-            Snackbar.Add("Eroare la anularea abonamentului.", Severity.Error);
+            Snackbar.Add($"Eroare: {ex.Message}", Severity.Error);
         }
-        _isCancelling = false;
+        finally
+        {
+            _isCancelling = false;
+        }
     }
 
     private string GetSubscriptionName(SubscriptionType type) => type switch
     {
-        SubscriptionType.ParentMonthly => "Plan Lunar",
-        SubscriptionType.ParentYearly => "Plan Anual",
-        SubscriptionType.School => "Plan Școală",
-        _ => "Plan Gratuit"
+        SubscriptionType.Free => "Gratuit",
+        SubscriptionType.ParentMonthly => "Parent Monthly",
+        SubscriptionType.ParentYearly => "Parent Yearly",
+        SubscriptionType.School => "School",
+        _ => type.ToString()
     };
 
-    private record PlanInfo(int Index, string Name, decimal Price, string Period,
-        SubscriptionType Type, bool IsRecommended, string Badge, List<string> Features);
+    private class PlanInfo
+    {
+        public int Index { get; set; }
+        public SubscriptionType Type { get; set; }
+        public string Name { get; set; } = string.Empty;
+        public string Tagline { get; set; } = string.Empty;
+        public decimal Price { get; set; }
+        public string Period { get; set; } = string.Empty;
+        public string Icon { get; set; } = string.Empty;
+        public string IconBg { get; set; } = string.Empty;
+        public string IconColor { get; set; } = string.Empty;
+        public bool IsRecommended { get; set; }
+        public List<string> Features { get; set; } = new();
+    }
 }

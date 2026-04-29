@@ -216,14 +216,54 @@ public class ApiService
         }
     }
 
-    // Subscriptions
-    public async Task<SubscriptionDto?> GetSubscriptionByUserAsync(Guid userId)
+    // ============================================================
+    // SUBSCRIPTIONS — Stripe integrated
+    // ============================================================
+
+    /// <summary>
+    /// Backend-ul returnează { "value": [...], "Count": N }.
+    /// </summary>
+    public async Task<List<SubscriptionDto>> GetUserSubscriptionsAsync(Guid userId)
     {
         await AttachTokenAsync();
         try
         {
             var content = await _httpClient.GetStringAsync($"api/Subscriptions/user/{userId}");
-            return JsonSerializer.Deserialize<SubscriptionDto>(content, _jsonOptions);
+            var wrapper = JsonSerializer.Deserialize<SubscriptionListResponse>(content, _jsonOptions);
+            return wrapper?.Value ?? new();
+        }
+        catch
+        {
+            return new();
+        }
+    }
+
+    /// <summary>
+    /// Compatibility wrapper: returnează prima subscripție activă, sau prima din listă, sau null.
+    /// </summary>
+    public async Task<SubscriptionDto?> GetSubscriptionByUserAsync(Guid userId)
+    {
+        var list = await GetUserSubscriptionsAsync(userId);
+        if (list.Count == 0) return null;
+        return list.FirstOrDefault(s => s.IsActive) ?? list.FirstOrDefault();
+    }
+
+    /// <summary>
+    /// Creates a Stripe Checkout Session and returns SessionId + CheckoutUrl.
+    /// User-ul va fi redirectat la CheckoutUrl pentru a finaliza plata.
+    /// </summary>
+    public async Task<CheckoutSessionResponse?> CreateCheckoutSessionAsync(CreateCheckoutSessionRequest request)
+    {
+        await AttachTokenAsync();
+        try
+        {
+            var response = await _httpClient.PostAsJsonAsync("api/Subscriptions/checkout-session", request);
+            if (response.IsSuccessStatusCode)
+            {
+                var content = await response.Content.ReadAsStringAsync();
+                return JsonSerializer.Deserialize<CheckoutSessionResponse>(content, _jsonOptions);
+            }
+            return null;
         }
         catch
         {
@@ -231,6 +271,9 @@ public class ApiService
         }
     }
 
+    /// <summary>
+    /// Legacy: creates a subscription directly (without Stripe). Kept for backward compatibility.
+    /// </summary>
     public async Task<SubscriptionDto?> CreateSubscriptionAsync(CreateSubscriptionRequest request)
     {
         await AttachTokenAsync();

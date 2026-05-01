@@ -2,7 +2,7 @@
 @inject ApiService ApiService
 @inject AuthService AuthService
 @inject NavigationManager Navigation
-@inject IDispatcher Dispatcher
+@using AiTutor.Web.Models
 
 <PageTitle>Panou Principal | AiTutor</PageTitle>
 
@@ -14,15 +14,14 @@
                 Bună ziua, @(_userName)! 👋
             </MudText>
             <MudText Typo="Typo.body1" Style="color:rgba(255,255,255,0.85); margin-top:0.25rem;">
-                Continuă să înveți și să progresezi!
+                @_heroSubtitle
             </MudText>
         </div>
-        <div style="position:absolute; top:-10px; right:20px; opacity:0.15; font-size:120px; line-height:1;">🎓</div>
+        <div style="position:absolute; top:-10px; right:20px; opacity:0.15; font-size:120px; line-height:1;">@_heroEmoji</div>
     </div>
 
     @if (_isLoading)
     {
-        <!-- Loading Skeletons -->
         <MudGrid Class="mb-4">
             @for (int i = 0; i < 4; i++)
             {
@@ -35,9 +34,209 @@
             }
         </MudGrid>
     }
+    else if (_role == UserRole.Parent)
+    {
+        <!-- ============ PARENT DASHBOARD ============ -->
+        <MudGrid Class="mb-4">
+            <MudItem xs="12" sm="6" md="3">
+                <div class="stat-card stat-card-purple page-fade-in stagger-1 card-hover">
+                    <div style="display:flex; align-items:center; justify-content:space-between;">
+                        <div>
+                            <MudText Typo="Typo.caption" Style="color:#546E7A; text-transform:uppercase; letter-spacing:0.5px; font-weight:600;">Abonament</MudText>
+                            @if (_hasActiveSubscription)
+                            {
+                                <div class="active-badge" style="margin-top:4px;">
+                                    <div class="active-dot"></div>
+                                    Activ
+                                </div>
+                            }
+                            else
+                            {
+                                <MudText Typo="Typo.body2" Style="font-weight:700; color:#7B1FA2; margin-top:4px;">Inactiv</MudText>
+                            }
+                        </div>
+                        <div style="width:52px; height:52px; background:rgba(123,31,162,0.1); border-radius:12px; display:flex; align-items:center; justify-content:center;">
+                            <MudIcon Icon="@Icons.Material.Filled.WorkspacePremium" Style="color:#7B1FA2; font-size:28px;" />
+                        </div>
+                    </div>
+                </div>
+            </MudItem>
+
+            <MudItem xs="12" sm="6" md="3">
+                <div class="stat-card stat-card-primary page-fade-in stagger-2 card-hover">
+                    <div style="display:flex; align-items:center; justify-content:space-between;">
+                        <div>
+                            <MudText Typo="Typo.caption" Style="color:#546E7A; text-transform:uppercase; letter-spacing:0.5px; font-weight:600;">Copii Conectați</MudText>
+                            <MudText Typo="Typo.h4" Style="font-weight:800; color:#1976D2;">@_children.Count</MudText>
+                        </div>
+                        <div style="width:52px; height:52px; background:rgba(25,118,210,0.1); border-radius:12px; display:flex; align-items:center; justify-content:center;">
+                            <MudIcon Icon="@Icons.Material.Filled.FamilyRestroom" Style="color:#1976D2; font-size:28px;" />
+                        </div>
+                    </div>
+                </div>
+            </MudItem>
+
+            <MudItem xs="12" sm="6" md="3">
+                <div class="stat-card stat-card-secondary page-fade-in stagger-3 card-hover">
+                    <div style="display:flex; align-items:center; justify-content:space-between;">
+                        <div>
+                            <MudText Typo="Typo.caption" Style="color:#546E7A; text-transform:uppercase; letter-spacing:0.5px; font-weight:600;">Total Note</MudText>
+                            <MudText Typo="Typo.h4" Style="font-weight:800; color:#388E3C;">@_totalGrades</MudText>
+                        </div>
+                        <div style="width:52px; height:52px; background:rgba(56,142,60,0.1); border-radius:12px; display:flex; align-items:center; justify-content:center;">
+                            <MudIcon Icon="@Icons.Material.Filled.Grade" Style="color:#388E3C; font-size:28px;" />
+                        </div>
+                    </div>
+                </div>
+            </MudItem>
+
+            <MudItem xs="12" sm="6" md="3">
+                <div class="stat-card stat-card-accent page-fade-in stagger-4 card-hover">
+                    <div style="display:flex; align-items:center; justify-content:space-between;">
+                        <div>
+                            <MudText Typo="Typo.caption" Style="color:#546E7A; text-transform:uppercase; letter-spacing:0.5px; font-weight:600;">Media Generală</MudText>
+                            <MudText Typo="Typo.h4" Style="font-weight:800; color:#FF6B35;">@(_averageGrade > 0 ? _averageGrade.ToString("0.00") : "-")</MudText>
+                        </div>
+                        <div style="width:52px; height:52px; background:rgba(255,107,53,0.1); border-radius:12px; display:flex; align-items:center; justify-content:center;">
+                            <MudIcon Icon="@Icons.Material.Filled.TrendingUp" Style="color:#FF6B35; font-size:28px;" />
+                        </div>
+                    </div>
+                </div>
+            </MudItem>
+        </MudGrid>
+
+        <MudGrid>
+            <!-- Left: Children list -->
+            <MudItem xs="12" md="8">
+                <MudPaper Elevation="1" Class="pa-4 mb-4" Style="border-radius:16px;">
+                    <div style="display:flex; align-items:center; justify-content:space-between; margin-bottom:1.5rem;">
+                        <MudText Typo="Typo.h6" Style="font-weight:700;">Copiii Mei</MudText>
+                        <MudButton Variant="Variant.Text" Color="Color.Primary"
+                                   OnClick="@(() => Navigation.NavigateTo("/children"))">
+                            Vezi toți
+                        </MudButton>
+                    </div>
+
+                    @if (!_hasActiveSubscription)
+                    {
+                        <MudAlert Severity="Severity.Warning" Class="mb-3">
+                            Pentru a vedea progresul copiilor și a folosi codul de invitație, ai nevoie de un abonament activ.
+                        </MudAlert>
+                        <MudButton Variant="Variant.Filled" Color="Color.Primary" FullWidth="true"
+                                   OnClick="@(() => Navigation.NavigateTo("/subscriptions"))">
+                            Vezi planurile de abonament
+                        </MudButton>
+                    }
+                    else if (_children.Count == 0)
+                    {
+                        <div style="text-align:center; padding:2rem; color:#546E7A;">
+                            <MudIcon Icon="@Icons.Material.Filled.PersonAdd" Style="font-size:48px; opacity:0.3;" />
+                            <MudText Typo="Typo.body2" Class="mt-2">Niciun copil conectat încă.</MudText>
+                            <MudText Typo="Typo.caption" Class="mt-1">
+                                Cod invitație: <strong>@_invitationCode</strong>
+                            </MudText>
+                        </div>
+                    }
+                    else
+                    {
+                        @foreach (var child in _children)
+                        {
+                            <div class="card-hover" style="display:flex; align-items:center; gap:12px; padding:0.75rem; border-radius:10px; cursor:pointer; margin-bottom:8px; background:#F8F9FA;"
+                                 @onclick="@(() => Navigation.NavigateTo($"/children/{child.Id}/grades"))">
+                                <div style="width:44px; height:44px; background:rgba(25,118,210,0.1); border-radius:10px; display:flex; align-items:center; justify-content:center;">
+                                    <MudIcon Icon="@Icons.Material.Filled.School" Style="color:#1976D2; font-size:24px;" />
+                                </div>
+                                <div style="flex:1;">
+                                    <MudText Typo="Typo.body1" Style="font-weight:600;">@child.FullName</MudText>
+                                    <MudText Typo="Typo.caption" Style="color:#546E7A;">@child.Email</MudText>
+                                </div>
+                                <MudButton Size="Size.Small" Variant="Variant.Text" Color="Color.Primary">
+                                    Vezi note
+                                </MudButton>
+                            </div>
+                        }
+                    }
+                </MudPaper>
+            </MudItem>
+
+            <!-- Right: Invitation code & quick nav -->
+            <MudItem xs="12" md="4">
+                @if (_hasActiveSubscription && !string.IsNullOrEmpty(_invitationCode))
+                {
+                    <MudPaper Elevation="1" Class="pa-4 mb-4" Style="border-radius:16px; background:var(--gradient-accent); color:white;">
+                        <MudText Typo="Typo.caption" Style="color:rgba(255,255,255,0.85); text-transform:uppercase; letter-spacing:0.5px; font-weight:600;">
+                            Cod de invitație
+                        </MudText>
+                        <MudText Typo="Typo.h4" Style="font-weight:800; letter-spacing:2px; margin-top:0.5rem;">
+                            @_invitationCode
+                        </MudText>
+                        <MudText Typo="Typo.caption" Style="color:rgba(255,255,255,0.85); margin-top:0.5rem; display:block;">
+                            Dă acest cod copilului ca să se conecteze la contul tău.
+                        </MudText>
+                    </MudPaper>
+                }
+
+                <MudPaper Elevation="1" Class="pa-4" Style="border-radius:16px;">
+                    <MudText Typo="Typo.h6" Style="font-weight:700; margin-bottom:1rem;">Acces Rapid</MudText>
+                    <div class="card-hover" style="display:flex; align-items:center; gap:12px; padding:0.75rem; border-radius:10px; cursor:pointer; margin-bottom:8px; background:#F8F9FA;"
+                         @onclick="@(() => Navigation.NavigateTo("/children"))">
+                        <div style="width:40px; height:40px; background:rgba(25,118,210,0.1); border-radius:10px; display:flex; align-items:center; justify-content:center;">
+                            <MudIcon Icon="@Icons.Material.Filled.FamilyRestroom" Style="color:#1976D2; font-size:22px;" />
+                        </div>
+                        <div>
+                            <MudText Typo="Typo.body2" Style="font-weight:600;">Copiii Mei</MudText>
+                            <MudText Typo="Typo.caption" Style="color:#546E7A;">Note și progres</MudText>
+                        </div>
+                        <MudIcon Icon="@Icons.Material.Filled.ChevronRight" Style="color:#B0BEC5; margin-left:auto;" />
+                    </div>
+                    <div class="card-hover" style="display:flex; align-items:center; gap:12px; padding:0.75rem; border-radius:10px; cursor:pointer; background:#F8F9FA;"
+                         @onclick="@(() => Navigation.NavigateTo("/subscriptions"))">
+                        <div style="width:40px; height:40px; background:rgba(123,31,162,0.1); border-radius:10px; display:flex; align-items:center; justify-content:center;">
+                            <MudIcon Icon="@Icons.Material.Filled.Star" Style="color:#7B1FA2; font-size:22px;" />
+                        </div>
+                        <div>
+                            <MudText Typo="Typo.body2" Style="font-weight:600;">Abonament</MudText>
+                            <MudText Typo="Typo.caption" Style="color:#546E7A;">Gestionează plan</MudText>
+                        </div>
+                        <MudIcon Icon="@Icons.Material.Filled.ChevronRight" Style="color:#B0BEC5; margin-left:auto;" />
+                    </div>
+                </MudPaper>
+            </MudItem>
+        </MudGrid>
+    }
+    else if (_role == UserRole.Teacher)
+    {
+        <!-- ============ TEACHER DASHBOARD (minimal) ============ -->
+        <MudGrid Class="mb-4">
+            <MudItem xs="12" md="6">
+                <MudPaper Elevation="1" Class="pa-4" Style="border-radius:16px;">
+                    <MudText Typo="Typo.h6" Style="font-weight:700; margin-bottom:1rem;">Clasele Mele</MudText>
+                    <MudText Typo="Typo.body2" Style="color:#546E7A; margin-bottom:1rem;">
+                        Gestionează clasele, lecțiile și quiz-urile tale.
+                    </MudText>
+                    <MudButton Variant="Variant.Filled" Color="Color.Primary" FullWidth="true"
+                               OnClick="@(() => Navigation.NavigateTo("/classrooms"))">
+                        Mergi la clase
+                    </MudButton>
+                </MudPaper>
+            </MudItem>
+            <MudItem xs="12" md="6">
+                <MudPaper Elevation="1" Class="pa-4" Style="border-radius:16px;">
+                    <MudText Typo="Typo.h6" Style="font-weight:700; margin-bottom:1rem;">Asistent AI</MudText>
+                    <MudText Typo="Typo.body2" Style="color:#546E7A; margin-bottom:1rem;">
+                        Generează explicații sau probleme pentru elevii tăi.
+                    </MudText>
+                    <MudButton Variant="Variant.Filled" Color="Color.Secondary" FullWidth="true"
+                               OnClick="@(() => Navigation.NavigateTo("/ai/explanation"))">
+                        Deschide AI
+                    </MudButton>
+                </MudPaper>
+            </MudItem>
+        </MudGrid>
+    }
     else
     {
-        <!-- Stats Cards with stagger animation -->
+        <!-- ============ STUDENT DASHBOARD (original) ============ -->
         <MudGrid Class="mb-4">
             <MudItem xs="12" sm="6" md="3">
                 <div class="stat-card stat-card-primary page-fade-in stagger-1 card-hover">
@@ -46,8 +245,7 @@
                             <MudText Typo="Typo.caption" Style="color:#546E7A; text-transform:uppercase; letter-spacing:0.5px; font-weight:600;">Lecții Completate</MudText>
                             <MudText Typo="Typo.h4" Style="font-weight:800; color:#1976D2;">@_completedLessons</MudText>
                         </div>
-                        <div style="width:52px; height:52px; background:rgba(25,118,210,0.1); border-radius:12px; 
-                                    display:flex; align-items:center; justify-content:center;">
+                        <div style="width:52px; height:52px; background:rgba(25,118,210,0.1); border-radius:12px; display:flex; align-items:center; justify-content:center;">
                             <MudIcon Icon="@Icons.Material.Filled.CheckCircle" Style="color:#1976D2; font-size:28px;" />
                         </div>
                     </div>
@@ -61,8 +259,7 @@
                             <MudText Typo="Typo.caption" Style="color:#546E7A; text-transform:uppercase; letter-spacing:0.5px; font-weight:600;">Scor Mediu</MudText>
                             <MudText Typo="Typo.h4" Style="font-weight:800; color:#388E3C;">@_averageScore%</MudText>
                         </div>
-                        <div style="width:52px; height:52px; background:rgba(56,142,60,0.1); border-radius:12px; 
-                                    display:flex; align-items:center; justify-content:center;">
+                        <div style="width:52px; height:52px; background:rgba(56,142,60,0.1); border-radius:12px; display:flex; align-items:center; justify-content:center;">
                             <MudIcon Icon="@Icons.Material.Filled.Stars" Style="color:#388E3C; font-size:28px;" />
                         </div>
                     </div>
@@ -76,8 +273,7 @@
                             <MudText Typo="Typo.caption" Style="color:#546E7A; text-transform:uppercase; letter-spacing:0.5px; font-weight:600;">Quiz-uri Rezolvate</MudText>
                             <MudText Typo="Typo.h4" Style="font-weight:800; color:#FF6B35;">@_totalProgress</MudText>
                         </div>
-                        <div style="width:52px; height:52px; background:rgba(255,107,53,0.1); border-radius:12px; 
-                                    display:flex; align-items:center; justify-content:center;">
+                        <div style="width:52px; height:52px; background:rgba(255,107,53,0.1); border-radius:12px; display:flex; align-items:center; justify-content:center;">
                             <MudIcon Icon="@Icons.Material.Filled.Quiz" Style="color:#FF6B35; font-size:28px;" />
                         </div>
                     </div>
@@ -88,36 +284,33 @@
                 <div class="stat-card stat-card-purple page-fade-in stagger-4 card-hover">
                     <div style="display:flex; align-items:center; justify-content:space-between;">
                         <div>
-                            <MudText Typo="Typo.caption" Style="color:#546E7A; text-transform:uppercase; letter-spacing:0.5px; font-weight:600;">Abonament</MudText>
-                            @if (_hasActiveSubscription)
+                            <MudText Typo="Typo.caption" Style="color:#546E7A; text-transform:uppercase; letter-spacing:0.5px; font-weight:600;">Părinte</MudText>
+                            @if (_hasParentLinked)
                             {
                                 <div class="active-badge" style="margin-top:4px;">
                                     <div class="active-dot"></div>
-                                    Activ
+                                    Conectat
                                 </div>
                             }
                             else
                             {
-                                <MudText Typo="Typo.body2" Style="font-weight:700; color:#7B1FA2; margin-top:4px;">Gratuit</MudText>
+                                <MudText Typo="Typo.body2" Style="font-weight:700; color:#7B1FA2; margin-top:4px;">Neconectat</MudText>
                             }
                         </div>
-                        <div style="width:52px; height:52px; background:rgba(123,31,162,0.1); border-radius:12px; 
-                                    display:flex; align-items:center; justify-content:center;">
-                            <MudIcon Icon="@Icons.Material.Filled.WorkspacePremium" Style="color:#7B1FA2; font-size:28px;" />
+                        <div style="width:52px; height:52px; background:rgba(123,31,162,0.1); border-radius:12px; display:flex; align-items:center; justify-content:center;">
+                            <MudIcon Icon="@Icons.Material.Filled.FamilyRestroom" Style="color:#7B1FA2; font-size:28px;" />
                         </div>
                     </div>
                 </div>
             </MudItem>
         </MudGrid>
 
-        <!-- Main Content Grid -->
         <MudGrid>
-            <!-- Left: Subjects Progress -->
             <MudItem xs="12" md="8">
                 <MudPaper Elevation="1" Class="pa-4 mb-4" Style="border-radius:16px;">
                     <div style="display:flex; align-items:center; justify-content:space-between; margin-bottom:1.5rem;">
                         <MudText Typo="Typo.h6" Style="font-weight:700;">Progres per Materie</MudText>
-                        <MudButton Variant="Variant.Text" Color="Color.Primary" 
+                        <MudButton Variant="Variant.Text" Color="Color.Primary"
                                    OnClick="@(() => Navigation.NavigateTo("/subjects"))">
                             Vezi toate
                         </MudButton>
@@ -128,8 +321,7 @@
                         <div class="mb-3">
                             <div style="display:flex; align-items:center; justify-content:space-between; margin-bottom:6px;">
                                 <div style="display:flex; align-items:center; gap:10px;">
-                                    <div style="width:36px; height:36px; background:@subject.Color; border-radius:8px; 
-                                                display:flex; align-items:center; justify-content:center;">
+                                    <div style="width:36px; height:36px; background:@subject.Color; border-radius:8px; display:flex; align-items:center; justify-content:center;">
                                         <MudIcon Icon="@subject.Icon" Style="color:white; font-size:20px;" />
                                     </div>
                                     <MudText Typo="Typo.body1" Style="font-weight:600;">@subject.Name</MudText>
@@ -142,7 +334,6 @@
                     }
                 </MudPaper>
 
-                <!-- Recent Activity -->
                 <MudPaper Elevation="1" Class="pa-4" Style="border-radius:16px;">
                     <MudText Typo="Typo.h6" Style="font-weight:700; margin-bottom:1rem;">Activitate Recentă</MudText>
                     @if (_recentProgress.Count == 0)
@@ -157,8 +348,7 @@
                         @foreach (var item in _recentProgress.Take(5))
                         {
                             <div style="display:flex; align-items:center; gap:12px; padding:0.75rem 0; border-bottom:1px solid #f0f0f0;">
-                                <div style="width:40px; height:40px; background:@(item.IsCompleted ? "rgba(56,142,60,0.1)" : "rgba(25,118,210,0.1)"); 
-                                            border-radius:10px; display:flex; align-items:center; justify-content:center; flex-shrink:0;">
+                                <div style="width:40px; height:40px; background:@(item.IsCompleted ? "rgba(56,142,60,0.1)" : "rgba(25,118,210,0.1)"); border-radius:10px; display:flex; align-items:center; justify-content:center; flex-shrink:0;">
                                     <MudIcon Icon="@(item.IsCompleted ? Icons.Material.Filled.CheckCircle : Icons.Material.Filled.RadioButtonUnchecked)"
                                              Style="@($"color:{(item.IsCompleted ? "#388E3C" : "#1976D2")}; font-size:22px;")" />
                                 </div>
@@ -180,13 +370,10 @@
                 </MudPaper>
             </MudItem>
 
-            <!-- Right: Quick Actions -->
             <MudItem xs="12" md="4">
-                <!-- AI Quick Action -->
                 <div class="ai-card pa-4 mb-4 card-hover" style="cursor:pointer;" @onclick="@(() => Navigation.NavigateTo("/ai/explanation"))">
                     <div style="display:flex; align-items:center; gap:10px; margin-bottom:1rem;">
-                        <div style="width:48px; height:48px; background:var(--gradient-accent); border-radius:12px; 
-                                    display:flex; align-items:center; justify-content:center;">
+                        <div style="width:48px; height:48px; background:var(--gradient-accent); border-radius:12px; display:flex; align-items:center; justify-content:center;">
                             <MudIcon Icon="@Icons.Material.Filled.AutoAwesome" Style="color:white; font-size:26px;" />
                         </div>
                         <div>
@@ -204,16 +391,13 @@
                     </MudButton>
                 </div>
 
-                <!-- Quick Nav Cards -->
                 <MudPaper Elevation="1" Class="pa-4" Style="border-radius:16px;">
                     <MudText Typo="Typo.h6" Style="font-weight:700; margin-bottom:1rem;">Acces Rapid</MudText>
                     @foreach (var nav in _quickNav)
                     {
-                        <div class="card-hover" style="display:flex; align-items:center; gap:12px; padding:0.75rem; 
-                                    border-radius:10px; cursor:pointer; margin-bottom:8px; background:#F8F9FA;"
+                        <div class="card-hover" style="display:flex; align-items:center; gap:12px; padding:0.75rem; border-radius:10px; cursor:pointer; margin-bottom:8px; background:#F8F9FA;"
                              @onclick="@(() => Navigation.NavigateTo(nav.Href))">
-                            <div style="width:40px; height:40px; background:@nav.BgColor; border-radius:10px; 
-                                        display:flex; align-items:center; justify-content:center;">
+                            <div style="width:40px; height:40px; background:@nav.BgColor; border-radius:10px; display:flex; align-items:center; justify-content:center;">
                                 <MudIcon Icon="@nav.Icon" Style="@($"color:{nav.IconColor}; font-size:22px;")" />
                             </div>
                             <div>
@@ -232,11 +416,23 @@
 @code {
     private bool _isLoading = true;
     private string _userName = "Utilizator";
+    private UserRole _role = UserRole.Student;
+    private string _heroSubtitle = "Continuă să înveți și să progresezi!";
+    private string _heroEmoji = "🎓";
+
+    // Student
     private int _completedLessons = 0;
     private int _averageScore = 0;
     private int _totalProgress = 0;
     private bool _hasActiveSubscription = false;
+    private bool _hasParentLinked = false;
     private List<StudentProgressDto> _recentProgress = new();
+
+    // Parent
+    private List<ChildDto> _children = new();
+    private string _invitationCode = "";
+    private int _totalGrades = 0;
+    private double _averageGrade = 0;
 
     private List<SubjectProgress> _subjectProgress = new()
     {
@@ -250,43 +446,86 @@
         new("Materii", "Explorează disciplinele", "/subjects", Icons.Material.Filled.Category, "rgba(25,118,210,0.1)", "#1976D2"),
         new("Lecții", "Continuă să înveți", "/lessons", Icons.Material.Filled.MenuBook, "rgba(56,142,60,0.1)", "#388E3C"),
         new("Progres", "Statistici detaliate", "/progress", Icons.Material.Filled.TrendingUp, "rgba(255,107,53,0.1)", "#FF6B35"),
-        new("Abonamente", "Planuri disponibile", "/subscriptions", Icons.Material.Filled.Star, "rgba(123,31,162,0.1)", "#7B1FA2"),
+        new("Părintele meu", "Conectare la părinte", "/link-parent", Icons.Material.Filled.FamilyRestroom, "rgba(123,31,162,0.1)", "#7B1FA2"),
     };
 
     protected override async Task OnInitializedAsync()
     {
         var userId = await AuthService.GetCurrentUserIdAsync();
         var user = await AuthService.GetCurrentUserAsync();
-        if (user != null) _userName = user.FullName.Split(' ')[0];
+        if (user != null)
+        {
+            _userName = user.FullName.Split(' ')[0];
+            _role = user.Role;
+        }
 
         try
         {
-            var progress = await ApiService.GetProgressAsync(userId);
-            _recentProgress = progress.OrderByDescending(p => p.CompletedAt).ToList();
-            _completedLessons = progress.Count(p => p.IsCompleted);
-            _totalProgress = progress.Count;
-            _averageScore = progress.Count > 0 ? (int)progress.Average(p => p.ScorePercentage) : 0;
-
-            // Update subject progress (mock distribution)
-            if (progress.Count > 0)
+            if (_role == UserRole.Parent)
             {
-                _subjectProgress[0] = _subjectProgress[0] with { Progress = Math.Min(100, _completedLessons * 20) };
-                _subjectProgress[1] = _subjectProgress[1] with { Progress = Math.Min(100, _completedLessons * 15) };
-                _subjectProgress[2] = _subjectProgress[2] with { Progress = Math.Min(100, _completedLessons * 25) };
-            }
+                _heroSubtitle = "Urmărește progresul copiilor tăi!";
+                _heroEmoji = "👨‍👩‍👧";
 
-            var subscription = await ApiService.GetSubscriptionByUserAsync(userId);
-            _hasActiveSubscription = subscription?.IsActive == true;
+                var sub = await ApiService.GetSubscriptionByUserAsync(userId);
+                _hasActiveSubscription = sub?.IsActive == true;
+
+                if (_hasActiveSubscription)
+                {
+                    var codeData = await ApiService.GetInvitationCodeAsync(userId);
+                    if (codeData != null) _invitationCode = codeData.InvitationCode;
+
+                    var childData = await ApiService.GetChildrenAsync(userId);
+                    if (childData != null) _children = childData;
+
+                    // Aggregate grades
+                    var allGrades = new List<StudentGradeDto>();
+                    foreach (var c in _children)
+                    {
+                        try
+                        {
+                            var g = await ApiService.GetStudentGradesAsync(c.Id, userId);
+                            if (g != null) allGrades.AddRange(g);
+                        }
+                        catch { }
+                    }
+                    _totalGrades = allGrades.Count;
+                    _averageGrade = allGrades.Count > 0 ? allGrades.Average(g => g.Value) : 0;
+                }
+
+            }
+            else if (_role == UserRole.Teacher)
+            {
+                _heroSubtitle = "Gestionează clasele și lecțiile tale.";
+                _heroEmoji = "👨‍🏫";
+            }
+            else // Student
+            {
+                var progress = await ApiService.GetProgressAsync(userId);
+                _recentProgress = progress.OrderByDescending(p => p.CompletedAt).ToList();
+                _completedLessons = progress.Count(p => p.IsCompleted);
+                _totalProgress = progress.Count;
+                _averageScore = progress.Count > 0 ? (int)progress.Average(p => p.ScorePercentage) : 0;
+
+                if (progress.Count > 0)
+                {
+                    _subjectProgress[0] = _subjectProgress[0] with { Progress = Math.Min(100, _completedLessons * 20) };
+                    _subjectProgress[1] = _subjectProgress[1] with { Progress = Math.Min(100, _completedLessons * 15) };
+                    _subjectProgress[2] = _subjectProgress[2] with { Progress = Math.Min(100, _completedLessons * 25) };
+                }
+
+                try
+                {
+                    var myParent = await ApiService.GetMyParentAsync(userId);
+                    _hasParentLinked = myParent != null;
+                }
+                catch { }
+            }
         }
         catch { }
 
         _isLoading = false;
     }
 
-    private record SubjectProgress(string Name, string Icon, string Color, Color MudColor, int Progress)
-    {
-        public SubjectProgress with(int Progress) => new(Name, Icon, Color, MudColor, Progress);
-    }
-
+    private record SubjectProgress(string Name, string Icon, string Color, Color MudColor, int Progress);
     private record QuickNav(string Title, string Subtitle, string Href, string Icon, string BgColor, string IconColor);
 }

@@ -434,4 +434,55 @@ public class SubscriptionListResponse
     public int Count { get; set; }
 }
 
+// ===== Parent ↔ Child =====
+public class InvitationCodeDto
+{
+    public Guid ParentId { get; set; }
+    public string InvitationCode { get; set; } = string.Empty;
+}
+
+public class ChildDto
+{
+    public Guid Id { get; set; }
+    public string FullName { get; set; } = string.Empty;
+    public string Email { get; set; } = string.Empty;
+    public UserRole Role { get; set; }
+    public DateTime CreatedAt { get; set; }
+}
+
+public class LinkParentRequest
+{
+    public Guid StudentId { get; set; }
+    public string InvitationCode { get; set; } = string.Empty;
+}
+
+public class LinkParentResponse
+{
+    public Guid ParentId { get; set; }
+    public string ParentFullName { get; set; } = string.Empty;
+}
+
+public class ParentInfoDto
+{
+    public Guid ParentId { get; set; }
+    public string FullName { get; set; } = string.Empty;
+    public string Email { get; set; } = string.Empty;
+}
+
+public class StudentGradeDto
+{
+    public Guid Id { get; set; }
+    public int Value { get; set; }
+    public string Description { get; set; } = string.Empty;
+    public DateTime GradedAt { get; set; }
+    public Guid ClassroomId { get; set; }
+    public string ClassroomName { get; set; } = string.Empty;
+    public string SubjectName { get; set; } = string.Empty;
+    public Guid TeacherId { get; set; }
+    public string TeacherName { get; set; } = string.Empty;
+}
+
+
+
+
 

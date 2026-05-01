@@ -23,15 +23,24 @@ public class UserConfiguration : IEntityTypeConfiguration<User>
             .IsRequired();
 
         builder.Property(u => u.Email)
-        .HasConversion(
-            email => email.Value,
-            value => Email.Create(value))
-        .IsRequired()
-        .HasMaxLength(256)
-        .HasColumnName("Email");
+            .HasConversion(
+                email => email.Value,
+                value => Email.Create(value))
+            .IsRequired()
+            .HasMaxLength(256)
+            .HasColumnName("Email");
 
         builder.HasIndex(u => u.Email).IsUnique();
 
+        // 🆕 Parent ↔ Child
+        builder.Property(u => u.ParentId)
+            .IsRequired(false);
+
+        builder.Property(u => u.InvitationCode)
+            .HasMaxLength(20)
+            .IsRequired(false);
+
+        builder.HasIndex(u => u.InvitationCode).IsUnique();
 
         builder.HasMany(u => u.Progresses)
             .WithOne(p => p.User)

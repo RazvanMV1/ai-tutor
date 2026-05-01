@@ -294,6 +294,76 @@ public class ApiService
         }
     }
 
+    // ===== Parent ↔ Child =====
+    public async Task<InvitationCodeDto?> GetInvitationCodeAsync(Guid parentId)
+    {
+        await AttachTokenAsync();
+        try
+        {
+            var response = await _httpClient.GetAsync($"api/Users/{parentId}/invitation-code");
+            if (response.IsSuccessStatusCode)
+            {
+                var content = await response.Content.ReadAsStringAsync();
+                return JsonSerializer.Deserialize<InvitationCodeDto>(content, _jsonOptions);
+            }
+            return null;
+        }
+        catch
+        {
+            return null;
+        }
+    }
+
+    public async Task<List<ChildDto>> GetChildrenAsync(Guid parentId)
+    {
+        await AttachTokenAsync();
+        try
+        {
+            var response = await _httpClient.GetAsync($"api/Users/parent/{parentId}/children");
+            if (response.IsSuccessStatusCode)
+            {
+                var content = await response.Content.ReadAsStringAsync();
+                return JsonSerializer.Deserialize<List<ChildDto>>(content, _jsonOptions) ?? new();
+            }
+            return new();
+        }
+        catch
+        {
+            return new();
+        }
+    }
+
+    public async Task<(bool Success, string Message, LinkParentResponse? Data)> LinkParentAsync(Guid studentId, string invitationCode)
+    {
+        await AttachTokenAsync();
+        try
+        {
+            var request = new LinkParentRequest { StudentId = studentId, InvitationCode = invitationCode };
+            var response = await _httpClient.PostAsJsonAsync("api/Users/link-parent", request);
+            var content = await response.Content.ReadAsStringAsync();
+
+            if (response.IsSuccessStatusCode)
+            {
+                var data = JsonSerializer.Deserialize<LinkParentResponse>(content, _jsonOptions);
+                return (true, "Cont legat cu succes!", data);
+            }
+
+            try
+            {
+                using var doc = JsonDocument.Parse(content);
+                if (doc.RootElement.TryGetProperty("message", out var msg))
+                    return (false, msg.GetString() ?? "Eroare necunoscută.", null);
+            }
+            catch { }
+            return (false, "Cod invalid sau eroare server.", null);
+        }
+        catch
+        {
+            return (false, "Eroare de conexiune.", null);
+        }
+    }
+
+
     public async Task<bool> CancelSubscriptionAsync(Guid subscriptionId, Guid userId)
     {
         await AttachTokenAsync();
@@ -527,5 +597,58 @@ public class ApiService
         }
         catch { return false; }
     }
+
+    public async Task<ParentInfoDto?> GetMyParentAsync(Guid studentId)
+    {
+        await AttachTokenAsync();
+        try
+        {
+            var response = await _httpClient.GetAsync($"api/Users/{studentId}/my-parent");
+            if (!response.IsSuccessStatusCode) return null;
+
+            var content = await response.Content.ReadAsStringAsync();
+            if (string.IsNullOrWhiteSpace(content) || content == "null") return null;
+            return JsonSerializer.Deserialize<ParentInfoDto>(content, _jsonOptions);
+        }
+        catch
+        {
+            return null;
+        }
+    }
+
+    public async Task<List<StudentGradeDto>> GetStudentGradesAsync(Guid studentId, Guid requesterId)
+    {
+        await AttachTokenAsync();
+        try
+        {
+            var response = await _httpClient.GetAsync($"api/Users/student/{studentId}/grades?requesterId={requesterId}");
+            if (response.IsSuccessStatusCode)
+            {
+                var content = await response.Content.ReadAsStringAsync();
+                return JsonSerializer.Deserialize<List<StudentGradeDto>>(content, _jsonOptions) ?? new();
+            }
+            return new();
+        }
+        catch
+        {
+            return new();
+        }
+    }
+
+
+    public async Task<bool> UnlinkParentAsync(Guid studentId)
+    {
+        await AttachTokenAsync();
+        try
+        {
+            var response = await _httpClient.DeleteAsync($"api/Users/{studentId}/my-parent");
+            return response.IsSuccessStatusCode;
+        }
+        catch
+        {
+            return false;
+        }
+    }
+
 
 }

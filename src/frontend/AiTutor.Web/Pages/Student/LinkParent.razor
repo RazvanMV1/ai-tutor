@@ -1,0 +1,186 @@
+@page "/link-parent"
+@inject AuthService AuthService
+@inject ApiService ApiService
+@inject ISnackbar Snackbar
+@inject NavigationManager Navigation
+@inject IDialogService DialogService
+@using AiTutor.Web.Models
+
+<PageTitle>Părintele meu | AiTutor</PageTitle>
+
+<div class="page-fade-in" style="max-width:600px; margin:0 auto;">
+    <MudPaper Elevation="0" Class="pa-4 mb-4" Style="background:linear-gradient(135deg,#FF6B35,#FF8C69); border-radius:16px;">
+        <div style="display:flex; align-items:center; gap:12px;">
+            <MudIcon Icon="@Icons.Material.Filled.FamilyRestroom" Style="color:white; font-size:32px;" />
+            <div>
+                <MudText Typo="Typo.h5" Style="font-weight:800; color:white;">
+                    @(_currentParent != null ? "Părintele tău" : "Conectare la părinte")
+                </MudText>
+                <MudText Typo="Typo.caption" Style="color:rgba(255,255,255,0.9);">
+                    @(_currentParent != null ? "Ești conectat la un cont de părinte" : "Introdu codul primit de la părintele tău")
+                </MudText>
+            </div>
+        </div>
+    </MudPaper>
+
+    @if (_isLoading)
+    {
+        <MudProgressLinear Indeterminate="true" Color="Color.Primary" />
+    }
+    else if (_currentParent != null)
+    {
+        <!-- Already linked view -->
+        <MudPaper Elevation="2" Class="pa-4" Style="border-radius:16px;">
+            <MudAlert Severity="Severity.Success" Class="mb-3" Icon="@Icons.Material.Filled.CheckCircle">
+                Ești conectat cu succes la părintele tău.
+            </MudAlert>
+
+            <MudPaper Elevation="0" Class="pa-3 mb-3"
+                      Style="background:#F5F7FA; border-radius:12px; border-left:4px solid #FF6B35;">
+                <div style="display:flex; align-items:center; gap:12px;">
+                    <MudAvatar Color="Color.Primary" Size="Size.Large">
+                        @(_currentParent.FullName.Length > 0 ? _currentParent.FullName[0] : '?')
+                    </MudAvatar>
+                    <div style="flex:1;">
+                        <MudText Typo="Typo.body1" Style="font-weight:700;">@_currentParent.FullName</MudText>
+                        <MudText Typo="Typo.caption" Style="color:#546E7A;">
+                            <MudIcon Icon="@Icons.Material.Filled.Email" Size="Size.Small" Style="vertical-align:middle; font-size:14px;" />
+                            @_currentParent.Email
+                        </MudText>
+                    </div>
+                </div>
+            </MudPaper>
+
+            <MudText Typo="Typo.body2" Style="color:#546E7A; margin-bottom:1rem;">
+                Părintele tău poate vedea progresul tău și activitatea ta în platformă.
+            </MudText>
+
+            <MudButton Variant="Variant.Outlined" Color="Color.Error" FullWidth="true"
+                       OnClick="HandleUnlinkParent"
+                       Disabled="@_isSubmitting"
+                       StartIcon="@Icons.Material.Filled.LinkOff"
+                       Style="border-radius:10px; height:44px;">
+                @if (_isSubmitting)
+                {
+                    <MudProgressCircular Size="Size.Small" Indeterminate="true" Class="mr-2" />
+                }
+                Deconectează-mă de la părinte
+            </MudButton>
+        </MudPaper>
+    }
+    else
+    {
+        <!-- Not linked — show form -->
+        <MudPaper Elevation="2" Class="pa-4" Style="border-radius:16px;">
+            <MudText Typo="Typo.body1" Style="margin-bottom:1.25rem; color:#546E7A;">
+                Părintele tău are un cod unic (gen <strong>PAR-XXXXXX</strong>). Introdu-l mai jos pentru ca el să poată vedea progresul tău.
+            </MudText>
+
+            <MudTextField @bind-Value="_code" Label="Cod de invitație"
+                          Placeholder="PAR-XXXXXX"
+                          Variant="Variant.Outlined"
+                          AdornmentIcon="@Icons.Material.Filled.QrCode2"
+                          Adornment="Adornment.Start"
+                          Class="mb-3"
+                          Style="font-family:'Courier New', monospace; font-size:1.2rem;"
+                          Disabled="@_isSubmitting" />
+
+            <MudButton Variant="Variant.Filled" Color="Color.Primary" FullWidth="true"
+                       OnClick="HandleLinkParent"
+                       Disabled="@(_isSubmitting || string.IsNullOrWhiteSpace(_code))"
+                       StartIcon="@Icons.Material.Filled.Link"
+                       Style="border-radius:10px; height:48px;">
+                @if (_isSubmitting)
+                {
+                    <MudProgressCircular Size="Size.Small" Indeterminate="true" Class="mr-2" />
+                }
+                Conectează la părinte
+            </MudButton>
+
+            @if (!string.IsNullOrEmpty(_resultMessage))
+            {
+                <MudAlert Severity="@_resultSeverity" Class="mt-3">@_resultMessage</MudAlert>
+            }
+        </MudPaper>
+    }
+</div>
+
+@code {
+    private string _code = "";
+    private bool _isLoading = true;
+    private bool _isSubmitting = false;
+    private string _resultMessage = "";
+    private Severity _resultSeverity = Severity.Info;
+    private ParentInfoDto? _currentParent;
+    private Guid _studentId;
+
+    protected override async Task OnInitializedAsync()
+    {
+        var role = await AuthService.GetCurrentUserRoleAsync();
+        if (role != UserRole.Student)
+        {
+            Navigation.NavigateTo("/dashboard");
+            return;
+        }
+
+        _studentId = await AuthService.GetCurrentUserIdAsync();
+        await LoadParentAsync();
+    }
+
+    private async Task LoadParentAsync()
+    {
+        _isLoading = true;
+        _currentParent = await ApiService.GetMyParentAsync(_studentId);
+        _isLoading = false;
+    }
+
+    private async Task HandleLinkParent()
+    {
+        if (string.IsNullOrWhiteSpace(_code)) return;
+
+        _isSubmitting = true;
+        _resultMessage = "";
+
+        var (success, message, data) = await ApiService.LinkParentAsync(_studentId, _code.Trim().ToUpper());
+
+        if (success)
+        {
+            Snackbar.Add($"✅ Conectat la {data?.ParentFullName}!", Severity.Success);
+            await LoadParentAsync();
+            _code = "";
+        }
+        else
+        {
+            _resultSeverity = Severity.Error;
+            _resultMessage = $"❌ {message}";
+        }
+
+        _isSubmitting = false;
+    }
+
+    private async Task HandleUnlinkParent()
+    {
+        var confirmed = await DialogService.ShowMessageBox(
+            "Confirmare deconectare",
+            "Sigur vrei să te deconectezi de la părinte? Va trebui să introduci din nou codul pentru a te reconecta.",
+            yesText: "Da, deconectează",
+            cancelText: "Anulează");
+
+        if (confirmed != true) return;
+
+        _isSubmitting = true;
+        var success = await ApiService.UnlinkParentAsync(_studentId);
+
+        if (success)
+        {
+            Snackbar.Add("Te-ai deconectat de la părinte.", Severity.Success);
+            _currentParent = null;
+        }
+        else
+        {
+            Snackbar.Add("Eroare la deconectare. Încearcă din nou.", Severity.Error);
+        }
+
+        _isSubmitting = false;
+    }
+}

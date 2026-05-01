@@ -1,0 +1,188 @@
+@page "/children"
+@inject AuthService AuthService
+@inject ApiService ApiService
+@inject ISnackbar Snackbar
+@inject IJSRuntime JS
+@inject NavigationManager Navigation
+@using AiTutor.Web.Models
+
+<PageTitle>Copiii Mei | AiTutor</PageTitle>
+
+<div class="page-fade-in">
+    <!-- Hero Header -->
+    <MudPaper Elevation="0" Class="pa-4 mb-4" Style="background:linear-gradient(135deg,#FF6B35,#FF8C69); border-radius:16px;">
+        <div style="display:flex; align-items:center; gap:12px;">
+            <div style="width:56px; height:56px; background:rgba(255,255,255,0.2); border-radius:14px; display:flex; align-items:center; justify-content:center;">
+                <MudIcon Icon="@Icons.Material.Filled.FamilyRestroom" Style="color:white; font-size:32px;" />
+            </div>
+            <div>
+                <MudText Typo="Typo.h4" Style="font-weight:800; color:white;">Copiii Mei</MudText>
+                <MudText Typo="Typo.body2" Style="color:rgba(255,255,255,0.9);">Gestionează conturile copiilor tăi</MudText>
+            </div>
+        </div>
+    </MudPaper>
+
+    @if (_isLoading)
+    {
+        <MudProgressLinear Indeterminate="true" Color="Color.Primary" />
+    }
+    else if (!_hasActiveSubscription)
+    {
+        <!-- 🔒 Gating: no active subscription -->
+        <MudPaper Elevation="2" Class="pa-5" Style="border-radius:16px; text-align:center; background:linear-gradient(135deg,#FFF3E0,#FFE0B2);">
+            <MudIcon Icon="@Icons.Material.Filled.Lock" Style="font-size:64px; color:#FF6B35; margin-bottom:1rem;" />
+            <MudText Typo="Typo.h5" Style="font-weight:800; color:#E65100; margin-bottom:0.5rem;">
+                Abonament necesar
+            </MudText>
+            <MudText Typo="Typo.body1" Style="color:#546E7A; max-width:500px; margin:0 auto 1.5rem;">
+                Pentru a accesa codul de invitație și a-ți gestiona copiii, ai nevoie de un abonament activ pe AiTutor.
+            </MudText>
+            <MudButton Variant="Variant.Filled" Color="Color.Primary" Size="Size.Large"
+                       OnClick="@(() => Navigation.NavigateTo("/subscriptions"))"
+                       StartIcon="@Icons.Material.Filled.Star"
+                       Style="border-radius:12px; height:48px; padding:0 2rem; font-weight:700;">
+                Vezi planurile de abonament
+            </MudButton>
+        </MudPaper>
+    }
+    else
+    {
+        <MudGrid>
+            <!-- Invitation Code Card -->
+            <MudItem xs="12" md="5">
+                <MudPaper Elevation="2" Class="pa-4" Style="border-radius:16px; height:100%;">
+                    <div style="display:flex; align-items:center; gap:8px; margin-bottom:1rem;">
+                        <MudIcon Icon="@Icons.Material.Filled.QrCode2" Color="Color.Primary" />
+                        <MudText Typo="Typo.h6" Style="font-weight:700;">Codul tău de invitație</MudText>
+                    </div>
+
+                    <MudText Typo="Typo.body2" Style="color:#546E7A; margin-bottom:1rem;">
+                        Trimite acest cod copilului tău. El îl va introduce în contul lui pentru a se conecta la tine.
+                    </MudText>
+
+                    @if (!string.IsNullOrEmpty(_invitationCode))
+                    {
+                        <MudPaper Elevation="0" Class="pa-3 mb-3"
+                                  Style="background:linear-gradient(135deg,rgba(255,107,53,0.1),rgba(255,140,105,0.05)); border:2px dashed #FF6B35; border-radius:12px; text-align:center;">
+                            <MudText Typo="Typo.h4" Style="font-weight:800; color:#FF6B35; letter-spacing:3px; font-family:'Courier New', monospace;">
+                                @_invitationCode
+                            </MudText>
+                        </MudPaper>
+
+                        <MudButton Variant="Variant.Filled" Color="Color.Primary" FullWidth="true"
+                                   OnClick="CopyCode" StartIcon="@Icons.Material.Filled.ContentCopy"
+                                   Style="border-radius:10px;">
+                            Copiază codul
+                        </MudButton>
+                    }
+                    else
+                    {
+                        <MudAlert Severity="Severity.Warning">Codul nu este disponibil. Încearcă să reîmprospătezi pagina.</MudAlert>
+                    }
+                </MudPaper>
+            </MudItem>
+
+            <!-- Children List -->
+            <MudItem xs="12" md="7">
+                <MudPaper Elevation="2" Class="pa-4" Style="border-radius:16px; height:100%;">
+                    <div style="display:flex; align-items:center; justify-content:space-between; margin-bottom:1rem;">
+                        <div style="display:flex; align-items:center; gap:8px;">
+                            <MudIcon Icon="@Icons.Material.Filled.School" Color="Color.Primary" />
+                            <MudText Typo="Typo.h6" Style="font-weight:700;">Copii înregistrați (@_children.Count)</MudText>
+                        </div>
+                        <MudIconButton Icon="@Icons.Material.Filled.Refresh" Color="Color.Default" OnClick="LoadDataAsync" Size="Size.Small" />
+                    </div>
+
+                    @if (_children.Count == 0)
+                    {
+                        <div style="display:flex; flex-direction:column; align-items:center; padding:2rem; color:#546E7A; text-align:center;">
+                            <MudIcon Icon="@Icons.Material.Filled.PersonOff" Style="font-size:48px; color:rgba(255,107,53,0.4); margin-bottom:1rem;" />
+                            <MudText Typo="Typo.body1" Style="font-weight:600;">Niciun copil legat încă</MudText>
+                            <MudText Typo="Typo.caption" Class="mt-1">Trimite codul de invitație copilului tău pentru a-l conecta.</MudText>
+                        </div>
+                    }
+                    else
+                    {
+                        @foreach (var child in _children)
+                        {
+                            <MudPaper Elevation="0" Class="pa-3 mb-2" Style="background:#F5F7FA; border-radius:12px; border-left:4px solid #FF6B35;">
+                                <div style="display:flex; align-items:center; gap:12px; flex-wrap:wrap;">
+                                    <MudAvatar Color="Color.Primary" Size="Size.Medium">
+                                        @(child.FullName.Length > 0 ? child.FullName[0] : '?')
+                                    </MudAvatar>
+                                    <div style="flex:1; min-width:150px;">
+                                        <MudText Typo="Typo.body1" Style="font-weight:700;">@child.FullName</MudText>
+                                        <MudText Typo="Typo.caption" Style="color:#546E7A;">@child.Email</MudText>
+                                    </div>
+                                    <MudButton Variant="Variant.Outlined" Color="Color.Primary" Size="Size.Small"
+                                               StartIcon="@Icons.Material.Filled.Grade"
+                                               OnClick="@(() => Navigation.NavigateTo($"/children/{child.Id}/grades"))"
+                                               Style="border-radius:8px;">
+                                        Vezi note
+                                    </MudButton>
+                                </div>
+                            </MudPaper>
+                        }
+                    }
+                </MudPaper>
+            </MudItem>
+        </MudGrid>
+    }
+</div>
+
+@code {
+    private bool _isLoading = true;
+    private bool _hasActiveSubscription = false;
+    private string _invitationCode = "";
+    private List<ChildDto> _children = new();
+    private Guid _parentId;
+
+    protected override async Task OnInitializedAsync()
+    {
+        var role = await AuthService.GetCurrentUserRoleAsync();
+        if (role != UserRole.Parent)
+        {
+            Navigation.NavigateTo("/dashboard");
+            return;
+        }
+
+        _parentId = await AuthService.GetCurrentUserIdAsync();
+        await LoadDataAsync();
+    }
+
+    private async Task LoadDataAsync()
+    {
+        _isLoading = true;
+
+        // 1. Check active subscription
+        var subscriptions = await ApiService.GetUserSubscriptionsAsync(_parentId);
+        _hasActiveSubscription = subscriptions.Any(s => s.IsActive && s.EndDate > DateTime.UtcNow);
+
+        if (_hasActiveSubscription)
+        {
+            // 2. Load invitation code + children only if subscribed
+            try
+            {
+                var inviteTask = ApiService.GetInvitationCodeAsync(_parentId);
+                var childrenTask = ApiService.GetChildrenAsync(_parentId);
+                await Task.WhenAll(inviteTask, childrenTask);
+
+                _invitationCode = inviteTask.Result?.InvitationCode ?? "";
+                _children = childrenTask.Result;
+            }
+            catch
+            {
+                Snackbar.Add("Eroare la încărcarea datelor.", Severity.Error);
+            }
+        }
+
+        _isLoading = false;
+    }
+
+    private async Task CopyCode()
+    {
+        if (string.IsNullOrEmpty(_invitationCode)) return;
+        await JS.InvokeVoidAsync("navigator.clipboard.writeText", _invitationCode);
+        Snackbar.Add("Cod copiat!", Severity.Success);
+    }
+}

@@ -204,36 +204,34 @@
             </MudItem>
         </MudGrid>
     }
-    else if (_role == UserRole.Teacher)
+        else if (_role == UserRole.Teacher)
     {
-        <!-- ============ TEACHER DASHBOARD (minimal) ============ -->
+        <!-- ============ TEACHER DASHBOARD ============ -->
         <MudGrid Class="mb-4">
-            <MudItem xs="12" md="6">
-                <MudPaper Elevation="1" Class="pa-4" Style="border-radius:16px;">
-                    <MudText Typo="Typo.h6" Style="font-weight:700; margin-bottom:1rem;">Clasele Mele</MudText>
-                    <MudText Typo="Typo.body2" Style="color:#546E7A; margin-bottom:1rem;">
-                        Gestionează clasele, lecțiile și quiz-urile tale.
-                    </MudText>
-                    <MudButton Variant="Variant.Filled" Color="Color.Primary" FullWidth="true"
-                               OnClick="@(() => Navigation.NavigateTo("/classrooms"))">
-                        Mergi la clase
-                    </MudButton>
-                </MudPaper>
-            </MudItem>
-            <MudItem xs="12" md="6">
-                <MudPaper Elevation="1" Class="pa-4" Style="border-radius:16px;">
-                    <MudText Typo="Typo.h6" Style="font-weight:700; margin-bottom:1rem;">Asistent AI</MudText>
-                    <MudText Typo="Typo.body2" Style="color:#546E7A; margin-bottom:1rem;">
-                        Generează explicații sau probleme pentru elevii tăi.
-                    </MudText>
-                    <MudButton Variant="Variant.Filled" Color="Color.Secondary" FullWidth="true"
-                               OnClick="@(() => Navigation.NavigateTo("/ai/explanation"))">
-                        Deschide AI
+            <MudItem xs="12">
+                <MudPaper Elevation="1" Class="pa-6" Style="border-radius:16px;">
+                    <div style="display:flex; align-items:center; gap:16px; margin-bottom:1.5rem;">
+                        <div style="width:64px; height:64px; background:rgba(25,118,210,0.1); border-radius:16px; display:flex; align-items:center; justify-content:center;">
+                            <MudIcon Icon="@Icons.Material.Filled.Groups" Style="color:#1976D2; font-size:36px;" />
+                        </div>
+                        <div>
+                            <MudText Typo="Typo.h5" Style="font-weight:700;">Clasele Mele</MudText>
+                            <MudText Typo="Typo.body2" Style="color:#546E7A;">
+                                Gestionează clasele, lecțiile, quiz-urile și notele elevilor tăi.
+                            </MudText>
+                        </div>
+                    </div>
+                    <MudButton Variant="Variant.Filled" Color="Color.Primary" Size="Size.Large"
+                               StartIcon="@Icons.Material.Filled.ArrowForward"
+                               OnClick="@(() => Navigation.NavigateTo("/classrooms"))"
+                               Style="border-radius:12px; font-weight:700;">
+                        Mergi la Clasele Mele
                     </MudButton>
                 </MudPaper>
             </MudItem>
         </MudGrid>
     }
+
     else
     {
         <!-- ============ STUDENT DASHBOARD (original) ============ -->

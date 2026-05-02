@@ -4,7 +4,7 @@
 @inject NavigationManager Navigation
 @inject ISnackbar Snackbar
 
-<PageTitle>Detalii Clasă | AiTutor</PageTitle>
+<PageTitle>Detalii ClasÄƒ | AiTutor</PageTitle>
 
 @if (_isLoading)
 {
@@ -17,9 +17,9 @@
 else if (_classroom == null)
 {
     <div style="padding:24px; text-align:center;">
-        <MudText Typo="Typo.h6" Style="color:#546E7A;">Clasa nu a fost găsită.</MudText>
+        <MudText Typo="Typo.h6" Style="color:#546E7A;">Clasa nu a fost gÄƒsitÄƒ.</MudText>
         <MudButton Variant="Variant.Filled" Color="Color.Primary" OnClick='() => Navigation.NavigateTo("/classrooms")' Class="mt-4">
-            Înapoi la Clase
+            ÃŽnapoi la Clase
         </MudButton>
     </div>
 }
@@ -34,7 +34,7 @@ else
                     <MudButton Variant="Variant.Text" Style="color:rgba(255,255,255,0.8); margin-bottom:8px; padding:0;"
                                StartIcon="@Icons.Material.Filled.ArrowBack"
                                OnClick='() => Navigation.NavigateTo("/classrooms")'>
-                        Înapoi
+                        ÃŽnapoi
                     </MudButton>
                     <MudText Typo="Typo.h4" Style="font-weight:700; color:white;">@_classroom.Name</MudText>
                     @if (!string.IsNullOrEmpty(_classroom.Description))
@@ -48,7 +48,7 @@ else
                         </MudChip>
                         <MudChip T="string" Style="background:rgba(255,255,255,0.2); color:white;">
                             <MudIcon Icon="@Icons.Material.Filled.MenuBook" Style="font-size:16px; margin-right:4px;" />
-                            @_classroom.LessonCount lecții
+                            @_classroom.LessonCount lecÈ›ii
                         </MudChip>
                         <MudChip T="string" Style="background:rgba(255,255,255,0.2); color:white;">
                             @GetSubjectName(_classroom.SubjectType)
@@ -58,12 +58,12 @@ else
                 @if (_isTeacher)
                 {
                     <div style="background:rgba(255,255,255,0.15); border-radius:12px; padding:12px 20px; text-align:center;">
-                        <MudText Typo="Typo.caption" Style="color:rgba(255,255,255,0.7); display:block;">Cod Clasă</MudText>
+                        <MudText Typo="Typo.caption" Style="color:rgba(255,255,255,0.7); display:block;">Cod ClasÄƒ</MudText>
                         <MudText Typo="Typo.h5" Style="font-weight:800; letter-spacing:4px; color:white;">@_classroom.ClassCode</MudText>
                         <MudButton Size="Size.Small" Variant="Variant.Text" Style="color:rgba(255,255,255,0.8);"
                                    StartIcon="@Icons.Material.Filled.ContentCopy"
                                    OnClick="CopyCode">
-                            Copiază
+                            CopiazÄƒ
                         </MudButton>
                     </div>
                 }
@@ -73,8 +73,8 @@ else
         <!-- Tabs -->
         <MudTabs Elevation="0" Rounded="true" ApplyEffectsToContainer="true"
                  Style="background:white; border-radius:16px; padding:8px;">
-            <!-- Lecții -->
-            <MudTabPanel Text="Lecții" Icon="@Icons.Material.Filled.MenuBook">
+            <!-- LecÈ›ii -->
+            <MudTabPanel Text="LecÈ›ii" Icon="@Icons.Material.Filled.MenuBook">
                 <div style="padding:16px;">
                     @if (_isTeacher)
                     {
@@ -83,7 +83,7 @@ else
                                        StartIcon="@Icons.Material.Filled.Add"
                                        OnClick="OpenCreateLessonDialog"
                                        Style="border-radius:12px;">
-                                Lecție Nouă
+                                LecÈ›ie NouÄƒ
                             </MudButton>
                         </div>
                     }
@@ -91,7 +91,7 @@ else
                     {
                         <div style="text-align:center; padding:32px;">
                             <MudIcon Icon="@Icons.Material.Filled.MenuBook" Style="font-size:48px; color:#B0BEC5;" />
-                            <MudText Typo="Typo.body1" Style="color:#546E7A; margin-top:8px;">Nu există lecții în această clasă.</MudText>
+                            <MudText Typo="Typo.body1" Style="color:#546E7A; margin-top:8px;">Nu existÄƒ lecÈ›ii Ã®n aceastÄƒ clasÄƒ.</MudText>
                         </div>
                     }
                     else
@@ -111,7 +111,7 @@ else
                                                     </MudChip>
                                                 </div>
                                                 <MudText Typo="Typo.caption" Style="color:#90A4AE;">
-                                                    Lecția @lesson.OrderIndex
+                                                    LecÈ›ia @lesson.OrderIndex
                                                 </MudText>
                                             </div>
                                             @if (_isTeacher)
@@ -133,7 +133,7 @@ else
                                         </div>
                                     </div>
 
-                                    @* Lista quiz-urilor pentru lecția asta *@
+                                    @* Lista quiz-urilor pentru lecÈ›ia asta *@
                                     @if (_quizzesByLesson.ContainsKey(lesson.Id) && _quizzesByLesson[lesson.Id].Count > 0)
                                     {
                                         <MudDivider Class="my-2" />
@@ -148,7 +148,7 @@ else
                                                 <div style="flex:1;">
                                                     <MudText Typo="Typo.body2" Style="font-weight:600;">@quiz.Title</MudText>
                                                     <MudText Typo="Typo.caption" Style="color:#90A4AE;">
-                                                        @quiz.QuestionCount întrebări · @quiz.TimeLimitMinutes min
+                                                        @quiz.QuestionCount Ã®ntrebÄƒri Â· @quiz.TimeLimitMinutes min
                                                     </MudText>
                                                 </div>
                                                 @if (_isTeacher)
@@ -184,7 +184,7 @@ else
                                        StartIcon="@Icons.Material.Filled.PersonAdd"
                                        OnClick="OpenAddMemberDialog"
                                        Style="border-radius:12px;">
-                                Adaugă Elev
+                                AdaugÄƒ Elev
                             </MudButton>
                         </div>
                     }
@@ -192,7 +192,7 @@ else
                     {
                         <div style="text-align:center; padding:32px;">
                             <MudIcon Icon="@Icons.Material.Filled.People" Style="font-size:48px; color:#B0BEC5;" />
-                            <MudText Typo="Typo.body1" Style="color:#546E7A; margin-top:8px;">Nu există elevi înscriși.</MudText>
+                            <MudText Typo="Typo.body1" Style="color:#546E7A; margin-top:8px;">Nu existÄƒ elevi Ã®nscriÈ™i.</MudText>
                         </div>
                     }
                     else
@@ -201,10 +201,10 @@ else
                             <HeaderContent>
                                 <MudTh>Nume</MudTh>
                                 <MudTh>Email</MudTh>
-                                <MudTh>Data înscrierii</MudTh>
+                                <MudTh>Data Ã®nscrierii</MudTh>
                                 @if (_isTeacher)
                                 {
-                                    <MudTh>Acțiuni</MudTh>
+                                    <MudTh>AcÈ›iuni</MudTh>
                                 }
                             </HeaderContent>
                             <RowTemplate>
@@ -242,14 +242,14 @@ else
                                        StartIcon="@Icons.Material.Filled.Add"
                                        OnClick="OpenAddGradeDialog"
                                        Style="border-radius:12px;">
-                                Adaugă Notă
+                                AdaugÄƒ NotÄƒ
                             </MudButton>
                         </div>
                         @if (_grades.Count == 0)
                         {
                             <div style="text-align:center; padding:32px;">
                                 <MudIcon Icon="@Icons.Material.Filled.Grade" Style="font-size:48px; color:#B0BEC5;" />
-                                <MudText Typo="Typo.body1" Style="color:#546E7A; margin-top:8px;">Nu există note în catalog.</MudText>
+                                <MudText Typo="Typo.body1" Style="color:#546E7A; margin-top:8px;">Nu existÄƒ note Ã®n catalog.</MudText>
                             </div>
                         }
                         else
@@ -257,10 +257,10 @@ else
                             <MudTable Items="_grades" Hover="true" Striped="true" Style="border-radius:12px;">
                                 <HeaderContent>
                                     <MudTh>Elev</MudTh>
-                                    <MudTh>Notă</MudTh>
+                                    <MudTh>NotÄƒ</MudTh>
                                     <MudTh>Descriere</MudTh>
                                     <MudTh>Data</MudTh>
-                                    <MudTh>Acțiuni</MudTh>
+                                    <MudTh>AcÈ›iuni</MudTh>
                                 </HeaderContent>
                                 <RowTemplate>
                                     <MudTd>@context.StudentName</MudTd>
@@ -290,7 +290,7 @@ else
                     {
                         <div style="text-align:center; padding:32px;">
                             <MudIcon Icon="@Icons.Material.Filled.TrendingUp" Style="font-size:48px; color:#B0BEC5;" />
-                            <MudText Typo="Typo.body1" Style="color:#546E7A; margin-top:8px;">Nu există date de progres.</MudText>
+                            <MudText Typo="Typo.body1" Style="color:#546E7A; margin-top:8px;">Nu existÄƒ date de progres.</MudText>
                         </div>
                     }
                     else
@@ -301,10 +301,10 @@ else
                                 {
                                     <MudTh>Elev</MudTh>
                                 }
-                                <MudTh>Lecție</MudTh>
+                                <MudTh>LecÈ›ie</MudTh>
                                 <MudTh>Status</MudTh>
                                 <MudTh>Scor</MudTh>
-                                <MudTh>Încercări</MudTh>
+                                <MudTh>ÃŽncercÄƒri</MudTh>
                             </HeaderContent>
                             <RowTemplate>
                                 @if (_isTeacher)
@@ -319,7 +319,7 @@ else
                                     }
                                     else
                                     {
-                                        <MudChip T="string" Size="Size.Small" Style="background:#FFF3E0; color:#E65100;">În progres</MudChip>
+                                        <MudChip T="string" Size="Size.Small" Style="background:#FFF3E0; color:#E65100;">ÃŽn progres</MudChip>
                                     }
                                 </MudTd>
                                 <MudTd>
@@ -341,27 +341,27 @@ else
 <!-- Create Lesson Dialog -->
 <MudDialog @bind-Visible="_showCreateLessonDialog">
     <TitleContent>
-        <MudText Typo="Typo.h6">Lecție Nouă</MudText>
+        <MudText Typo="Typo.h6">LecÈ›ie NouÄƒ</MudText>
     </TitleContent>
     <DialogContent>
-        <MudTextField @bind-Value="_newLesson.Title" Label="Titlu lecție" Required="true"
+        <MudTextField @bind-Value="_newLesson.Title" Label="Titlu lecÈ›ie" Required="true"
                       Variant="Variant.Outlined" Class="mb-3" />
-        <MudTextField @bind-Value="_newLesson.Content" Label="Conținut"
+        <MudTextField @bind-Value="_newLesson.Content" Label="ConÈ›inut"
                       Variant="Variant.Outlined" Lines="5" Class="mb-3" />
-        <MudNumericField @bind-Value="_newLesson.OrderIndex" Label="Ordinea lecției"
+        <MudNumericField @bind-Value="_newLesson.OrderIndex" Label="Ordinea lecÈ›iei"
                          Min="1" Variant="Variant.Outlined" Class="mb-3" />
         <MudSelect T="DifficultyLevel" @bind-Value="_newLesson.Difficulty"
                    Label="Dificultate" Variant="Variant.Outlined">
-            <MudSelectItem Value="DifficultyLevel.Beginner">Începător</MudSelectItem>
+            <MudSelectItem Value="DifficultyLevel.Beginner">ÃŽncepÄƒtor</MudSelectItem>
             <MudSelectItem Value="DifficultyLevel.Intermediate">Intermediar</MudSelectItem>
             <MudSelectItem Value="DifficultyLevel.Advanced">Avansat</MudSelectItem>
         </MudSelect>
     </DialogContent>
     <DialogActions>
-        <MudButton OnClick="() => _showCreateLessonDialog = false">Anulează</MudButton>
+        <MudButton OnClick="() => _showCreateLessonDialog = false">AnuleazÄƒ</MudButton>
         <MudButton Variant="Variant.Filled" Color="Color.Primary"
                    OnClick="CreateLesson" Disabled="_isSaving">
-            Creează
+            CreeazÄƒ
         </MudButton>
     </DialogActions>
 </MudDialog>
@@ -371,7 +371,7 @@ else
     <TitleContent>
         <MudText Typo="Typo.h6" Style="font-weight:700;">
             <MudIcon Icon="@Icons.Material.Filled.MenuBook" Class="mr-2" Style="color:#1976D2;" />
-            @(_viewedLesson?.Title ?? "Lecție")
+            @(_viewedLesson?.Title ?? "LecÈ›ie")
         </MudText>
     </TitleContent>
     <DialogContent>
@@ -382,25 +382,25 @@ else
                     @GetDifficultyName(_viewedLesson.Difficulty)
                 </MudChip>
                 <MudChip T="string" Size="Size.Small" Style="background:#E3F2FD; color:#1565C0;">
-                    Lecția @_viewedLesson.OrderIndex
+                    LecÈ›ia @_viewedLesson.OrderIndex
                 </MudChip>
             </div>
-            <MudText Typo="Typo.subtitle2" Style="color:#546E7A; margin-bottom:8px;">Conținut:</MudText>
+            <MudText Typo="Typo.subtitle2" Style="color:#546E7A; margin-bottom:8px;">ConÈ›inut:</MudText>
             <MudPaper Class="pa-3" Style="background:#F5F7FA; border-radius:8px; max-height:400px; overflow-y:auto;">
                 <MudText Typo="Typo.body2" Style="white-space:pre-wrap;">
-                    @(string.IsNullOrWhiteSpace(_viewedLesson.Content) ? "(fără conținut)" : _viewedLesson.Content)
+                    @(string.IsNullOrWhiteSpace(_viewedLesson.Content) ? "(fÄƒrÄƒ conÈ›inut)" : _viewedLesson.Content)
                 </MudText>
             </MudPaper>
         }
     </DialogContent>
     <DialogActions>
-        <MudButton OnClick="() => _showViewLessonDialog = false">Închide</MudButton>
+        <MudButton OnClick="() => _showViewLessonDialog = false">ÃŽnchide</MudButton>
         @if (_isTeacher && _viewedLesson != null)
         {
             <MudButton Variant="Variant.Filled" Color="Color.Primary"
                        StartIcon="@Icons.Material.Filled.Edit"
                        OnClick="@(() => { _showViewLessonDialog = false; OpenEditLessonDialog(_viewedLesson); })">
-                Editează
+                EditeazÄƒ
             </MudButton>
         }
     </DialogActions>
@@ -409,25 +409,25 @@ else
 <!-- Edit Lesson Dialog -->
 <MudDialog @bind-Visible="_showEditLessonDialog">
     <TitleContent>
-        <MudText Typo="Typo.h6">Editează Lecție</MudText>
+        <MudText Typo="Typo.h6">EditeazÄƒ LecÈ›ie</MudText>
     </TitleContent>
     <DialogContent>
-        <MudTextField @bind-Value="_editLesson.Title" Label="Titlu lecție" Required="true"
+        <MudTextField @bind-Value="_editLesson.Title" Label="Titlu lecÈ›ie" Required="true"
                       Variant="Variant.Outlined" Class="mb-3" />
-        <MudTextField @bind-Value="_editLesson.Content" Label="Conținut"
+        <MudTextField @bind-Value="_editLesson.Content" Label="ConÈ›inut"
                       Variant="Variant.Outlined" Lines="6" Class="mb-3" />
         <MudSelect T="DifficultyLevel" @bind-Value="_editLesson.Difficulty"
                    Label="Dificultate" Variant="Variant.Outlined">
-            <MudSelectItem Value="DifficultyLevel.Beginner">Începător</MudSelectItem>
+            <MudSelectItem Value="DifficultyLevel.Beginner">ÃŽncepÄƒtor</MudSelectItem>
             <MudSelectItem Value="DifficultyLevel.Intermediate">Intermediar</MudSelectItem>
             <MudSelectItem Value="DifficultyLevel.Advanced">Avansat</MudSelectItem>
         </MudSelect>
     </DialogContent>
     <DialogActions>
-        <MudButton OnClick="() => _showEditLessonDialog = false">Anulează</MudButton>
+        <MudButton OnClick="() => _showEditLessonDialog = false">AnuleazÄƒ</MudButton>
         <MudButton Variant="Variant.Filled" Color="Color.Primary"
                    OnClick="UpdateLesson" Disabled="_isSaving">
-            Salvează
+            SalveazÄƒ
         </MudButton>
     </DialogActions>
 </MudDialog>
@@ -435,17 +435,17 @@ else
 <!-- Add Member Dialog -->
 <MudDialog @bind-Visible="_showAddMemberDialog">
     <TitleContent>
-        <MudText Typo="Typo.h6">Adaugă Elev</MudText>
+        <MudText Typo="Typo.h6">AdaugÄƒ Elev</MudText>
     </TitleContent>
     <DialogContent>
         <MudTextField @bind-Value="_memberEmail" Label="Email elev" Required="true"
                       Placeholder="elev@email.com" Variant="Variant.Outlined" />
     </DialogContent>
     <DialogActions>
-        <MudButton OnClick="() => _showAddMemberDialog = false">Anulează</MudButton>
+        <MudButton OnClick="() => _showAddMemberDialog = false">AnuleazÄƒ</MudButton>
         <MudButton Variant="Variant.Filled" Color="Color.Primary"
                    OnClick="AddMember" Disabled="_isSaving">
-            Adaugă
+            AdaugÄƒ
         </MudButton>
     </DialogActions>
 </MudDialog>
@@ -453,7 +453,7 @@ else
 <!-- Add Grade Dialog -->
 <MudDialog @bind-Visible="_showAddGradeDialog">
     <TitleContent>
-        <MudText Typo="Typo.h6">Adaugă Notă</MudText>
+        <MudText Typo="Typo.h6">AdaugÄƒ NotÄƒ</MudText>
     </TitleContent>
     <DialogContent>
         <MudSelect T="Guid" @bind-Value="_newGrade.StudentId"
@@ -463,16 +463,16 @@ else
                 <MudSelectItem Value="member.StudentId">@member.FullName</MudSelectItem>
             }
         </MudSelect>
-        <MudNumericField @bind-Value="_newGrade.Value" Label="Notă (1-10)"
+        <MudNumericField @bind-Value="_newGrade.Value" Label="NotÄƒ (1-10)"
                          Min="1" Max="10" Variant="Variant.Outlined" Class="mb-3" />
-        <MudTextField @bind-Value="_newGrade.Description" Label="Descriere (opțional)"
+        <MudTextField @bind-Value="_newGrade.Description" Label="Descriere (opÈ›ional)"
                       Variant="Variant.Outlined" />
     </DialogContent>
     <DialogActions>
-        <MudButton OnClick="() => _showAddGradeDialog = false">Anulează</MudButton>
+        <MudButton OnClick="() => _showAddGradeDialog = false">AnuleazÄƒ</MudButton>
         <MudButton Variant="Variant.Filled" Color="Color.Primary"
                    OnClick="AddGrade" Disabled="_isSaving">
-            Salvează
+            SalveazÄƒ
         </MudButton>
     </DialogActions>
 </MudDialog>
@@ -487,18 +487,18 @@ else
                       Variant="Variant.Outlined" Class="mb-3" />
         <MudSelect T="DifficultyLevel" @bind-Value="_newQuiz.Difficulty"
                    Label="Dificultate" Variant="Variant.Outlined" Class="mb-3">
-            <MudSelectItem Value="DifficultyLevel.Beginner">Începător</MudSelectItem>
+            <MudSelectItem Value="DifficultyLevel.Beginner">ÃŽncepÄƒtor</MudSelectItem>
             <MudSelectItem Value="DifficultyLevel.Intermediate">Intermediar</MudSelectItem>
             <MudSelectItem Value="DifficultyLevel.Advanced">Avansat</MudSelectItem>
         </MudSelect>
-        <MudNumericField @bind-Value="_newQuiz.TimeLimitMinutes" Label="Limită timp (minute)"
+        <MudNumericField @bind-Value="_newQuiz.TimeLimitMinutes" Label="LimitÄƒ timp (minute)"
                          Min="5" Max="180" Variant="Variant.Outlined" />
     </DialogContent>
     <DialogActions>
-        <MudButton OnClick="() => _showCreateQuizDialog = false">Anulează</MudButton>
+        <MudButton OnClick="() => _showCreateQuizDialog = false">AnuleazÄƒ</MudButton>
         <MudButton Variant="Variant.Filled" Color="Color.Primary"
                    OnClick="CreateQuiz" Disabled="_isSaving">
-            Creează
+            CreeazÄƒ
         </MudButton>
     </DialogActions>
 </MudDialog>
@@ -522,194 +522,100 @@ else
                     @_viewedQuiz.TimeLimitMinutes min
                 </MudChip>
                 <MudChip T="string" Size="Size.Small" Style="background:#F3E5F5; color:#6A1B9A;">
-                    @_viewedQuiz.Questions.Count întrebări
+                    @_viewedQuiz.Questions.Count Ã®ntrebÄƒri
                 </MudChip>
             </div>
 
             @if (_isTeacher)
             {
-                @* ======================== TEACHER MODE ======================== *@
                 <div style="display:flex; justify-content:flex-end; margin-bottom:12px;">
                     <MudButton Variant="Variant.Filled" Color="Color.Primary" Size="Size.Small"
                                StartIcon="@Icons.Material.Filled.Add"
                                OnClick="OpenAddQuestionDialog">
-                        Întrebare nouă
+                        ÃŽntrebare nouÄƒ
                     </MudButton>
                 </div>
+            }
 
-                @if (_viewedQuiz.Questions.Count == 0)
-                {
-                    <div style="text-align:center; padding:24px; color:#90A4AE;">
-                        <MudIcon Icon="@Icons.Material.Filled.HelpOutline" Style="font-size:48px;" />
-                        <MudText Typo="Typo.body2" Class="mt-2">Nu există întrebări încă.</MudText>
-                    </div>
-                }
-                else
-                {
-                    @foreach (var (q, idx) in _viewedQuiz.Questions.Select((q, i) => (q, i + 1)))
-                    {
-                        <MudPaper Class="pa-3 mb-2" Style="border-radius:8px; border:1px solid #E0E0E0;">
-                            <div style="display:flex; justify-content:space-between; align-items:flex-start; gap:8px;">
-                                <div style="flex:1;">
-                                    <MudText Typo="Typo.body2" Style="font-weight:700; margin-bottom:6px;">
-                                        @idx. @q.Text
-                                    </MudText>
-                                    <div style="display:flex; flex-direction:column; gap:4px; margin-bottom:6px;">
-                                        @foreach (var opt in q.Options)
-                                        {
-                                            var isCorrect = opt == q.CorrectAnswer;
-                                            <div style="@($"padding:4px 8px; border-radius:4px; font-size:0.85rem; {(isCorrect ? "background:#E8F5E9; color:#2E7D32; font-weight:600;" : "background:#F5F5F5; color:#546E7A;")}")">
-                                                @if (isCorrect)
-                                                {
-                                                    <MudIcon Icon="@Icons.Material.Filled.CheckCircle" Style="font-size:14px; margin-right:4px;" />
-                                                }
-                                                @opt
-                                            </div>
-                                        }
-                                    </div>
-                                    @if (!string.IsNullOrEmpty(q.Explanation))
-                                    {
-                                        <MudText Typo="Typo.caption" Style="color:#1565C0; font-style:italic;">
-                                            💡 @q.Explanation
-                                        </MudText>
-                                    }
-                                    <MudText Typo="Typo.caption" Style="color:#90A4AE; display:block; margin-top:4px;">
-                                        Punctaj: @q.Points
-                                    </MudText>
-                                </div>
-                                <MudIconButton Icon="@Icons.Material.Filled.Delete"
-                                               Color="Color.Error" Size="Size.Small"
-                                               OnClick="@(() => DeleteQuestion(q.Id))" />
-                            </div>
-                        </MudPaper>
-                    }
-                }
+            @if (_viewedQuiz.Questions.Count == 0)
+            {
+                <div style="text-align:center; padding:24px; color:#90A4AE;">
+                    <MudIcon Icon="@Icons.Material.Filled.HelpOutline" Style="font-size:48px;" />
+                    <MudText Typo="Typo.body2" Class="mt-2">Nu existÄƒ Ã®ntrebÄƒri Ã®ncÄƒ.</MudText>
+                </div>
             }
             else
             {
-                @* ======================== STUDENT MODE ======================== *@
-                @if (_viewedQuiz.Questions.Count == 0)
+                @foreach (var (q, idx) in _viewedQuiz.Questions.Select((q, i) => (q, i + 1)))
                 {
-                    <div style="text-align:center; padding:24px; color:#90A4AE;">
-                        <MudIcon Icon="@Icons.Material.Filled.HelpOutline" Style="font-size:48px;" />
-                        <MudText Typo="Typo.body2" Class="mt-2">Acest quiz nu are încă întrebări.</MudText>
-                    </div>
-                }
-                else if (_quizSubmitResult == null)
-                {
-                    @* --- Quiz în desfășurare --- *@
-                    @foreach (var (q, idx) in _viewedQuiz.Questions.Select((q, i) => (q, i + 1)))
-                    {
-                        <MudPaper Class="pa-3 mb-3" Style="border-radius:8px; border:1px solid #E0E0E0;">
-                            <MudText Typo="Typo.body1" Style="font-weight:700; margin-bottom:8px;">
-                                @idx. @q.Text
-                            </MudText>
-                            <MudRadioGroup T="string"
-                                           Value="@(_studentAnswers.ContainsKey(q.Id) ? _studentAnswers[q.Id] : null)"
-                                           ValueChanged="@((string val) => _studentAnswers[q.Id] = val)">
-                                @foreach (var opt in q.Options)
-                                {
-                                    <MudRadio T="string" Value="@opt" Color="Color.Primary" Class="d-block">@opt</MudRadio>
-                                }
-                            </MudRadioGroup>
-                            <MudText Typo="Typo.caption" Style="color:#90A4AE; display:block; margin-top:4px;">
-                                Punctaj: @q.Points
-                            </MudText>
-                        </MudPaper>
-                    }
-
-                    <div style="display:flex; justify-content:flex-end; margin-top:16px;">
-                        <MudButton Variant="Variant.Filled" Color="Color.Success"
-                                   StartIcon="@Icons.Material.Filled.Send"
-                                   OnClick="SubmitStudentQuiz"
-                                   Disabled="_isSaving">
-                            Trimite răspunsurile
-                        </MudButton>
-                    </div>
-                }
-                else
-                {
-                    @* --- Rezultatul quiz-ului după submit --- *@
-                    var res = _quizSubmitResult;
-                    var pct = (int)Math.Round(res.ScorePercentage);
-                    var bgColor = pct >= 70 ? "#E8F5E9" : (pct >= 50 ? "#FFF3E0" : "#FCE4EC");
-                    var fgColor = pct >= 70 ? "#2E7D32" : (pct >= 50 ? "#E65100" : "#C62828");
-
-                    <MudPaper Class="pa-4 mb-3" Style="@($"border-radius:12px; background:{bgColor}; text-align:center;")">
-                        <MudText Typo="Typo.h4" Style="@($"color:{fgColor}; font-weight:800;")">
-                            @pct%
-                        </MudText>
-                        <MudText Typo="Typo.body1" Style="@($"color:{fgColor}; font-weight:600;")">
-                            @res.CorrectAnswers din @res.TotalQuestions răspunsuri corecte
-                        </MudText>
-                    </MudPaper>
-
-                    @foreach (var (r, idx) in res.Results.Select((r, i) => (r, i + 1)))
-                    {
-                        var rBg = r.IsCorrect ? "#E8F5E9" : "#FFEBEE";
-                        var rBorder = r.IsCorrect ? "#A5D6A7" : "#EF9A9A";
-                        <MudPaper Class="pa-3 mb-2" Style="@($"border-radius:8px; background:{rBg}; border:1px solid {rBorder};")">
-                            <div style="display:flex; align-items:flex-start; gap:8px;">
-                                <MudIcon Icon="@(r.IsCorrect ? Icons.Material.Filled.CheckCircle : Icons.Material.Filled.Cancel)"
-                                         Style="@($"color:{(r.IsCorrect ? "#2E7D32" : "#C62828")}; font-size:24px;")" />
-                                <div style="flex:1;">
-                                    <MudText Typo="Typo.body2" Style="font-weight:700; margin-bottom:4px;">
-                                        @idx. @r.QuestionText
-                                    </MudText>
-                                    <MudText Typo="Typo.caption" Style="display:block;">
-                                        Răspunsul tău: <strong>@(string.IsNullOrEmpty(r.UserAnswer) ? "(fără răspuns)" : r.UserAnswer)</strong>
-                                    </MudText>
-                                    @if (!r.IsCorrect)
+                    <MudPaper Class="pa-3 mb-2" Style="border-radius:8px; border:1px solid #E0E0E0;">
+                        <div style="display:flex; justify-content:space-between; align-items:flex-start; gap:8px;">
+                            <div style="flex:1;">
+                                <MudText Typo="Typo.body2" Style="font-weight:700; margin-bottom:6px;">
+                                    @idx. @q.Text
+                                </MudText>
+                                <div style="display:flex; flex-direction:column; gap:4px; margin-bottom:6px;">
+                                    @foreach (var opt in q.Options)
                                     {
-                                        <MudText Typo="Typo.caption" Style="display:block; color:#2E7D32;">
-                                            Răspuns corect: <strong>@r.CorrectAnswer</strong>
-                                        </MudText>
-                                    }
-                                    @if (!string.IsNullOrEmpty(r.Explanation))
-                                    {
-                                        <MudText Typo="Typo.caption" Style="display:block; color:#1565C0; font-style:italic; margin-top:4px;">
-                                            💡 @r.Explanation
-                                        </MudText>
+                                        var isCorrect = opt == q.CorrectAnswer;
+                                        <div style="@($"padding:4px 8px; border-radius:4px; font-size:0.85rem; {(isCorrect ? "background:#E8F5E9; color:#2E7D32; font-weight:600;" : "background:#F5F5F5; color:#546E7A;")}")">
+                                            @if (isCorrect)
+                                            {
+                                                <MudIcon Icon="@Icons.Material.Filled.CheckCircle" Style="font-size:14px; margin-right:4px;" />
+                                            }
+                                            @opt
+                                        </div>
                                     }
                                 </div>
+                                @if (!string.IsNullOrEmpty(q.Explanation))
+                                {
+                                    <MudText Typo="Typo.caption" Style="color:#1565C0; font-style:italic;">
+                                        ðŸ’¡ @q.Explanation
+                                    </MudText>
+                                }
+                                <MudText Typo="Typo.caption" Style="color:#90A4AE; display:block; margin-top:4px;">
+                                    Punctaj: @q.Points
+                                </MudText>
                             </div>
-                        </MudPaper>
-                    }
+                            @if (_isTeacher)
+                            {
+                                <MudIconButton Icon="@Icons.Material.Filled.Delete"
+                                               Color="Color.Error" Size="Size.Small"
+                                               OnClick="@(() => DeleteQuestion(q.Id))" />
+                            }
+                        </div>
+                    </MudPaper>
                 }
             }
         }
     </DialogContent>
     <DialogActions>
-        @if (!_isTeacher && _quizSubmitResult != null)
-        {
-            <MudButton OnClick="ResetQuizAttempt" Color="Color.Primary">Mai încearcă</MudButton>
-        }
-        <MudButton OnClick="CloseQuizDialog">Închide</MudButton>
+        <MudButton OnClick="() => _showViewQuizDialog = false">ÃŽnchide</MudButton>
     </DialogActions>
 </MudDialog>
 
 <!-- Edit Quiz Dialog -->
 <MudDialog @bind-Visible="_showEditQuizDialog">
     <TitleContent>
-        <MudText Typo="Typo.h6">Editează Quiz</MudText>
+        <MudText Typo="Typo.h6">EditeazÄƒ Quiz</MudText>
     </TitleContent>
     <DialogContent>
         <MudTextField @bind-Value="_editQuiz.Title" Label="Titlu quiz" Required="true"
                       Variant="Variant.Outlined" Class="mb-3" />
         <MudSelect T="DifficultyLevel" @bind-Value="_editQuiz.Difficulty"
                    Label="Dificultate" Variant="Variant.Outlined" Class="mb-3">
-            <MudSelectItem Value="DifficultyLevel.Beginner">Începător</MudSelectItem>
+            <MudSelectItem Value="DifficultyLevel.Beginner">ÃŽncepÄƒtor</MudSelectItem>
             <MudSelectItem Value="DifficultyLevel.Intermediate">Intermediar</MudSelectItem>
             <MudSelectItem Value="DifficultyLevel.Advanced">Avansat</MudSelectItem>
         </MudSelect>
-        <MudNumericField @bind-Value="_editQuiz.TimeLimitMinutes" Label="Limită timp (minute)"
+        <MudNumericField @bind-Value="_editQuiz.TimeLimitMinutes" Label="LimitÄƒ timp (minute)"
                          Min="5" Max="180" Variant="Variant.Outlined" />
     </DialogContent>
     <DialogActions>
-        <MudButton OnClick="() => _showEditQuizDialog = false">Anulează</MudButton>
+        <MudButton OnClick="() => _showEditQuizDialog = false">AnuleazÄƒ</MudButton>
         <MudButton Variant="Variant.Filled" Color="Color.Primary"
                    OnClick="UpdateQuiz" Disabled="_isSaving">
-            Salvează
+            SalveazÄƒ
         </MudButton>
     </DialogActions>
 </MudDialog>
@@ -717,13 +623,13 @@ else
 <!-- Add Question Dialog -->
 <MudDialog @bind-Visible="_showAddQuestionDialog" Options="_viewQuizOptions">
     <TitleContent>
-        <MudText Typo="Typo.h6">Întrebare Nouă</MudText>
+        <MudText Typo="Typo.h6">ÃŽntrebare NouÄƒ</MudText>
     </TitleContent>
     <DialogContent>
-        <MudTextField @bind-Value="_newQuestion.Text" Label="Text întrebare" Required="true"
+        <MudTextField @bind-Value="_newQuestion.Text" Label="Text Ã®ntrebare" Required="true"
                       Variant="Variant.Outlined" Lines="2" Class="mb-3" />
 
-        <MudText Typo="Typo.subtitle2" Class="mb-2">Variante de răspuns:</MudText>
+        <MudText Typo="Typo.subtitle2" Class="mb-2">Variante de rÄƒspuns:</MudText>
         @for (int i = 0; i < _newQuestionOptions.Count; i++)
         {
             var idx = i;
@@ -738,11 +644,11 @@ else
         <MudButton Size="Size.Small" StartIcon="@Icons.Material.Filled.Add"
                    OnClick="AddOption" Class="mb-3"
                    Disabled="@(_newQuestionOptions.Count >= 6)">
-            Adaugă variantă
+            AdaugÄƒ variantÄƒ
         </MudButton>
 
         <MudSelect T="string" @bind-Value="_newQuestion.CorrectAnswer"
-                   Label="Răspuns corect *" Variant="Variant.Outlined" Class="mb-3">
+                   Label="RÄƒspuns corect *" Variant="Variant.Outlined" Class="mb-3">
             @foreach (var opt in _newQuestionOptions.Where(o => !string.IsNullOrWhiteSpace(o)))
             {
                 <MudSelectItem Value="opt">@opt</MudSelectItem>
@@ -751,14 +657,14 @@ else
 
         <MudNumericField @bind-Value="_newQuestion.Points" Label="Punctaj" Min="1" Max="100"
                          Variant="Variant.Outlined" Class="mb-3" />
-        <MudTextField @bind-Value="_newQuestion.Explanation" Label="Explicație (opțional)"
+        <MudTextField @bind-Value="_newQuestion.Explanation" Label="ExplicaÈ›ie (opÈ›ional)"
                       Variant="Variant.Outlined" Lines="2" />
     </DialogContent>
     <DialogActions>
-        <MudButton OnClick="() => _showAddQuestionDialog = false">Anulează</MudButton>
+        <MudButton OnClick="() => _showAddQuestionDialog = false">AnuleazÄƒ</MudButton>
         <MudButton Variant="Variant.Filled" Color="Color.Primary"
                    OnClick="AddQuestion" Disabled="_isSaving">
-            Salvează
+            SalveazÄƒ
         </MudButton>
     </DialogActions>
 </MudDialog>
@@ -803,10 +709,6 @@ else
     private List<string> _newQuestionOptions = new() { "", "" };
     private Dictionary<Guid, List<ClassroomQuizDto>> _quizzesByLesson = new();
 
-    // ===== STUDENT QUIZ ATTEMPT =====
-    private Dictionary<Guid, string> _studentAnswers = new();
-    private ClassroomQuizResultResponse? _quizSubmitResult;
-
     private DialogOptions _viewLessonOptions = new()
     {
         MaxWidth = MaxWidth.Medium,
@@ -815,11 +717,11 @@ else
     };
 
     private DialogOptions _viewQuizOptions = new()
-    {
-        MaxWidth = MaxWidth.Medium,
-        FullWidth = true,
-        CloseButton = true
-    };
+{
+    MaxWidth = MaxWidth.Medium,
+    FullWidth = true,
+    CloseButton = true
+};
 
     protected override async Task OnInitializedAsync()
     {
@@ -909,190 +811,140 @@ else
     }
 
     private async Task OpenViewQuizDialog(Guid quizId)
+{
+    var quiz = await ApiService.GetClassroomQuizByIdAsync(ClassroomId, quizId, _userId);
+    if (quiz != null)
     {
-        var quiz = await ApiService.GetClassroomQuizByIdAsync(ClassroomId, quizId, _userId);
-        if (quiz != null)
-        {
-            _viewedQuiz = quiz;
-            _studentAnswers = new Dictionary<Guid, string>();
-            _quizSubmitResult = null;
-            _showViewQuizDialog = true;
-        }
-        else
-        {
-            Snackbar.Add("Eroare la încărcarea quiz-ului.", Severity.Error);
-        }
+        _viewedQuiz = quiz;
+        _showViewQuizDialog = true;
+    }
+    else
+    {
+        Snackbar.Add("Eroare la Ã®ncÄƒrcarea quiz-ului.", Severity.Error);
+    }
+}
+
+private void OpenEditQuizDialog(ClassroomQuizDto quiz)
+{
+    _editingQuizId = quiz.Id;
+    _editQuiz = new UpdateClassroomQuizRequest
+    {
+        Title = quiz.Title,
+        Difficulty = quiz.Difficulty,
+        TimeLimitMinutes = quiz.TimeLimitMinutes
+    };
+    _showEditQuizDialog = true;
+}
+
+private async Task UpdateQuiz()
+{
+    if (string.IsNullOrWhiteSpace(_editQuiz.Title)) return;
+    _isSaving = true;
+    var result = await ApiService.UpdateClassroomQuizAsync(
+        ClassroomId, _editingQuizId, _userId, _editQuiz);
+    _isSaving = false;
+    if (result != null)
+    {
+        _showEditQuizDialog = false;
+        Snackbar.Add("Quiz-ul a fost actualizat!", Severity.Success);
+        await LoadLessons();
+    }
+    else
+    {
+        Snackbar.Add("Eroare la actualizarea quiz-ului.", Severity.Error);
+    }
+}
+
+private async Task DeleteQuiz(Guid quizId)
+{
+    var result = await ApiService.DeleteClassroomQuizAsync(ClassroomId, quizId, _userId);
+    if (result)
+    {
+        Snackbar.Add("Quiz-ul a fost È™ters.", Severity.Info);
+        await LoadLessons();
+    }
+    else
+    {
+        Snackbar.Add("Eroare la È™tergerea quiz-ului.", Severity.Error);
+    }
+}
+
+private void OpenAddQuestionDialog()
+{
+    _newQuestion = new AddClassroomQuestionRequest { Points = 10 };
+    _newQuestionOptions = new List<string> { "", "" };
+    _showAddQuestionDialog = true;
+}
+
+private void AddOption()
+{
+    if (_newQuestionOptions.Count < 6) _newQuestionOptions.Add("");
+}
+
+private void RemoveOption(int idx)
+{
+    if (_newQuestionOptions.Count > 2) _newQuestionOptions.RemoveAt(idx);
+}
+
+private async Task AddQuestion()
+{
+    if (_viewedQuiz == null) return;
+    if (string.IsNullOrWhiteSpace(_newQuestion.Text))
+    {
+        Snackbar.Add("Textul Ã®ntrebÄƒrii este obligatoriu.", Severity.Warning);
+        return;
+    }
+    var validOptions = _newQuestionOptions.Where(o => !string.IsNullOrWhiteSpace(o)).ToList();
+    if (validOptions.Count < 2)
+    {
+        Snackbar.Add("Trebuie cel puÈ›in 2 variante de rÄƒspuns.", Severity.Warning);
+        return;
+    }
+    if (string.IsNullOrWhiteSpace(_newQuestion.CorrectAnswer) ||
+        !validOptions.Contains(_newQuestion.CorrectAnswer))
+    {
+        Snackbar.Add("Trebuie sÄƒ alegi un rÄƒspuns corect dintre variante.", Severity.Warning);
+        return;
     }
 
-    private void CloseQuizDialog()
+    _newQuestion.Options = validOptions;
+    _isSaving = true;
+    var result = await ApiService.AddClassroomQuestionAsync(
+        ClassroomId, _viewedQuiz.Id, _userId, _newQuestion);
+    _isSaving = false;
+
+    if (result != null)
     {
-        _showViewQuizDialog = false;
-        _studentAnswers = new Dictionary<Guid, string>();
-        _quizSubmitResult = null;
+        Snackbar.Add("ÃŽntrebarea a fost adÄƒugatÄƒ!", Severity.Success);
+        _showAddQuestionDialog = false;
+        // ReÃ®ncarcÄƒ quiz-ul ca sÄƒ se vadÄƒ noua Ã®ntrebare
+        var refreshed = await ApiService.GetClassroomQuizByIdAsync(ClassroomId, _viewedQuiz.Id, _userId);
+        if (refreshed != null) _viewedQuiz = refreshed;
+        await LoadLessons();
     }
-
-    private void ResetQuizAttempt()
+    else
     {
-        _studentAnswers = new Dictionary<Guid, string>();
-        _quizSubmitResult = null;
+        Snackbar.Add("Eroare la adÄƒugarea Ã®ntrebÄƒrii.", Severity.Error);
     }
+}
 
-    private async Task SubmitStudentQuiz()
+private async Task DeleteQuestion(Guid questionId)
+{
+    if (_viewedQuiz == null) return;
+    var result = await ApiService.DeleteClassroomQuestionAsync(
+        ClassroomId, _viewedQuiz.Id, questionId, _userId);
+    if (result)
     {
-        if (_viewedQuiz == null) return;
-
-        var unanswered = _viewedQuiz.Questions.Count(q =>
-            !_studentAnswers.ContainsKey(q.Id) || string.IsNullOrEmpty(_studentAnswers[q.Id]));
-        if (unanswered > 0)
-        {
-            Snackbar.Add($"Mai ai {unanswered} întrebări fără răspuns.", Severity.Warning);
-            return;
-        }
-
-        _isSaving = true;
-        var request = new SubmitClassroomQuizRequest
-        {
-            Answers = _studentAnswers
-                .Select(kv => new QuizAnswerDto { QuestionId = kv.Key, Answer = kv.Value })
-                .ToList()
-        };
-
-        var result = await ApiService.SubmitClassroomQuizAsync(
-            ClassroomId, _viewedQuiz.Id, _userId, request);
-        _isSaving = false;
-
-        if (result != null)
-        {
-            _quizSubmitResult = result;
-            Snackbar.Add($"Quiz trimis! Scor: {(int)Math.Round(result.ScorePercentage)}%", Severity.Success);
-            await LoadProgress();
-        }
-        else
-        {
-            Snackbar.Add("Eroare la trimiterea quiz-ului.", Severity.Error);
-        }
+        Snackbar.Add("ÃŽntrebarea a fost È™tearsÄƒ.", Severity.Info);
+        var refreshed = await ApiService.GetClassroomQuizByIdAsync(ClassroomId, _viewedQuiz.Id, _userId);
+        if (refreshed != null) _viewedQuiz = refreshed;
+        await LoadLessons();
     }
-
-    private void OpenEditQuizDialog(ClassroomQuizDto quiz)
+    else
     {
-        _editingQuizId = quiz.Id;
-        _editQuiz = new UpdateClassroomQuizRequest
-        {
-            Title = quiz.Title,
-            Difficulty = quiz.Difficulty,
-            TimeLimitMinutes = quiz.TimeLimitMinutes
-        };
-        _showEditQuizDialog = true;
+        Snackbar.Add("Eroare la È™tergerea Ã®ntrebÄƒrii.", Severity.Error);
     }
-
-    private async Task UpdateQuiz()
-    {
-        if (string.IsNullOrWhiteSpace(_editQuiz.Title)) return;
-        _isSaving = true;
-        var result = await ApiService.UpdateClassroomQuizAsync(
-            ClassroomId, _editingQuizId, _userId, _editQuiz);
-        _isSaving = false;
-        if (result != null)
-        {
-            _showEditQuizDialog = false;
-            Snackbar.Add("Quiz-ul a fost actualizat!", Severity.Success);
-            await LoadLessons();
-        }
-        else
-        {
-            Snackbar.Add("Eroare la actualizarea quiz-ului.", Severity.Error);
-        }
-    }
-
-    private async Task DeleteQuiz(Guid quizId)
-    {
-        var result = await ApiService.DeleteClassroomQuizAsync(ClassroomId, quizId, _userId);
-        if (result)
-        {
-            Snackbar.Add("Quiz-ul a fost șters.", Severity.Info);
-            await LoadLessons();
-        }
-        else
-        {
-            Snackbar.Add("Eroare la ștergerea quiz-ului.", Severity.Error);
-        }
-    }
-
-    private void OpenAddQuestionDialog()
-    {
-        _newQuestion = new AddClassroomQuestionRequest { Points = 10 };
-        _newQuestionOptions = new List<string> { "", "" };
-        _showAddQuestionDialog = true;
-    }
-
-    private void AddOption()
-    {
-        if (_newQuestionOptions.Count < 6) _newQuestionOptions.Add("");
-    }
-
-    private void RemoveOption(int idx)
-    {
-        if (_newQuestionOptions.Count > 2) _newQuestionOptions.RemoveAt(idx);
-    }
-
-    private async Task AddQuestion()
-    {
-        if (_viewedQuiz == null) return;
-        if (string.IsNullOrWhiteSpace(_newQuestion.Text))
-        {
-            Snackbar.Add("Textul întrebării este obligatoriu.", Severity.Warning);
-            return;
-        }
-        var validOptions = _newQuestionOptions.Where(o => !string.IsNullOrWhiteSpace(o)).ToList();
-        if (validOptions.Count < 2)
-        {
-            Snackbar.Add("Trebuie cel puțin 2 variante de răspuns.", Severity.Warning);
-            return;
-        }
-        if (string.IsNullOrWhiteSpace(_newQuestion.CorrectAnswer) ||
-            !validOptions.Contains(_newQuestion.CorrectAnswer))
-        {
-            Snackbar.Add("Trebuie să alegi un răspuns corect dintre variante.", Severity.Warning);
-            return;
-        }
-
-        _newQuestion.Options = validOptions;
-        _isSaving = true;
-        var result = await ApiService.AddClassroomQuestionAsync(
-            ClassroomId, _viewedQuiz.Id, _userId, _newQuestion);
-        _isSaving = false;
-
-        if (result != null)
-        {
-            Snackbar.Add("Întrebarea a fost adăugată!", Severity.Success);
-            _showAddQuestionDialog = false;
-            var refreshed = await ApiService.GetClassroomQuizByIdAsync(ClassroomId, _viewedQuiz.Id, _userId);
-            if (refreshed != null) _viewedQuiz = refreshed;
-            await LoadLessons();
-        }
-        else
-        {
-            Snackbar.Add("Eroare la adăugarea întrebării.", Severity.Error);
-        }
-    }
-
-    private async Task DeleteQuestion(Guid questionId)
-    {
-        if (_viewedQuiz == null) return;
-        var result = await ApiService.DeleteClassroomQuestionAsync(
-            ClassroomId, _viewedQuiz.Id, questionId, _userId);
-        if (result)
-        {
-            Snackbar.Add("Întrebarea a fost ștearsă.", Severity.Info);
-            var refreshed = await ApiService.GetClassroomQuizByIdAsync(ClassroomId, _viewedQuiz.Id, _userId);
-            if (refreshed != null) _viewedQuiz = refreshed;
-            await LoadLessons();
-        }
-        else
-        {
-            Snackbar.Add("Eroare la ștergerea întrebării.", Severity.Error);
-        }
-    }
+}
 
     private void OpenEditLessonDialog(ClassroomLessonDto lesson)
     {
@@ -1106,6 +958,8 @@ else
         _showEditLessonDialog = true;
     }
 
+    
+
     private async Task CreateLesson()
     {
         if (string.IsNullOrWhiteSpace(_newLesson.Title)) return;
@@ -1115,12 +969,12 @@ else
         if (result != null)
         {
             _showCreateLessonDialog = false;
-            Snackbar.Add("Lecția a fost creată!", Severity.Success);
+            Snackbar.Add("LecÈ›ia a fost creatÄƒ!", Severity.Success);
             await LoadLessons();
         }
         else
         {
-            Snackbar.Add("Eroare la crearea lecției.", Severity.Error);
+            Snackbar.Add("Eroare la crearea lecÈ›iei.", Severity.Error);
         }
     }
 
@@ -1134,12 +988,12 @@ else
         if (result != null)
         {
             _showEditLessonDialog = false;
-            Snackbar.Add("Lecția a fost actualizată!", Severity.Success);
+            Snackbar.Add("LecÈ›ia a fost actualizatÄƒ!", Severity.Success);
             await LoadLessons();
         }
         else
         {
-            Snackbar.Add("Eroare la actualizarea lecției.", Severity.Error);
+            Snackbar.Add("Eroare la actualizarea lecÈ›iei.", Severity.Error);
         }
     }
 
@@ -1148,12 +1002,12 @@ else
         var result = await ApiService.DeleteClassroomLessonAsync(ClassroomId, lessonId, _userId);
         if (result)
         {
-            Snackbar.Add("Lecția a fost ștearsă.", Severity.Info);
+            Snackbar.Add("LecÈ›ia a fost È™tearsÄƒ.", Severity.Info);
             await LoadLessons();
         }
         else
         {
-            Snackbar.Add("Eroare la ștergerea lecției.", Severity.Error);
+            Snackbar.Add("Eroare la È™tergerea lecÈ›iei.", Severity.Error);
         }
     }
 
@@ -1166,12 +1020,12 @@ else
         if (result)
         {
             _showAddMemberDialog = false;
-            Snackbar.Add("Elevul a fost adăugat!", Severity.Success);
+            Snackbar.Add("Elevul a fost adÄƒugat!", Severity.Success);
             await LoadMembers();
         }
         else
         {
-            Snackbar.Add("Eroare. Verifică emailul elevului.", Severity.Error);
+            Snackbar.Add("Eroare. VerificÄƒ emailul elevului.", Severity.Error);
         }
     }
 
@@ -1198,12 +1052,12 @@ else
         if (result != null)
         {
             _showAddGradeDialog = false;
-            Snackbar.Add("Nota a fost adăugată!", Severity.Success);
+            Snackbar.Add("Nota a fost adÄƒugatÄƒ!", Severity.Success);
             await LoadGrades();
         }
         else
         {
-            Snackbar.Add("Eroare la adăugarea notei.", Severity.Error);
+            Snackbar.Add("Eroare la adÄƒugarea notei.", Severity.Error);
         }
     }
 
@@ -1212,12 +1066,12 @@ else
         var result = await ApiService.DeleteGradeAsync(ClassroomId, gradeId, _userId);
         if (result)
         {
-            Snackbar.Add("Nota a fost ștearsă.", Severity.Info);
+            Snackbar.Add("Nota a fost È™tearsÄƒ.", Severity.Info);
             await LoadGrades();
         }
         else
         {
-            Snackbar.Add("Eroare la ștergerea notei.", Severity.Error);
+            Snackbar.Add("Eroare la È™tergerea notei.", Severity.Error);
         }
     }
 
@@ -1231,7 +1085,6 @@ else
         {
             _showCreateQuizDialog = false;
             Snackbar.Add("Quiz-ul a fost creat!", Severity.Success);
-            await LoadLessons();
         }
         else
         {
@@ -1246,15 +1099,15 @@ else
 
     private string GetSubjectName(SubjectType type) => type switch
     {
-        SubjectType.Mathematics => "Matematică",
-        SubjectType.Romanian => "Română",
-        SubjectType.Informatics => "Informatică",
+        SubjectType.Mathematics => "MatematicÄƒ",
+        SubjectType.Romanian => "RomÃ¢nÄƒ",
+        SubjectType.Informatics => "InformaticÄƒ",
         _ => "General"
     };
 
     private string GetDifficultyName(DifficultyLevel d) => d switch
     {
-        DifficultyLevel.Beginner => "Începător",
+        DifficultyLevel.Beginner => "ÃŽncepÄƒtor",
         DifficultyLevel.Intermediate => "Intermediar",
         DifficultyLevel.Advanced => "Avansat",
         _ => "N/A"
@@ -1276,3 +1129,4 @@ else
         _ => "background:#FCE4EC; color:#C62828; font-weight:700;"
     };
 }
+

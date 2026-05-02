@@ -35,4 +35,18 @@ public class ClassroomQuiz : BaseEntity
             TimeLimitMinutes = timeLimitMinutes
         };
     }
+
+        public void Update(string title, DifficultyLevel difficulty, int timeLimitMinutes)
+    {
+        if (string.IsNullOrWhiteSpace(title))
+            throw new DomainException("Quiz title cannot be empty.");
+        if (timeLimitMinutes <= 0 || timeLimitMinutes > 180)
+            throw new DomainException("Time limit must be between 1 and 180 minutes.");
+
+        Title = title;
+        Difficulty = difficulty;
+        TimeLimitMinutes = timeLimitMinutes;
+        SetUpdatedAt();
+    }
+
 }

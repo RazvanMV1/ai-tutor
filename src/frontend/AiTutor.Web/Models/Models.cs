@@ -345,6 +345,36 @@ public class AddClassroomQuestionRequest
     public string? Explanation { get; set; }
 }
 
+public class UpdateClassroomQuizRequest
+{
+    public string Title { get; set; } = string.Empty;
+    public DifficultyLevel Difficulty { get; set; } = DifficultyLevel.Beginner;
+    public int TimeLimitMinutes { get; set; } = 30;
+}
+
+public class ClassroomQuizDetailDto
+{
+    public Guid Id { get; set; }
+    public Guid ClassroomLessonId { get; set; }
+    public Guid ClassroomId { get; set; }
+    public string Title { get; set; } = string.Empty;
+    public DifficultyLevel Difficulty { get; set; }
+    public int TimeLimitMinutes { get; set; }
+    public DateTime CreatedAt { get; set; }
+    public List<ClassroomQuestionDetailDto> Questions { get; set; } = new();
+}
+
+public class ClassroomQuestionDetailDto
+{
+    public Guid Id { get; set; }
+    public string Text { get; set; } = string.Empty;
+    public string CorrectAnswer { get; set; } = string.Empty;
+    public List<string> Options { get; set; } = new();
+    public int Points { get; set; }
+    public string? Explanation { get; set; }
+}
+
+
 public class ClassroomProgressDto
 {
     public Guid StudentId { get; set; }
@@ -481,6 +511,14 @@ public class StudentGradeDto
     public Guid TeacherId { get; set; }
     public string TeacherName { get; set; } = string.Empty;
 }
+
+public class UpdateClassroomLessonRequest
+{
+    public string Title { get; set; } = string.Empty;
+    public string Content { get; set; } = string.Empty;
+    public DifficultyLevel Difficulty { get; set; } = DifficultyLevel.Beginner;
+}
+
 
 
 

@@ -18,6 +18,14 @@ using AiTutor.Application.Features.Classrooms.Queries.GetClassroomMembers;
 using AiTutor.Application.Features.Classrooms.Queries.GetClassroomProgress;
 using AiTutor.Application.Features.Classrooms.Queries.GetMyClassrooms;
 using AiTutor.Domain.Enums;
+using AiTutor.Application.Features.Classrooms.Commands.UpdateClassroomQuiz;
+using AiTutor.Application.Features.Classrooms.Commands.DeleteClassroomQuiz;
+using AiTutor.Application.Features.Classrooms.Commands.DeleteClassroomQuestion;
+using AiTutor.Application.Features.Classrooms.Queries.GetClassroomQuizzesByLesson;
+using AiTutor.Application.Features.Classrooms.Queries.GetClassroomQuizById;
+using AiTutor.Application.Features.Classrooms.Commands.UpdateClassroomLesson;
+using AiTutor.Application.Features.Classrooms.Commands.DeleteClassroomLesson;
+using AiTutor.Application.Features.Classrooms.Queries.GetClassroomLessonById;
 using MediatR;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
@@ -124,6 +132,31 @@ public class ClassroomsController : ControllerBase
         return result.IsSuccess ? StatusCode(result.StatusCode, result.Data) : BadRequest(result.Error);
     }
 
+    [HttpGet("{id}/lessons/{lessonId}")]
+    public async Task<IActionResult> GetLessonById(Guid id, Guid lessonId, [FromQuery] Guid userId)
+    {
+        var result = await _mediator.Send(new GetClassroomLessonByIdQuery(id, lessonId, userId));
+        return result.IsSuccess ? Ok(result.Data) : BadRequest(result.Error);
+    }
+
+    [HttpPut("{id}/lessons/{lessonId}")]
+    public async Task<IActionResult> UpdateLesson(Guid id, Guid lessonId,
+        [FromBody] UpdateClassroomLessonRequest request, [FromQuery] Guid teacherId)
+    {
+        var cmd = new UpdateClassroomLessonCommand(id, lessonId, teacherId,
+            request.Title, request.Content, request.Difficulty);
+        var result = await _mediator.Send(cmd);
+        return result.IsSuccess ? Ok(result.Data) : BadRequest(result.Error);
+    }
+
+    [HttpDelete("{id}/lessons/{lessonId}")]
+    public async Task<IActionResult> DeleteLesson(Guid id, Guid lessonId, [FromQuery] Guid teacherId)
+    {
+        var result = await _mediator.Send(new DeleteClassroomLessonCommand(id, lessonId, teacherId));
+        return result.IsSuccess ? Ok(result.Data) : BadRequest(result.Error);
+    }
+
+
     // ── Quizzes ───────────────────────────────────────────────────────────────
     [HttpPost("{id}/lessons/{lessonId}/quizzes")]
     public async Task<IActionResult> CreateQuiz(Guid id, Guid lessonId, [FromBody] CreateQuizRequest request, [FromQuery] Guid teacherId)
@@ -138,6 +171,45 @@ public class ClassroomsController : ControllerBase
         var result = await _mediator.Send(new AddClassroomQuestionCommand(id, quizId, teacherId, request.Text, request.CorrectAnswer, request.Options, request.Points, request.Explanation));
         return result.IsSuccess ? StatusCode(result.StatusCode, result.Data) : BadRequest(result.Error);
     }
+
+    [HttpGet("{id}/lessons/{lessonId}/quizzes")]
+    public async Task<IActionResult> GetQuizzesByLesson(Guid id, Guid lessonId, [FromQuery] Guid userId)
+    {
+        var result = await _mediator.Send(new GetClassroomQuizzesByLessonQuery(id, lessonId, userId));
+        return result.IsSuccess ? Ok(result.Data) : BadRequest(result.Error);
+    }
+
+    [HttpGet("{id}/quizzes/{quizId}")]
+    public async Task<IActionResult> GetQuizById(Guid id, Guid quizId, [FromQuery] Guid userId)
+    {
+        var result = await _mediator.Send(new GetClassroomQuizByIdQuery(id, quizId, userId));
+        return result.IsSuccess ? Ok(result.Data) : BadRequest(result.Error);
+    }
+
+    [HttpPut("{id}/quizzes/{quizId}")]
+    public async Task<IActionResult> UpdateQuiz(Guid id, Guid quizId,
+        [FromBody] UpdateClassroomQuizRequest request, [FromQuery] Guid teacherId)
+    {
+        var cmd = new UpdateClassroomQuizCommand(id, quizId, teacherId,
+            request.Title, request.Difficulty, request.TimeLimitMinutes);
+        var result = await _mediator.Send(cmd);
+        return result.IsSuccess ? Ok(result.Data) : BadRequest(result.Error);
+    }
+
+    [HttpDelete("{id}/quizzes/{quizId}")]
+    public async Task<IActionResult> DeleteQuiz(Guid id, Guid quizId, [FromQuery] Guid teacherId)
+    {
+        var result = await _mediator.Send(new DeleteClassroomQuizCommand(id, quizId, teacherId));
+        return result.IsSuccess ? Ok(result.Data) : BadRequest(result.Error);
+    }
+
+    [HttpDelete("{id}/quizzes/{quizId}/questions/{questionId}")]
+    public async Task<IActionResult> DeleteQuestion(Guid id, Guid quizId, Guid questionId, [FromQuery] Guid teacherId)
+    {
+        var result = await _mediator.Send(new DeleteClassroomQuestionCommand(id, quizId, questionId, teacherId));
+        return result.IsSuccess ? Ok(result.Data) : BadRequest(result.Error);
+    }
+
 
     [HttpPost("{id}/lessons/{lessonId}/quizzes/{quizId}/submit")]
     public async Task<IActionResult> SubmitQuiz(Guid id, Guid quizId, [FromBody] SubmitQuizRequest request, [FromQuery] Guid studentId)
@@ -182,6 +254,20 @@ public class ClassroomsController : ControllerBase
         var result = await _mediator.Send(new DeleteGradeCommand(gradeId, teacherId));
         return result.IsSuccess ? Ok() : BadRequest(result.Error);
     }
+
+    public record UpdateClassroomLessonRequest(
+    string Title,
+    string Content,
+    AiTutor.Domain.Enums.DifficultyLevel Difficulty
+);
+
+public record UpdateClassroomQuizRequest(
+    string Title,
+    AiTutor.Domain.Enums.DifficultyLevel Difficulty,
+    int TimeLimitMinutes
+);
+
+
 }
 
 

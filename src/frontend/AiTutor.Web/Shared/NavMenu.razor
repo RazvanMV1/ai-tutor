@@ -49,35 +49,14 @@
     }
 
     @* ========== TEACHER ========== *@
+        @* ========== TEACHER ========== *@
     else if (_role == UserRole.Teacher)
     {
-        <MudNavGroup Title="Conținut" Icon="@Icons.Material.Filled.School" Expanded="true">
-            <MudNavLink Href="/subjects" Icon="@Icons.Material.Filled.Category">
-                Materii
-            </MudNavLink>
-            <MudNavLink Href="/lessons" Icon="@Icons.Material.Filled.MenuBook">
-                Lecții
-            </MudNavLink>
-            <MudNavLink Href="/quiz" Icon="@Icons.Material.Filled.Quiz">
-                Quiz-uri
-            </MudNavLink>
-        </MudNavGroup>
-
-        <MudNavGroup Title="Clasele Mele" Icon="@Icons.Material.Filled.Groups" Expanded="true">
-            <MudNavLink Href="/classrooms" Icon="@Icons.Material.Filled.Class">
-                Clasele Mele
-            </MudNavLink>
-        </MudNavGroup>
-
-        <MudNavGroup Title="Asistent AI" Icon="@Icons.Material.Filled.AutoAwesome" Expanded="true">
-            <MudNavLink Href="/ai/explanation" Icon="@Icons.Material.Filled.Psychology">
-                Explicații AI
-            </MudNavLink>
-            <MudNavLink Href="/ai/problems" Icon="@Icons.Material.Filled.EditNote">
-                Probleme AI
-            </MudNavLink>
-        </MudNavGroup>
+        <MudNavLink Href="/classrooms" Icon="@Icons.Material.Filled.Groups" Match="NavLinkMatch.All">
+            Clasele Mele
+        </MudNavLink>
     }
+
 
     @* ========== PARENT ========== *@
     else if (_role == UserRole.Parent)

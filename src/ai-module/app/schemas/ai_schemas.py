@@ -1,4 +1,4 @@
-from pydantic import BaseModel, Field
+﻿from pydantic import BaseModel, Field
 from enum import IntEnum
 
 
@@ -56,3 +56,22 @@ class HintResponse(BaseModel):
     question: str
     hint: str
     subject: SubjectType
+
+
+# ===== Lesson Chat =====
+class ChatMessage(BaseModel):
+    role: str  # "user" sau "assistant"
+    content: str
+
+
+class LessonChatRequest(BaseModel):
+    lesson_title: str = Field(..., min_length=1, max_length=300)
+    lesson_content: str = Field(default="", max_length=20000)
+    subject: SubjectType
+    difficulty_level: DifficultyLevel
+    question: str = Field(..., min_length=1, max_length=2000)
+    history: list[ChatMessage] = Field(default_factory=list)
+
+
+class LessonChatResponse(BaseModel):
+    answer: str

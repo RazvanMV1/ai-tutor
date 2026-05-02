@@ -1,10 +1,12 @@
-using AiTutor.Application.Features.AI.Queries.GenerateProblems;
+﻿using AiTutor.Application.Features.AI.Queries.GenerateProblems;
 using AiTutor.Application.Features.AI.Queries.GetExplanation;
 using AiTutor.Application.Features.AI.Queries.GetHint;
 using AiTutor.Domain.Enums;
 using MediatR;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
+using System.Net.Http.Json;
+using System.Text.Json;
 
 namespace AiTutor.API.Controllers;
 
@@ -14,7 +16,15 @@ namespace AiTutor.API.Controllers;
 public class AiController : ControllerBase
 {
     private readonly IMediator _mediator;
-    public AiController(IMediator mediator) => _mediator = mediator;
+    private readonly IHttpClientFactory _httpClientFactory;
+    private readonly IConfiguration _configuration;
+
+    public AiController(IMediator mediator, IHttpClientFactory httpClientFactory, IConfiguration configuration)
+    {
+        _mediator = mediator;
+        _httpClientFactory = httpClientFactory;
+        _configuration = configuration;
+    }
 
     public record ExplanationRequest(
         string Topic,
@@ -35,6 +45,19 @@ public class AiController : ControllerBase
         int StudentAge,
         int Count = 3
     );
+
+    public record ChatMessage(string Role, string Content);
+
+    public record LessonChatRequest(
+        string LessonTitle,
+        string LessonContent,
+        SubjectType Subject,
+        DifficultyLevel DifficultyLevel,
+        string Question,
+        List<ChatMessage>? History
+    );
+
+    public record LessonChatResponse(string Answer);
 
     /// <summary>Get AI explanation for a topic</summary>
     [HttpPost("explanation")]
@@ -72,5 +95,44 @@ public class AiController : ControllerBase
             request.Count
         ));
         return result.IsSuccess ? Ok(result.Data) : BadRequest(result.Error);
+    }
+
+    /// <summary>AI tutor chat about a specific lesson (with conversation history)</summary>
+    [HttpPost("lesson-chat")]
+    public async Task<IActionResult> LessonChat([FromBody] LessonChatRequest request)
+    {
+        try
+        {
+            var aiBaseUrl = _configuration["AiModule:BaseUrl"] ?? "http://ai-module:8000";
+            var client = _httpClientFactory.CreateClient();
+            client.Timeout = TimeSpan.FromSeconds(60);
+
+            // Forward to Python AI module with snake_case keys
+            var payload = new
+            {
+                lesson_title = request.LessonTitle,
+                lesson_content = request.LessonContent ?? string.Empty,
+                subject = (int)request.Subject,
+                difficulty_level = (int)request.DifficultyLevel,
+                question = request.Question,
+                history = (request.History ?? new List<ChatMessage>())
+                    .Select(m => new { role = m.Role, content = m.Content })
+                    .ToList()
+            };
+
+            var response = await client.PostAsJsonAsync($"{aiBaseUrl}/api/lesson-chat", payload);
+            var body = await response.Content.ReadAsStringAsync();
+
+            if (!response.IsSuccessStatusCode)
+                return StatusCode((int)response.StatusCode, body);
+
+            using var doc = JsonDocument.Parse(body);
+            var answer = doc.RootElement.TryGetProperty("answer", out var a) ? a.GetString() ?? "" : "";
+            return Ok(new LessonChatResponse(answer));
+        }
+        catch (Exception ex)
+        {
+            return StatusCode(500, new { error = ex.Message });
+        }
     }
 }

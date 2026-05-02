@@ -1,4 +1,4 @@
-using System.Net.Http.Json;
+﻿using System.Net.Http.Json;
 using System.Net.Http.Headers;
 using System.Text.Json;
 using AiTutor.Web.Models;
@@ -217,11 +217,11 @@ public class ApiService
     }
 
     // ============================================================
-    // SUBSCRIPTIONS — Stripe integrated
+    // SUBSCRIPTIONS â€” Stripe integrated
     // ============================================================
 
     /// <summary>
-    /// Backend-ul returnează { "value": [...], "Count": N }.
+    /// Backend-ul returneazÄƒ { "value": [...], "Count": N }.
     /// </summary>
     public async Task<List<SubscriptionDto>> GetUserSubscriptionsAsync(Guid userId)
     {
@@ -229,7 +229,7 @@ public class ApiService
         try
         {
             var content = await _httpClient.GetStringAsync($"api/Subscriptions/user/{userId}");
-            // Backend returnează direct un array JSON: [{ ... }, { ... }]
+            // Backend returneazÄƒ direct un array JSON: [{ ... }, { ... }]
             return JsonSerializer.Deserialize<List<SubscriptionDto>>(content, _jsonOptions) ?? new();
         }
         catch
@@ -240,7 +240,7 @@ public class ApiService
 
 
     /// <summary>
-    /// Compatibility wrapper: returnează prima subscripție activă, sau prima din listă, sau null.
+    /// Compatibility wrapper: returneazÄƒ prima subscripÈ›ie activÄƒ, sau prima din listÄƒ, sau null.
     /// </summary>
     public async Task<SubscriptionDto?> GetSubscriptionByUserAsync(Guid userId)
     {
@@ -294,7 +294,7 @@ public class ApiService
         }
     }
 
-    // ===== Parent ↔ Child =====
+    // ===== Parent â†” Child =====
     public async Task<InvitationCodeDto?> GetInvitationCodeAsync(Guid parentId)
     {
         await AttachTokenAsync();
@@ -352,7 +352,7 @@ public class ApiService
             {
                 using var doc = JsonDocument.Parse(content);
                 if (doc.RootElement.TryGetProperty("message", out var msg))
-                    return (false, msg.GetString() ?? "Eroare necunoscută.", null);
+                    return (false, msg.GetString() ?? "Eroare necunoscutÄƒ.", null);
             }
             catch { }
             return (false, "Cod invalid sau eroare server.", null);
@@ -780,4 +780,24 @@ public class ApiService
     }
 
 
+
+    // ===== AI Tutor — Lesson Chat =====
+    public async Task<LessonChatResponse?> AskLessonAiAsync(LessonChatRequest request)
+    {
+        await AttachTokenAsync();
+        try
+        {
+            var response = await _httpClient.PostAsJsonAsync("api/Ai/lesson-chat", request);
+            if (response.IsSuccessStatusCode)
+            {
+                var content = await response.Content.ReadAsStringAsync();
+                return JsonSerializer.Deserialize<LessonChatResponse>(content, _jsonOptions);
+            }
+            return null;
+        }
+        catch
+        {
+            return null;
+        }
+    }
 }

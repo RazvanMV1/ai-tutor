@@ -1,4 +1,4 @@
-namespace AiTutor.Web.Models;
+﻿namespace AiTutor.Web.Models;
 
 // Enums
 public enum DifficultyLevel
@@ -249,6 +249,28 @@ public class ProblemResponse
     public DifficultyLevel DifficultyLevel { get; set; }
 }
 
+// ===== Lesson Chat (AI Tutor) =====
+public class LessonChatMessage
+{
+    public string Role { get; set; } = "user"; // "user" sau "assistant"
+    public string Content { get; set; } = string.Empty;
+}
+
+public class LessonChatRequest
+{
+    public string LessonTitle { get; set; } = string.Empty;
+    public string LessonContent { get; set; } = string.Empty;
+    public SubjectType Subject { get; set; }
+    public DifficultyLevel DifficultyLevel { get; set; }
+    public string Question { get; set; } = string.Empty;
+    public List<LessonChatMessage> History { get; set; } = new();
+}
+
+public class LessonChatResponse
+{
+    public string Answer { get; set; } = string.Empty;
+}
+
 // Auth State
 public class AuthState
 {
@@ -433,7 +455,7 @@ public class ClassroomQuizResultResponse
     public List<QuestionResultDto> Results { get; set; } = new();
 }
 
-// Stripe Subscription Status (mirror al SubscriptionStatus din backend)
+// Stripe Subscription Status
 public enum SubscriptionStatus
 {
     Pending = 1,
@@ -443,7 +465,6 @@ public enum SubscriptionStatus
     Incomplete = 5
 }
 
-// Checkout Session DTOs
 public class CreateCheckoutSessionRequest
 {
     public Guid UserId { get; set; }
@@ -456,8 +477,6 @@ public class CheckoutSessionResponse
     public string CheckoutUrl { get; set; } = string.Empty;
 }
 
-// Wrapper pentru răspunsul paginat de la GET /api/Subscriptions/user/{userId}
-// Backend-ul returnează { "value": [...], "Count": N }
 public class SubscriptionListResponse
 {
     public List<SubscriptionDto> Value { get; set; } = new();
@@ -518,9 +537,3 @@ public class UpdateClassroomLessonRequest
     public string Content { get; set; } = string.Empty;
     public DifficultyLevel Difficulty { get; set; } = DifficultyLevel.Beginner;
 }
-
-
-
-
-
-

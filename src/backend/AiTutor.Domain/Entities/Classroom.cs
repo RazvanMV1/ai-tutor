@@ -1,4 +1,5 @@
-using AiTutor.Domain.Common;
+﻿using AiTutor.Domain.Common;
+using System.Security.Cryptography;
 using AiTutor.Domain.Enums;
 using AiTutor.Domain.Exceptions;
 
@@ -71,10 +72,10 @@ public class Classroom : BaseEntity
             SubjectType.Informatics => "INF",
             _ => "GEN"
         };
-        var random = new Random();
         var chars = "ABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789";
         var suffix = new string(Enumerable.Range(0, 4)
-            .Select(_ => chars[random.Next(chars.Length)]).ToArray());
+            .Select(_ => chars[RandomNumberGenerator.GetInt32(chars.Length)]).ToArray());
         return $"{prefix}-{suffix}";
     }
 }
+

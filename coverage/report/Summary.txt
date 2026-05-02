@@ -1,0 +1,265 @@
+Summary
+  Generated on: 5/2/2026 - 9:34:07 PM
+  Coverage date: 3/31/2026 - 7:10:19 PM - 5/2/2026 - 9:32:39 PM
+  Parser: MultiReport (3x Cobertura)
+  Assemblies: 4
+  Classes: 237
+  Files: 187
+  Line coverage: 85.2%
+  Covered lines: 6202
+  Uncovered lines: 1071
+  Coverable lines: 7273
+  Total lines: 10829
+  Branch coverage: 44% (246 of 559)
+  Covered branches: 246
+  Total branches: 559
+  Method coverage: 67% (644 of 961)
+  Full method coverage: 60.4% (581 of 961)
+  Covered methods: 644
+  Fully covered methods: 581
+  Total methods: 961
+
+AiTutor.API                                                                                                             46.7%
+  AiTutor.API.Controllers.AiController                                                                                     0%
+  AiTutor.API.Controllers.AuthController                                                                                92.8%
+  AiTutor.API.Controllers.BaseController                                                                                 100%
+  AiTutor.API.Controllers.ClassroomsController                                                                             0%
+  AiTutor.API.Controllers.LessonsController                                                                                0%
+  AiTutor.API.Controllers.LoginRequest                                                                                   100%
+  AiTutor.API.Controllers.ProgressController                                                                              60%
+  AiTutor.API.Controllers.QuizzesController                                                                                0%
+  AiTutor.API.Controllers.RegisterRequest                                                                                100%
+  AiTutor.API.Controllers.SubjectsController                                                                              90%
+  AiTutor.API.Controllers.SubscriptionsController                                                                          0%
+  AiTutor.API.Controllers.UsersController                                                                                  0%
+  AiTutor.API.Middleware.ExceptionHandlingMiddleware                                                                      56%
+  Program                                                                                                                100%
+
+AiTutor.Application                                                                                                     76.2%
+  AiTutor.Application.Common.Behaviors.LoggingBehavior<T1, T2>                                                           100%
+  AiTutor.Application.Common.Behaviors.ValidationBehavior<T1, T2>                                                        100%
+  AiTutor.Application.Common.Exceptions.ForbiddenAccessException                                                         100%
+  AiTutor.Application.Common.Exceptions.NotFoundException                                                                100%
+  AiTutor.Application.Common.Exceptions.ValidationException                                                              100%
+  AiTutor.Application.Common.Interfaces.ExplanationRequest                                                              66.6%
+  AiTutor.Application.Common.Interfaces.ExplanationResponse                                                               50%
+  AiTutor.Application.Common.Interfaces.HintRequest                                                                       75%
+  AiTutor.Application.Common.Interfaces.HintResponse                                                                      80%
+  AiTutor.Application.Common.Interfaces.ProblemRequest                                                                  57.1%
+  AiTutor.Application.Common.Interfaces.ProblemResponse                                                                   50%
+  AiTutor.Application.Common.Models.PaginatedList<T>                                                                     100%
+  AiTutor.Application.Common.Models.Result<T>                                                                            100%
+  AiTutor.Application.Common.Models.Stripe.CheckoutSessionResult                                                           0%
+  AiTutor.Application.Common.Models.Stripe.StripeCheckoutSessionData                                                       0%
+  AiTutor.Application.Common.Models.Stripe.StripeStatusMapper                                                              0%
+  AiTutor.Application.Common.Models.Stripe.StripeSubscriptionData                                                          0%
+  AiTutor.Application.Common.Models.Stripe.StripeWebhookEvent                                                              0%
+  AiTutor.Application.DependencyInjection                                                                                100%
+  AiTutor.Application.Features.AI.Queries.GenerateProblems.GenerateProblemsQuery                                         100%
+  AiTutor.Application.Features.AI.Queries.GenerateProblems.GenerateProblemsQueryHandler                                  100%
+  AiTutor.Application.Features.AI.Queries.GetExplanation.GetExplanationQuery                                             100%
+  AiTutor.Application.Features.AI.Queries.GetExplanation.GetExplanationQueryHandler                                      100%
+  AiTutor.Application.Features.AI.Queries.GetHint.GetHintQuery                                                           100%
+  AiTutor.Application.Features.AI.Queries.GetHint.GetHintQueryHandler                                                    100%
+  AiTutor.Application.Features.Classrooms.Commands.AddClassroomQuestion.AddClassroomQuestionCommand                      100%
+  AiTutor.Application.Features.Classrooms.Commands.AddClassroomQuestion.AddClassroomQuestionCommandHandler              78.2%
+  AiTutor.Application.Features.Classrooms.Commands.AddClassroomQuestion.ClassroomQuestionResponse                       37.5%
+  AiTutor.Application.Features.Classrooms.Commands.AddGrade.AddGradeCommand                                              100%
+  AiTutor.Application.Features.Classrooms.Commands.AddGrade.AddGradeCommandHandler                                      90.9%
+  AiTutor.Application.Features.Classrooms.Commands.AddGrade.GradeResponse                                                 40%
+  AiTutor.Application.Features.Classrooms.Commands.AddMember.AddMemberCommand                                            100%
+  AiTutor.Application.Features.Classrooms.Commands.AddMember.AddMemberCommandHandler                                    74.1%
+  AiTutor.Application.Features.Classrooms.Commands.CreateClassroom.ClassroomResponse                                    41.6%
+  AiTutor.Application.Features.Classrooms.Commands.CreateClassroom.CreateClassroomCommand                                100%
+  AiTutor.Application.Features.Classrooms.Commands.CreateClassroom.CreateClassroomCommandHandler                         100%
+  AiTutor.Application.Features.Classrooms.Commands.CreateClassroom.CreateClassroomCommandValidator                       100%
+  AiTutor.Application.Features.Classrooms.Commands.CreateClassroomLesson.ClassroomLessonResponse                        55.5%
+  AiTutor.Application.Features.Classrooms.Commands.CreateClassroomLesson.CreateClassroomLessonCommand                    100%
+  AiTutor.Application.Features.Classrooms.Commands.CreateClassroomLesson.CreateClassroomLessonCommandHandler            95.6%
+  AiTutor.Application.Features.Classrooms.Commands.CreateClassroomQuiz.ClassroomQuizResponse                              50%
+  AiTutor.Application.Features.Classrooms.Commands.CreateClassroomQuiz.CreateClassroomQuizCommand                        100%
+  AiTutor.Application.Features.Classrooms.Commands.CreateClassroomQuiz.CreateClassroomQuizCommandHandler                94.1%
+  AiTutor.Application.Features.Classrooms.Commands.DeleteClassroom.DeleteClassroomCommand                                100%
+  AiTutor.Application.Features.Classrooms.Commands.DeleteClassroom.DeleteClassroomCommandHandler                        92.3%
+  AiTutor.Application.Features.Classrooms.Commands.DeleteClassroomLesson.DeleteClassroomLessonCommand                    100%
+  AiTutor.Application.Features.Classrooms.Commands.DeleteClassroomLesson.DeleteClassroomLessonCommandHandler             100%
+  AiTutor.Application.Features.Classrooms.Commands.DeleteClassroomQuestion.DeleteClassroomQuestionCommand                100%
+  AiTutor.Application.Features.Classrooms.Commands.DeleteClassroomQuestion.DeleteClassroomQuestionCommandHandler        94.4%
+  AiTutor.Application.Features.Classrooms.Commands.DeleteClassroomQuiz.DeleteClassroomQuizCommand                        100%
+  AiTutor.Application.Features.Classrooms.Commands.DeleteClassroomQuiz.DeleteClassroomQuizCommandHandler                94.4%
+  AiTutor.Application.Features.Classrooms.Commands.DeleteGrade.DeleteGradeCommand                                        100%
+  AiTutor.Application.Features.Classrooms.Commands.DeleteGrade.DeleteGradeCommandHandler                                84.6%
+  AiTutor.Application.Features.Classrooms.Commands.JoinClassroom.JoinClassroomCommand                                    100%
+  AiTutor.Application.Features.Classrooms.Commands.JoinClassroom.JoinClassroomCommandHandler                              95%
+  AiTutor.Application.Features.Classrooms.Commands.RemoveMember.RemoveMemberCommand                                      100%
+  AiTutor.Application.Features.Classrooms.Commands.RemoveMember.RemoveMemberCommandHandler                              92.3%
+  AiTutor.Application.Features.Classrooms.Commands.SubmitClassroomQuiz.ClassroomQuizResultResponse                        25%
+  AiTutor.Application.Features.Classrooms.Commands.SubmitClassroomQuiz.QuizAnswerDto                                     100%
+  AiTutor.Application.Features.Classrooms.Commands.SubmitClassroomQuiz.QuizQuestionResult                               37.5%
+  AiTutor.Application.Features.Classrooms.Commands.SubmitClassroomQuiz.SubmitClassroomQuizCommand                        100%
+  AiTutor.Application.Features.Classrooms.Commands.SubmitClassroomQuiz.SubmitClassroomQuizCommandHandler                 100%
+  AiTutor.Application.Features.Classrooms.Commands.UpdateClassroom.UpdateClassroomCommand                                100%
+  AiTutor.Application.Features.Classrooms.Commands.UpdateClassroom.UpdateClassroomCommandHandler                        90.4%
+  AiTutor.Application.Features.Classrooms.Commands.UpdateClassroomLesson.UpdateClassroomLessonCommand                    100%
+  AiTutor.Application.Features.Classrooms.Commands.UpdateClassroomLesson.UpdateClassroomLessonCommandHandler             100%
+  AiTutor.Application.Features.Classrooms.Commands.UpdateClassroomQuiz.UpdateClassroomQuizCommand                        100%
+  AiTutor.Application.Features.Classrooms.Commands.UpdateClassroomQuiz.UpdateClassroomQuizCommandHandler                95.4%
+  AiTutor.Application.Features.Classrooms.Commands.UpdateGrade.UpdateGradeCommand                                        100%
+  AiTutor.Application.Features.Classrooms.Commands.UpdateGrade.UpdateGradeCommandHandler                                88.8%
+  AiTutor.Application.Features.Classrooms.Queries.GetClassroomById.GetClassroomByIdQuery                                 100%
+  AiTutor.Application.Features.Classrooms.Queries.GetClassroomById.GetClassroomByIdQueryHandler                         95.6%
+  AiTutor.Application.Features.Classrooms.Queries.GetClassroomGrades.GetClassroomGradesQuery                             100%
+  AiTutor.Application.Features.Classrooms.Queries.GetClassroomGrades.GetClassroomGradesQueryHandler                     90.9%
+  AiTutor.Application.Features.Classrooms.Queries.GetClassroomLessonById.GetClassroomLessonByIdQuery                     100%
+  AiTutor.Application.Features.Classrooms.Queries.GetClassroomLessonById.GetClassroomLessonByIdQueryHandler              100%
+  AiTutor.Application.Features.Classrooms.Queries.GetClassroomLessons.GetClassroomLessonsQuery                           100%
+  AiTutor.Application.Features.Classrooms.Queries.GetClassroomLessons.GetClassroomLessonsQueryHandler                   91.3%
+  AiTutor.Application.Features.Classrooms.Queries.GetClassroomMembers.ClassroomMemberDto                                33.3%
+  AiTutor.Application.Features.Classrooms.Queries.GetClassroomMembers.GetClassroomMembersQuery                           100%
+  AiTutor.Application.Features.Classrooms.Queries.GetClassroomMembers.GetClassroomMembersQueryHandler                   90.9%
+  AiTutor.Application.Features.Classrooms.Queries.GetClassroomProgress.ClassroomProgressResponse                           0%
+  AiTutor.Application.Features.Classrooms.Queries.GetClassroomProgress.GetClassroomProgressQuery                         100%
+  AiTutor.Application.Features.Classrooms.Queries.GetClassroomProgress.GetClassroomProgressQueryHandler                 93.3%
+  AiTutor.Application.Features.Classrooms.Queries.GetClassroomQuizById.ClassroomQuestionDetailResponse                    25%
+  AiTutor.Application.Features.Classrooms.Queries.GetClassroomQuizById.ClassroomQuizDetailResponse                        40%
+  AiTutor.Application.Features.Classrooms.Queries.GetClassroomQuizById.GetClassroomQuizByIdQuery                         100%
+  AiTutor.Application.Features.Classrooms.Queries.GetClassroomQuizById.GetClassroomQuizByIdQueryHandler                  100%
+  AiTutor.Application.Features.Classrooms.Queries.GetClassroomQuizzesByLesson.GetClassroomQuizzesByLessonQuery           100%
+  AiTutor.Application.Features.Classrooms.Queries.GetClassroomQuizzesByLesson.GetClassroomQuizzesByLessonQueryHandler    100%
+  AiTutor.Application.Features.Classrooms.Queries.GetMyClassrooms.GetMyClassroomsQuery                                   100%
+  AiTutor.Application.Features.Classrooms.Queries.GetMyClassrooms.GetMyClassroomsQueryHandler                            100%
+  AiTutor.Application.Features.Lessons.Commands.CreateLesson.CreateLessonCommand                                         100%
+  AiTutor.Application.Features.Lessons.Commands.CreateLesson.CreateLessonCommandHandler                                  100%
+  AiTutor.Application.Features.Lessons.Commands.CreateLesson.CreateLessonCommandValidator                                100%
+  AiTutor.Application.Features.Lessons.Commands.CreateLesson.LessonResponse                                              100%
+  AiTutor.Application.Features.Lessons.Queries.GetLessonById.GetLessonByIdQuery                                          100%
+  AiTutor.Application.Features.Lessons.Queries.GetLessonById.GetLessonByIdQueryHandler                                   100%
+  AiTutor.Application.Features.Lessons.Queries.GetLessonById.LessonDto                                                    50%
+  AiTutor.Application.Features.Lessons.Queries.GetLessonsBySubject.GetLessonsBySubjectQuery                              100%
+  AiTutor.Application.Features.Lessons.Queries.GetLessonsBySubject.GetLessonsBySubjectQueryHandler                       100%
+  AiTutor.Application.Features.Lessons.Queries.GetLessonsBySubject.LessonDto                                            37.5%
+  AiTutor.Application.Features.Progress.Commands.CompleteLesson.CompleteLessonCommand                                    100%
+  AiTutor.Application.Features.Progress.Commands.CompleteLesson.CompleteLessonCommandHandler                             100%
+  AiTutor.Application.Features.Progress.Commands.CompleteLesson.CompleteLessonCommandValidator                           100%
+  AiTutor.Application.Features.Progress.Commands.CompleteLesson.ProgressResponse                                         100%
+  AiTutor.Application.Features.Progress.Events.LessonCompletedEventHandler                                               100%
+  AiTutor.Application.Features.Progress.Queries.GetStudentProgress.GetStudentProgressQuery                               100%
+  AiTutor.Application.Features.Progress.Queries.GetStudentProgress.GetStudentProgressQueryHandler                        100%
+  AiTutor.Application.Features.Progress.Queries.GetStudentProgress.StudentProgressDto                                   57.1%
+  AiTutor.Application.Features.Questions.Commands.CreateQuestion.CreateQuestionCommand                                   100%
+  AiTutor.Application.Features.Questions.Commands.CreateQuestion.CreateQuestionCommandHandler                            100%
+  AiTutor.Application.Features.Questions.Commands.CreateQuestion.CreateQuestionCommandValidator                          100%
+  AiTutor.Application.Features.Questions.Commands.CreateQuestion.QuestionResponse                                         50%
+  AiTutor.Application.Features.Quizzes.Commands.CreateQuiz.CreateQuizCommand                                             100%
+  AiTutor.Application.Features.Quizzes.Commands.CreateQuiz.CreateQuizCommandHandler                                      100%
+  AiTutor.Application.Features.Quizzes.Commands.CreateQuiz.CreateQuizCommandValidator                                    100%
+  AiTutor.Application.Features.Quizzes.Commands.CreateQuiz.QuizResponse                                                   50%
+  AiTutor.Application.Features.Quizzes.Commands.SubmitQuiz.QuestionResultDto                                            42.8%
+  AiTutor.Application.Features.Quizzes.Commands.SubmitQuiz.QuizAnswerDto                                                 100%
+  AiTutor.Application.Features.Quizzes.Commands.SubmitQuiz.QuizResultResponse                                           71.4%
+  AiTutor.Application.Features.Quizzes.Commands.SubmitQuiz.SubmitQuizCommand                                             100%
+  AiTutor.Application.Features.Quizzes.Commands.SubmitQuiz.SubmitQuizCommandHandler                                      100%
+  AiTutor.Application.Features.Quizzes.Commands.SubmitQuiz.SubmitQuizCommandValidator                                    100%
+  AiTutor.Application.Features.Quizzes.Queries.GetQuizById.GetQuizByIdQuery                                              100%
+  AiTutor.Application.Features.Quizzes.Queries.GetQuizById.GetQuizByIdQueryHandler                                       100%
+  AiTutor.Application.Features.Quizzes.Queries.GetQuizById.QuestionDto                                                    40%
+  AiTutor.Application.Features.Quizzes.Queries.GetQuizById.QuizDetailDto                                                42.8%
+  AiTutor.Application.Features.Quizzes.Queries.GetQuizzesByLesson.GetQuizzesByLessonQuery                                100%
+  AiTutor.Application.Features.Quizzes.Queries.GetQuizzesByLesson.GetQuizzesByLessonQueryHandler                         100%
+  AiTutor.Application.Features.Quizzes.Queries.GetQuizzesByLesson.QuizSummaryDto                                        33.3%
+  AiTutor.Application.Features.Subjects.Commands.CreateSubject.CreateSubjectCommand                                      100%
+  AiTutor.Application.Features.Subjects.Commands.CreateSubject.CreateSubjectCommandHandler                               100%
+  AiTutor.Application.Features.Subjects.Commands.CreateSubject.CreateSubjectCommandValidator                             100%
+  AiTutor.Application.Features.Subjects.Commands.CreateSubject.SubjectResponse                                           100%
+  AiTutor.Application.Features.Subjects.Queries.GetAllSubjects.GetAllSubjectsQueryHandler                                100%
+  AiTutor.Application.Features.Subjects.Queries.GetAllSubjects.SubjectDto                                                100%
+  AiTutor.Application.Features.Subscriptions.Commands.CancelSubscription.CancelSubscriptionCommand                       100%
+  AiTutor.Application.Features.Subscriptions.Commands.CancelSubscription.CancelSubscriptionCommandHandler                 50%
+  AiTutor.Application.Features.Subscriptions.Commands.CreateCheckoutSession.CheckoutSessionResponse                        0%
+  AiTutor.Application.Features.Subscriptions.Commands.CreateCheckoutSession.CreateCheckoutSessionCommand                   0%
+  AiTutor.Application.Features.Subscriptions.Commands.CreateCheckoutSession.CreateCheckoutSessionCommandHandler            0%
+  AiTutor.Application.Features.Subscriptions.Commands.CreateCheckoutSession.CreateCheckoutSessionCommandValidator          0%
+  AiTutor.Application.Features.Subscriptions.Commands.CreateSubscription.CreateSubscriptionCommand                       100%
+  AiTutor.Application.Features.Subscriptions.Commands.CreateSubscription.CreateSubscriptionCommandHandler                100%
+  AiTutor.Application.Features.Subscriptions.Commands.CreateSubscription.CreateSubscriptionCommandValidator              100%
+  AiTutor.Application.Features.Subscriptions.Commands.CreateSubscription.SubscriptionResponse                           44.4%
+  AiTutor.Application.Features.Subscriptions.Commands.HandleStripeWebhook.HandleStripeWebhookCommand                       0%
+  AiTutor.Application.Features.Subscriptions.Commands.HandleStripeWebhook.HandleStripeWebhookCommandHandler                0%
+  AiTutor.Application.Features.Subscriptions.Queries.GetAllSubscriptions.GetAllSubscriptionsQuery                        100%
+  AiTutor.Application.Features.Subscriptions.Queries.GetAllSubscriptions.GetAllSubscriptionsQueryHandler                 100%
+  AiTutor.Application.Features.Subscriptions.Queries.GetSubscriptionByUser.GetSubscriptionByUserQuery                    100%
+  AiTutor.Application.Features.Subscriptions.Queries.GetSubscriptionByUser.GetSubscriptionByUserQueryHandler             100%
+  AiTutor.Application.Features.Users.Commands.CreateUser.CreateUserCommand                                               100%
+  AiTutor.Application.Features.Users.Commands.CreateUser.CreateUserCommandHandler                                        100%
+  AiTutor.Application.Features.Users.Commands.CreateUser.CreateUserCommandValidator                                      100%
+  AiTutor.Application.Features.Users.Commands.CreateUser.CreateUserResponse                                              100%
+  AiTutor.Application.Features.Users.Commands.LinkParent.LinkParentCommand                                               100%
+  AiTutor.Application.Features.Users.Commands.LinkParent.LinkParentCommandHandler                                        100%
+  AiTutor.Application.Features.Users.Commands.LinkParent.LinkParentResponse                                              100%
+  AiTutor.Application.Features.Users.Commands.UnlinkParent.UnlinkParentCommand                                           100%
+  AiTutor.Application.Features.Users.Commands.UnlinkParent.UnlinkParentCommandHandler                                    100%
+  AiTutor.Application.Features.Users.Events.UserCreatedEventHandler                                                      100%
+  AiTutor.Application.Features.Users.Queries.GetAllUsers.GetAllUsersQuery                                                100%
+  AiTutor.Application.Features.Users.Queries.GetAllUsers.GetAllUsersQueryHandler                                         100%
+  AiTutor.Application.Features.Users.Queries.GetChildren.ChildDto                                                         50%
+  AiTutor.Application.Features.Users.Queries.GetChildren.GetChildrenQuery                                                100%
+  AiTutor.Application.Features.Users.Queries.GetChildren.GetChildrenQueryHandler                                         100%
+  AiTutor.Application.Features.Users.Queries.GetInvitationCode.GetInvitationCodeQuery                                    100%
+  AiTutor.Application.Features.Users.Queries.GetInvitationCode.GetInvitationCodeQueryHandler                            78.9%
+  AiTutor.Application.Features.Users.Queries.GetInvitationCode.InvitationCodeDto                                         100%
+  AiTutor.Application.Features.Users.Queries.GetMyParent.GetMyParentQuery                                                100%
+  AiTutor.Application.Features.Users.Queries.GetMyParent.GetMyParentQueryHandler                                          95%
+  AiTutor.Application.Features.Users.Queries.GetMyParent.ParentInfoDto                                                    75%
+  AiTutor.Application.Features.Users.Queries.GetStudentGrades.GetStudentGradesQuery                                        0%
+  AiTutor.Application.Features.Users.Queries.GetStudentGrades.GetStudentGradesQueryHandler                                 0%
+  AiTutor.Application.Features.Users.Queries.GetStudentGrades.StudentGradeDto                                              0%
+  AiTutor.Application.Features.Users.Queries.GetUserById.GetUserByIdQuery                                                100%
+  AiTutor.Application.Features.Users.Queries.GetUserById.GetUserByIdQueryHandler                                         100%
+  AiTutor.Application.Features.Users.Queries.GetUserById.UserDto                                                        57.1%
+
+AiTutor.Domain                                                                                                          76.8%
+  AiTutor.Domain.Common.BaseEntity                                                                                      88.8%
+  AiTutor.Domain.Entities.Classroom                                                                                     82.1%
+  AiTutor.Domain.Entities.ClassroomLesson                                                                               92.5%
+  AiTutor.Domain.Entities.ClassroomMember                                                                                100%
+  AiTutor.Domain.Entities.ClassroomProgress                                                                               80%
+  AiTutor.Domain.Entities.ClassroomQuestion                                                                             91.6%
+  AiTutor.Domain.Entities.ClassroomQuiz                                                                                 87.8%
+  AiTutor.Domain.Entities.Grade                                                                                         96.6%
+  AiTutor.Domain.Entities.Lesson                                                                                          96%
+  AiTutor.Domain.Entities.Question                                                                                      91.6%
+  AiTutor.Domain.Entities.Quiz                                                                                          69.2%
+  AiTutor.Domain.Entities.StudentProgress                                                                                100%
+  AiTutor.Domain.Entities.Subject                                                                                       68.4%
+  AiTutor.Domain.Entities.Subscription                                                                                  38.7%
+  AiTutor.Domain.Entities.User                                                                                          78.2%
+  AiTutor.Domain.Events.LessonCompletedEvent                                                                             100%
+  AiTutor.Domain.Events.UserCreatedEvent                                                                                 100%
+  AiTutor.Domain.Exceptions.DomainException                                                                              100%
+  AiTutor.Domain.ValueObjects.Email                                                                                     83.3%
+
+AiTutor.Infrastructure                                                                                                  95.4%
+  AiTutor.Infrastructure.DependencyInjection                                                                             100%
+  AiTutor.Infrastructure.Identity.ApplicationUser                                                                        100%
+  AiTutor.Infrastructure.Persistence.ApplicationDbContext                                                               69.4%
+  AiTutor.Infrastructure.Persistence.Configurations.ClassroomConfiguration                                               100%
+  AiTutor.Infrastructure.Persistence.Configurations.ClassroomLessonConfiguration                                         100%
+  AiTutor.Infrastructure.Persistence.Configurations.ClassroomMemberConfiguration                                         100%
+  AiTutor.Infrastructure.Persistence.Configurations.ClassroomProgressConfiguration                                       100%
+  AiTutor.Infrastructure.Persistence.Configurations.ClassroomQuestionConfiguration                                       100%
+  AiTutor.Infrastructure.Persistence.Configurations.ClassroomQuizConfiguration                                           100%
+  AiTutor.Infrastructure.Persistence.Configurations.GradeConfiguration                                                   100%
+  AiTutor.Infrastructure.Persistence.Configurations.LessonConfiguration                                                  100%
+  AiTutor.Infrastructure.Persistence.Configurations.QuestionConfiguration                                                100%
+  AiTutor.Infrastructure.Persistence.Configurations.QuizConfiguration                                                    100%
+  AiTutor.Infrastructure.Persistence.Configurations.StudentProgressConfiguration                                         100%
+  AiTutor.Infrastructure.Persistence.Configurations.SubjectConfiguration                                                 100%
+  AiTutor.Infrastructure.Persistence.Configurations.SubscriptionConfiguration                                            100%
+  AiTutor.Infrastructure.Persistence.Configurations.UserConfiguration                                                    100%
+  AiTutor.Infrastructure.Persistence.Migrations.AddClassroomFeatures                                                    98.7%
+  AiTutor.Infrastructure.Persistence.Migrations.AddQuizAndSubscriptionFeatures                                          99.6%
+  AiTutor.Infrastructure.Persistence.Migrations.ApplicationDbContextModelSnapshot                                        100%
+  AiTutor.Infrastructure.Persistence.Migrations.InitialCreate                                                           96.8%
+  AiTutor.Infrastructure.Services.AiTutorService                                                                           0%
+  AiTutor.Infrastructure.Services.CurrentUserService                                                                       0%
+  AiTutor.Infrastructure.Services.JwtService                                                                            56.6%

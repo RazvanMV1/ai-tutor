@@ -1,7 +1,8 @@
-using AiTutor.Domain.Common;
+﻿using AiTutor.Domain.Common;
 using AiTutor.Domain.Enums;
 using AiTutor.Domain.Events;
 using AiTutor.Domain.ValueObjects;
+using System.Security.Cryptography;
 
 namespace AiTutor.Domain.Entities;
 
@@ -14,7 +15,7 @@ public class User : BaseEntity
     public bool IsActive { get; private set; } = true;
     public string? IdentityUserId { get; private set; }
 
-    // 🆕 Parent ↔ Child relationship
+    // ðŸ†• Parent â†” Child relationship
     public Guid? ParentId { get; private set; }       // Set on Student when linked to a Parent
     public string? InvitationCode { get; private set; } // Set on Parent (e.g. "PAR-X7K9M2")
 
@@ -60,7 +61,7 @@ public class User : BaseEntity
         SetUpdatedAt();
     }
 
-    // 🆕 Link this Student to a Parent (called on a Student entity)
+    // ðŸ†• Link this Student to a Parent (called on a Student entity)
     public void LinkToParent(Guid parentId)
     {
         if (Role != UserRole.Student)
@@ -75,7 +76,7 @@ public class User : BaseEntity
         SetUpdatedAt();
     }
 
-    // 🆕 Re-generate invitation code if needed
+    // ðŸ†• Re-generate invitation code if needed
     public void RegenerateInvitationCode()
     {
         if (Role != UserRole.Parent)
@@ -88,11 +89,11 @@ public class User : BaseEntity
     {
         // Format: PAR-XXXXXX (6 chars, no ambiguous like 0/O, 1/I)
         const string chars = "ABCDEFGHJKLMNPQRSTUVWXYZ23456789";
-        var random = new Random();
         var code = new string(Enumerable.Range(0, 6)
-            .Select(_ => chars[random.Next(chars.Length)]).ToArray());
+            .Select(_ => chars[RandomNumberGenerator.GetInt32(chars.Length)]).ToArray());
         return $"PAR-{code}";
     }
 
     public string FullName => $"{FirstName} {LastName}";
 }
+

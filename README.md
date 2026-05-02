@@ -5,7 +5,7 @@ Platforma moderna de e-learning cu tutor AI integrat, clase virtuale, quiz-uri i
 ---
 
 ## Cuprins
-
+a
 - Descriere
 - Caracteristici principale
 - Arhitectura

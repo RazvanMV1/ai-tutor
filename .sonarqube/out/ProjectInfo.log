@@ -1,0 +1,34 @@
+Product projects
+---------------------------------------
+D:\Facultate\.NET\ai-tutor\src\backend\AiTutor.Domain\AiTutor.Domain.csproj
+D:\Facultate\.NET\ai-tutor\src\frontend\AiTutor.Web\AiTutor.Web.csproj
+D:\Facultate\.NET\ai-tutor\src\backend\AiTutor.API\AiTutor.API.csproj
+D:\Facultate\.NET\ai-tutor\src\backend\AiTutor.Application\AiTutor.Application.csproj
+D:\Facultate\.NET\ai-tutor\src\backend\AiTutor.Infrastructure\AiTutor.Infrastructure.csproj
+
+
+Test projects
+---------------------------------------
+D:\Facultate\.NET\ai-tutor\tests\AiTutor.UnitTests\AiTutor.UnitTests.csproj
+D:\Facultate\.NET\ai-tutor\tests\AiTutor.IntegrationTests\AiTutor.IntegrationTests.csproj
+
+
+Invalid projects
+---------------------------------------
+{none}
+
+
+Skipped projects
+---------------------------------------
+D:\Facultate\.NET\ai-tutor\src\backend\AiTutor.API\AiTutor.API.csproj
+D:\Facultate\.NET\ai-tutor\tests\AiTutor.UnitTests\AiTutor.UnitTests.csproj
+D:\Facultate\.NET\ai-tutor\src\backend\AiTutor.Domain\AiTutor.Domain.csproj
+D:\Facultate\.NET\ai-tutor\src\backend\AiTutor.Application\AiTutor.Application.csproj
+D:\Facultate\.NET\ai-tutor\src\backend\AiTutor.Infrastructure\AiTutor.Infrastructure.csproj
+
+
+Excluded projects
+---------------------------------------
+{none}
+
+

@@ -1,0 +1,15 @@
+﻿D:\Facultate\.NET\ai-tutor\tests\AiTutor.IntegrationTests\Controllers\AuthControllerTests.cs
+D:\Facultate\.NET\ai-tutor\tests\AiTutor.IntegrationTests\Controllers\LessonsControllerTests.cs
+D:\Facultate\.NET\ai-tutor\tests\AiTutor.IntegrationTests\Controllers\MiddlewareTests.cs
+D:\Facultate\.NET\ai-tutor\tests\AiTutor.IntegrationTests\Controllers\ProgressControllerTests.cs
+D:\Facultate\.NET\ai-tutor\tests\AiTutor.IntegrationTests\Controllers\QuizzesControllerTests.cs
+D:\Facultate\.NET\ai-tutor\tests\AiTutor.IntegrationTests\Controllers\SubjectsControllerTests.cs
+D:\Facultate\.NET\ai-tutor\tests\AiTutor.IntegrationTests\Controllers\SubscriptionsControllerTests.cs
+D:\Facultate\.NET\ai-tutor\tests\AiTutor.IntegrationTests\Controllers\UsersControllerTests.cs
+D:\Facultate\.NET\ai-tutor\tests\AiTutor.IntegrationTests\Setup\BaseIntegrationTest.cs
+D:\Facultate\.NET\ai-tutor\tests\AiTutor.IntegrationTests\Setup\IntegrationTestWebAppFactory.cs
+C:\Users\Razvan\.nuget\packages\microsoft.net.test.sdk\17.14.1\build\net8.0\Microsoft.NET.Test.Sdk.Program.cs
+C:\Users\Razvan\.nuget\packages\microsoft.testplatform.testhost\17.14.1\build\net8.0\x64\testhost.exe
+C:\Users\Razvan\.nuget\packages\microsoft.testplatform.testhost\17.14.1\build\net8.0\x64\testhost.dll
+C:\Users\Razvan\.nuget\packages\xunit.runner.visualstudio\3.1.4\build\net8.0\xunit.abstractions.dll
+C:\Users\Razvan\.nuget\packages\xunit.runner.visualstudio\3.1.4\build\net8.0\xunit.runner.visualstudio.testadapter.dll

@@ -1,0 +1,15 @@
+e
+\D:\Facultate\.NET\ai-tutor\tests\AiTutor.IntegrationTests\Controllers\AuthControllerTests.csutf-8h
+_D:\Facultate\.NET\ai-tutor\tests\AiTutor.IntegrationTests\Controllers\LessonsControllerTests.csutf-8a
+XD:\Facultate\.NET\ai-tutor\tests\AiTutor.IntegrationTests\Controllers\MiddlewareTests.csutf-8i
+`D:\Facultate\.NET\ai-tutor\tests\AiTutor.IntegrationTests\Controllers\ProgressControllerTests.csutf-8h
+_D:\Facultate\.NET\ai-tutor\tests\AiTutor.IntegrationTests\Controllers\QuizzesControllerTests.csutf-8i
+`D:\Facultate\.NET\ai-tutor\tests\AiTutor.IntegrationTests\Controllers\SubjectsControllerTests.csutf-8n
+eD:\Facultate\.NET\ai-tutor\tests\AiTutor.IntegrationTests\Controllers\SubscriptionsControllerTests.csutf-8f
+]D:\Facultate\.NET\ai-tutor\tests\AiTutor.IntegrationTests\Controllers\UsersControllerTests.csutf-8_
+VD:\Facultate\.NET\ai-tutor\tests\AiTutor.IntegrationTests\Setup\BaseIntegrationTest.csutf-8h
+_D:\Facultate\.NET\ai-tutor\tests\AiTutor.IntegrationTests\Setup\IntegrationTestWebAppFactory.csutf-8x
+mC:\Users\Razvan\.nuget\packages\microsoft.net.test.sdk\17.14.1\build\net8.0\Microsoft.NET.Test.Sdk.Program.csutf-8Å
+vD:\Facultate\.NET\ai-tutor\tests\AiTutor.IntegrationTests\obj\Debug\net10.0\AiTutor.IntegrationTests.GlobalUsings.g.csutf-8Ü
+{D:\Facultate\.NET\ai-tutor\tests\AiTutor.IntegrationTests\obj\Debug\net10.0\.NETCoreApp,Version=v10.0.AssemblyAttributes.csutf-8
+tD:\Facultate\.NET\ai-tutor\tests\AiTutor.IntegrationTests\obj\Debug\net10.0\AiTutor.IntegrationTests.AssemblyInfo.csutf-8

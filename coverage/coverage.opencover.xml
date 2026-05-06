@@ -2,9 +2,9 @@
 <CoverageSession>
   <Summary numSequencePoints="10615" visitedSequencePoints="2485" numBranchPoints="656" visitedBranchPoints="345" sequenceCoverage="23.41" branchCoverage="52.59" maxCyclomaticComplexity="901" minCyclomaticComplexity="172" visitedClasses="285" numClasses="423" visitedMethods="673" numMethods="1042" />
   <Modules>
-    <Module hash="3981B0F7-E1B1-429D-8AA4-2DA413A5C8AD">
+    <Module hash="7F27949F-A99F-4292-B86C-0E6A7ED3385B">
       <ModulePath>AiTutor.API.dll</ModulePath>
-      <ModuleTime>2026-05-03T08:38:03</ModuleTime>
+      <ModuleTime>2026-05-06T04:58:15</ModuleTime>
       <ModuleName>AiTutor.API</ModuleName>
       <Files>
         <File uid="1" fullPath="D:\Facultate\.NET\ai-tutor\src\backend\AiTutor.API\Program.cs" />
@@ -2763,9 +2763,9 @@
         </Class>
       </Classes>
     </Module>
-    <Module hash="9A95A515-3384-4F84-8AD4-E58E196F3D9D">
+    <Module hash="E1CB1914-93DA-409A-B92E-281E29632289">
       <ModulePath>AiTutor.Application.dll</ModulePath>
-      <ModuleTime>2026-05-03T08:38:03</ModuleTime>
+      <ModuleTime>2026-05-06T04:58:15</ModuleTime>
       <ModuleName>AiTutor.Application</ModuleName>
       <Files>
         <File uid="14" fullPath="D:\Facultate\.NET\ai-tutor\src\backend\AiTutor.Application\DependencyInjection.cs" />
@@ -13128,9 +13128,9 @@
         </Class>
       </Classes>
     </Module>
-    <Module hash="65812041-40A6-4947-B907-85F3CAC83624">
+    <Module hash="9F4923FA-8EC5-47AB-AA6F-C4D6051DBA6C">
       <ModulePath>AiTutor.Domain.dll</ModulePath>
-      <ModuleTime>2026-05-03T08:38:03</ModuleTime>
+      <ModuleTime>2026-05-06T04:58:15</ModuleTime>
       <ModuleName>AiTutor.Domain</ModuleName>
       <Files>
         <File uid="149" fullPath="D:\Facultate\.NET\ai-tutor\src\backend\AiTutor.Domain\ValueObjects\Email.cs" />
@@ -15841,9 +15841,9 @@
         </Class>
       </Classes>
     </Module>
-    <Module hash="2F2ED8D7-86C4-45CB-9518-1FC9A7EC6D75">
+    <Module hash="2AD86FB2-B016-48AE-AD37-E8C01B38048D">
       <ModulePath>AiTutor.Infrastructure.dll</ModulePath>
-      <ModuleTime>2026-05-03T08:38:03</ModuleTime>
+      <ModuleTime>2026-05-06T04:58:15</ModuleTime>
       <ModuleName>AiTutor.Infrastructure</ModuleName>
       <Files>
         <File uid="168" fullPath="D:\Facultate\.NET\ai-tutor\src\backend\AiTutor.Infrastructure\DependencyInjection.cs" />

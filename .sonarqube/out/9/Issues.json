@@ -41,10 +41,10 @@
               "resultFile": {
                 "uri": "file:///D:/Facultate/.NET/ai-tutor/src/backend/AiTutor.Infrastructure/Services/AiTutorService.cs",
                 "region": {
-                  "startLine": 125,
+                  "startLine": 130,
                   "startColumn": 20,
-                  "endLine": 125,
-                  "endColumn": 34
+                  "endLine": 130,
+                  "endColumn": 37
                 }
               }
             }
@@ -62,10 +62,10 @@
               "resultFile": {
                 "uri": "file:///D:/Facultate/.NET/ai-tutor/src/backend/AiTutor.Infrastructure/Services/AiTutorService.cs",
                 "region": {
-                  "startLine": 130,
+                  "startLine": 125,
                   "startColumn": 20,
-                  "endLine": 130,
-                  "endColumn": 37
+                  "endLine": 125,
+                  "endColumn": 34
                 }
               }
             }
@@ -151,27 +151,24 @@
           }
         },
         {
-          "ruleId": "CA1860",
+          "ruleId": "CA1873",
           "level": "note",
-          "message": "Prefer comparing 'Count' to 0 rather than using 'Any()', both for clarity and for performance",
+          "message": "Evaluation of this argument may be expensive and unnecessary if logging is disabled",
           "locations": [
             {
               "resultFile": {
-                "uri": "file:///D:/Facultate/.NET/ai-tutor/src/backend/AiTutor.Infrastructure/Persistence/ApplicationDbContext.cs",
+                "uri": "file:///D:/Facultate/.NET/ai-tutor/src/backend/AiTutor.Infrastructure/Services/Stripe/StripeService.cs",
                 "region": {
-                  "startLine": 52,
-                  "startColumn": 25,
-                  "endLine": 52,
-                  "endColumn": 52
+                  "startLine": 75,
+                  "startColumn": 9,
+                  "endLine": 77,
+                  "endColumn": 50
                 }
               }
             }
           ],
           "properties": {
-            "warningLevel": 1,
-            "customProperties": {
-              "DiagnosticPropertyKey": "Count"
-            }
+            "warningLevel": 1
           }
         },
         {
@@ -202,48 +199,6 @@
           "locations": [
             {
               "resultFile": {
-                "uri": "file:///D:/Facultate/.NET/ai-tutor/src/backend/AiTutor.Infrastructure/Services/AiTutorService.cs",
-                "region": {
-                  "startLine": 98,
-                  "startColumn": 9,
-                  "endLine": 98,
-                  "endColumn": 89
-                }
-              }
-            }
-          ],
-          "properties": {
-            "warningLevel": 1
-          }
-        },
-        {
-          "ruleId": "CA1873",
-          "level": "note",
-          "message": "Evaluation of this argument may be expensive and unnecessary if logging is disabled",
-          "locations": [
-            {
-              "resultFile": {
-                "uri": "file:///D:/Facultate/.NET/ai-tutor/src/backend/AiTutor.Infrastructure/Services/Stripe/StripeService.cs",
-                "region": {
-                  "startLine": 75,
-                  "startColumn": 9,
-                  "endLine": 77,
-                  "endColumn": 50
-                }
-              }
-            }
-          ],
-          "properties": {
-            "warningLevel": 1
-          }
-        },
-        {
-          "ruleId": "CA1873",
-          "level": "note",
-          "message": "Evaluation of this argument may be expensive and unnecessary if logging is disabled",
-          "locations": [
-            {
-              "resultFile": {
                 "uri": "file:///D:/Facultate/.NET/ai-tutor/src/backend/AiTutor.Infrastructure/Services/Stripe/StripeService.cs",
                 "region": {
                   "startLine": 112,
@@ -256,6 +211,30 @@
           ],
           "properties": {
             "warningLevel": 1
+          }
+        },
+        {
+          "ruleId": "CA1860",
+          "level": "note",
+          "message": "Prefer comparing 'Count' to 0 rather than using 'Any()', both for clarity and for performance",
+          "locations": [
+            {
+              "resultFile": {
+                "uri": "file:///D:/Facultate/.NET/ai-tutor/src/backend/AiTutor.Infrastructure/Persistence/ApplicationDbContext.cs",
+                "region": {
+                  "startLine": 52,
+                  "startColumn": 25,
+                  "endLine": 52,
+                  "endColumn": 52
+                }
+              }
+            }
+          ],
+          "properties": {
+            "warningLevel": 1,
+            "customProperties": {
+              "DiagnosticPropertyKey": "Count"
+            }
           }
         },
         {
@@ -280,18 +259,18 @@
           }
         },
         {
-          "ruleId": "CA1859",
+          "ruleId": "CA1873",
           "level": "note",
-          "message": "Change type of parameter 'metadata' from 'System.Collections.Generic.IDictionary<string, string>?' to 'System.Collections.Generic.Dictionary<string, string>?' for improved performance",
+          "message": "Evaluation of this argument may be expensive and unnecessary if logging is disabled",
           "locations": [
             {
               "resultFile": {
-                "uri": "file:///D:/Facultate/.NET/ai-tutor/src/backend/AiTutor.Infrastructure/Services/Stripe/StripeService.cs",
+                "uri": "file:///D:/Facultate/.NET/ai-tutor/src/backend/AiTutor.Infrastructure/Services/AiTutorService.cs",
                 "region": {
-                  "startLine": 221,
-                  "startColumn": 70,
-                  "endLine": 221,
-                  "endColumn": 78
+                  "startLine": 98,
+                  "startColumn": 9,
+                  "endLine": 98,
+                  "endColumn": 89
                 }
               }
             }
@@ -313,6 +292,27 @@
                   "startColumn": 92,
                   "endLine": 228,
                   "endColumn": 100
+                }
+              }
+            }
+          ],
+          "properties": {
+            "warningLevel": 1
+          }
+        },
+        {
+          "ruleId": "CA1859",
+          "level": "note",
+          "message": "Change type of parameter 'metadata' from 'System.Collections.Generic.IDictionary<string, string>?' to 'System.Collections.Generic.Dictionary<string, string>?' for improved performance",
+          "locations": [
+            {
+              "resultFile": {
+                "uri": "file:///D:/Facultate/.NET/ai-tutor/src/backend/AiTutor.Infrastructure/Services/Stripe/StripeService.cs",
+                "region": {
+                  "startLine": 221,
+                  "startColumn": 70,
+                  "endLine": 221,
+                  "endColumn": 78
                 }
               }
             }

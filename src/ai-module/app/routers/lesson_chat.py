@@ -1,4 +1,4 @@
-﻿from fastapi import APIRouter, HTTPException
+from fastapi import APIRouter, HTTPException
 from app.schemas.ai_schemas import LessonChatRequest, LessonChatResponse
 from app.services.ai_service import lesson_chat
 import traceback

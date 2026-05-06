@@ -18,11 +18,11 @@
           "locations": [
             {
               "resultFile": {
-                "uri": "file:///D:/Facultate/.NET/ai-tutor/tests/AiTutor.UnitTests/Application/Users/GetStudentGradesTests.cs",
+                "uri": "file:///D:/Facultate/.NET/ai-tutor/tests/AiTutor.UnitTests/Application/Users/ParentChildHandlerTests.cs",
                 "region": {
-                  "startLine": 50,
+                  "startLine": 180,
                   "startColumn": 9,
-                  "endLine": 50,
+                  "endLine": 180,
                   "endColumn": 20
                 }
               }
@@ -39,201 +39,12 @@
           "locations": [
             {
               "resultFile": {
-                "uri": "file:///D:/Facultate/.NET/ai-tutor/tests/AiTutor.UnitTests/Application/Users/ParentChildHandlerTests.cs",
+                "uri": "file:///D:/Facultate/.NET/ai-tutor/tests/AiTutor.UnitTests/Application/Users/GetStudentGradesTests.cs",
                 "region": {
-                  "startLine": 180,
+                  "startLine": 50,
                   "startColumn": 9,
-                  "endLine": 180,
+                  "endLine": 50,
                   "endColumn": 20
-                }
-              }
-            }
-          ],
-          "properties": {
-            "warningLevel": 1
-          }
-        },
-        {
-          "ruleId": "CA1816",
-          "level": "note",
-          "message": "Change ProgressTests.Dispose() to call GC.SuppressFinalize(object). This will prevent derived types that introduce a finalizer from needing to re-implement 'IDisposable' to call it.",
-          "locations": [
-            {
-              "resultFile": {
-                "uri": "file:///D:/Facultate/.NET/ai-tutor/tests/AiTutor.UnitTests/Application/Progress/ProgressTests.cs",
-                "region": {
-                  "startLine": 24,
-                  "startColumn": 17,
-                  "endLine": 24,
-                  "endColumn": 24
-                }
-              }
-            }
-          ],
-          "properties": {
-            "warningLevel": 1
-          }
-        },
-        {
-          "ruleId": "CA1816",
-          "level": "note",
-          "message": "Change QuestionTests.Dispose() to call GC.SuppressFinalize(object). This will prevent derived types that introduce a finalizer from needing to re-implement 'IDisposable' to call it.",
-          "locations": [
-            {
-              "resultFile": {
-                "uri": "file:///D:/Facultate/.NET/ai-tutor/tests/AiTutor.UnitTests/Application/Questions/QuestionTests.cs",
-                "region": {
-                  "startLine": 24,
-                  "startColumn": 17,
-                  "endLine": 24,
-                  "endColumn": 24
-                }
-              }
-            }
-          ],
-          "properties": {
-            "warningLevel": 1
-          }
-        },
-        {
-          "ruleId": "CA1816",
-          "level": "note",
-          "message": "Change ClassroomQueryByIdTests.Dispose() to call GC.SuppressFinalize(object). This will prevent derived types that introduce a finalizer from needing to re-implement 'IDisposable' to call it.",
-          "locations": [
-            {
-              "resultFile": {
-                "uri": "file:///D:/Facultate/.NET/ai-tutor/tests/AiTutor.UnitTests/Application/Classrooms/ClassroomQueryByIdTests.cs",
-                "region": {
-                  "startLine": 26,
-                  "startColumn": 17,
-                  "endLine": 26,
-                  "endColumn": 24
-                }
-              }
-            }
-          ],
-          "properties": {
-            "warningLevel": 1
-          }
-        },
-        {
-          "ruleId": "CA1816",
-          "level": "note",
-          "message": "Change ClassroomLessonQuizDeleteUpdateTests.Dispose() to call GC.SuppressFinalize(object). This will prevent derived types that introduce a finalizer from needing to re-implement 'IDisposable' to call it.",
-          "locations": [
-            {
-              "resultFile": {
-                "uri": "file:///D:/Facultate/.NET/ai-tutor/tests/AiTutor.UnitTests/Application/Classrooms/ClassroomLessonQuizDeleteUpdateTests.cs",
-                "region": {
-                  "startLine": 30,
-                  "startColumn": 17,
-                  "endLine": 30,
-                  "endColumn": 24
-                }
-              }
-            }
-          ],
-          "properties": {
-            "warningLevel": 1
-          }
-        },
-        {
-          "ruleId": "CA1816",
-          "level": "note",
-          "message": "Change ClassroomCommandHandlerTests.Dispose() to call GC.SuppressFinalize(object). This will prevent derived types that introduce a finalizer from needing to re-implement 'IDisposable' to call it.",
-          "locations": [
-            {
-              "resultFile": {
-                "uri": "file:///D:/Facultate/.NET/ai-tutor/tests/AiTutor.UnitTests/Application/Classrooms/ClassroomCommandHandlerTests.cs",
-                "region": {
-                  "startLine": 25,
-                  "startColumn": 17,
-                  "endLine": 25,
-                  "endColumn": 24
-                }
-              }
-            }
-          ],
-          "properties": {
-            "warningLevel": 1
-          }
-        },
-        {
-          "ruleId": "CA1816",
-          "level": "note",
-          "message": "Change UserTests.Dispose() to call GC.SuppressFinalize(object). This will prevent derived types that introduce a finalizer from needing to re-implement 'IDisposable' to call it.",
-          "locations": [
-            {
-              "resultFile": {
-                "uri": "file:///D:/Facultate/.NET/ai-tutor/tests/AiTutor.UnitTests/Application/Users/UserTests.cs",
-                "region": {
-                  "startLine": 25,
-                  "startColumn": 17,
-                  "endLine": 25,
-                  "endColumn": 24
-                }
-              }
-            }
-          ],
-          "properties": {
-            "warningLevel": 1
-          }
-        },
-        {
-          "ruleId": "CA1816",
-          "level": "note",
-          "message": "Change LessonTests.Dispose() to call GC.SuppressFinalize(object). This will prevent derived types that introduce a finalizer from needing to re-implement 'IDisposable' to call it.",
-          "locations": [
-            {
-              "resultFile": {
-                "uri": "file:///D:/Facultate/.NET/ai-tutor/tests/AiTutor.UnitTests/Application/Lessons/LessonTests.cs",
-                "region": {
-                  "startLine": 26,
-                  "startColumn": 17,
-                  "endLine": 26,
-                  "endColumn": 24
-                }
-              }
-            }
-          ],
-          "properties": {
-            "warningLevel": 1
-          }
-        },
-        {
-          "ruleId": "CA1816",
-          "level": "note",
-          "message": "Change ClassroomExtendedTests.Dispose() to call GC.SuppressFinalize(object). This will prevent derived types that introduce a finalizer from needing to re-implement 'IDisposable' to call it.",
-          "locations": [
-            {
-              "resultFile": {
-                "uri": "file:///D:/Facultate/.NET/ai-tutor/tests/AiTutor.UnitTests/Application/Classrooms/ClassroomExtendedTests.cs",
-                "region": {
-                  "startLine": 38,
-                  "startColumn": 17,
-                  "endLine": 38,
-                  "endColumn": 24
-                }
-              }
-            }
-          ],
-          "properties": {
-            "warningLevel": 1
-          }
-        },
-        {
-          "ruleId": "CA1816",
-          "level": "note",
-          "message": "Change ClassroomCreateTests.Dispose() to call GC.SuppressFinalize(object). This will prevent derived types that introduce a finalizer from needing to re-implement 'IDisposable' to call it.",
-          "locations": [
-            {
-              "resultFile": {
-                "uri": "file:///D:/Facultate/.NET/ai-tutor/tests/AiTutor.UnitTests/Application/Classrooms/ClassroomCreateTests.cs",
-                "region": {
-                  "startLine": 24,
-                  "startColumn": 17,
-                  "endLine": 24,
-                  "endColumn": 24
                 }
               }
             }
@@ -329,15 +140,120 @@
         {
           "ruleId": "CA1816",
           "level": "note",
-          "message": "Change QuizTests.Dispose() to call GC.SuppressFinalize(object). This will prevent derived types that introduce a finalizer from needing to re-implement 'IDisposable' to call it.",
+          "message": "Change ClassroomCommandHandlerTests.Dispose() to call GC.SuppressFinalize(object). This will prevent derived types that introduce a finalizer from needing to re-implement 'IDisposable' to call it.",
           "locations": [
             {
               "resultFile": {
-                "uri": "file:///D:/Facultate/.NET/ai-tutor/tests/AiTutor.UnitTests/Application/Quizzes/QuizTests.cs",
+                "uri": "file:///D:/Facultate/.NET/ai-tutor/tests/AiTutor.UnitTests/Application/Classrooms/ClassroomCommandHandlerTests.cs",
                 "region": {
-                  "startLine": 27,
+                  "startLine": 25,
                   "startColumn": 17,
-                  "endLine": 27,
+                  "endLine": 25,
+                  "endColumn": 24
+                }
+              }
+            }
+          ],
+          "properties": {
+            "warningLevel": 1
+          }
+        },
+        {
+          "ruleId": "CA1816",
+          "level": "note",
+          "message": "Change UserTests.Dispose() to call GC.SuppressFinalize(object). This will prevent derived types that introduce a finalizer from needing to re-implement 'IDisposable' to call it.",
+          "locations": [
+            {
+              "resultFile": {
+                "uri": "file:///D:/Facultate/.NET/ai-tutor/tests/AiTutor.UnitTests/Application/Users/UserTests.cs",
+                "region": {
+                  "startLine": 25,
+                  "startColumn": 17,
+                  "endLine": 25,
+                  "endColumn": 24
+                }
+              }
+            }
+          ],
+          "properties": {
+            "warningLevel": 1
+          }
+        },
+        {
+          "ruleId": "CA1816",
+          "level": "note",
+          "message": "Change ClassroomQueryByIdTests.Dispose() to call GC.SuppressFinalize(object). This will prevent derived types that introduce a finalizer from needing to re-implement 'IDisposable' to call it.",
+          "locations": [
+            {
+              "resultFile": {
+                "uri": "file:///D:/Facultate/.NET/ai-tutor/tests/AiTutor.UnitTests/Application/Classrooms/ClassroomQueryByIdTests.cs",
+                "region": {
+                  "startLine": 26,
+                  "startColumn": 17,
+                  "endLine": 26,
+                  "endColumn": 24
+                }
+              }
+            }
+          ],
+          "properties": {
+            "warningLevel": 1
+          }
+        },
+        {
+          "ruleId": "CA1816",
+          "level": "note",
+          "message": "Change LessonTests.Dispose() to call GC.SuppressFinalize(object). This will prevent derived types that introduce a finalizer from needing to re-implement 'IDisposable' to call it.",
+          "locations": [
+            {
+              "resultFile": {
+                "uri": "file:///D:/Facultate/.NET/ai-tutor/tests/AiTutor.UnitTests/Application/Lessons/LessonTests.cs",
+                "region": {
+                  "startLine": 26,
+                  "startColumn": 17,
+                  "endLine": 26,
+                  "endColumn": 24
+                }
+              }
+            }
+          ],
+          "properties": {
+            "warningLevel": 1
+          }
+        },
+        {
+          "ruleId": "CA1816",
+          "level": "note",
+          "message": "Change ProgressTests.Dispose() to call GC.SuppressFinalize(object). This will prevent derived types that introduce a finalizer from needing to re-implement 'IDisposable' to call it.",
+          "locations": [
+            {
+              "resultFile": {
+                "uri": "file:///D:/Facultate/.NET/ai-tutor/tests/AiTutor.UnitTests/Application/Progress/ProgressTests.cs",
+                "region": {
+                  "startLine": 24,
+                  "startColumn": 17,
+                  "endLine": 24,
+                  "endColumn": 24
+                }
+              }
+            }
+          ],
+          "properties": {
+            "warningLevel": 1
+          }
+        },
+        {
+          "ruleId": "CA1816",
+          "level": "note",
+          "message": "Change ClassroomCreateTests.Dispose() to call GC.SuppressFinalize(object). This will prevent derived types that introduce a finalizer from needing to re-implement 'IDisposable' to call it.",
+          "locations": [
+            {
+              "resultFile": {
+                "uri": "file:///D:/Facultate/.NET/ai-tutor/tests/AiTutor.UnitTests/Application/Classrooms/ClassroomCreateTests.cs",
+                "region": {
+                  "startLine": 24,
+                  "startColumn": 17,
+                  "endLine": 24,
                   "endColumn": 24
                 }
               }
@@ -434,15 +350,99 @@
         {
           "ruleId": "CA1816",
           "level": "note",
-          "message": "Change SubscriptionTests.Dispose() to call GC.SuppressFinalize(object). This will prevent derived types that introduce a finalizer from needing to re-implement 'IDisposable' to call it.",
+          "message": "Change ClassroomLessonQuizDeleteUpdateTests.Dispose() to call GC.SuppressFinalize(object). This will prevent derived types that introduce a finalizer from needing to re-implement 'IDisposable' to call it.",
           "locations": [
             {
               "resultFile": {
-                "uri": "file:///D:/Facultate/.NET/ai-tutor/tests/AiTutor.UnitTests/Application/Subscriptions/SubscriptionTests.cs",
+                "uri": "file:///D:/Facultate/.NET/ai-tutor/tests/AiTutor.UnitTests/Application/Classrooms/ClassroomLessonQuizDeleteUpdateTests.cs",
                 "region": {
-                  "startLine": 35,
+                  "startLine": 30,
                   "startColumn": 17,
-                  "endLine": 35,
+                  "endLine": 30,
+                  "endColumn": 24
+                }
+              }
+            }
+          ],
+          "properties": {
+            "warningLevel": 1
+          }
+        },
+        {
+          "ruleId": "CA1816",
+          "level": "note",
+          "message": "Change ClassroomExtendedTests.Dispose() to call GC.SuppressFinalize(object). This will prevent derived types that introduce a finalizer from needing to re-implement 'IDisposable' to call it.",
+          "locations": [
+            {
+              "resultFile": {
+                "uri": "file:///D:/Facultate/.NET/ai-tutor/tests/AiTutor.UnitTests/Application/Classrooms/ClassroomExtendedTests.cs",
+                "region": {
+                  "startLine": 38,
+                  "startColumn": 17,
+                  "endLine": 38,
+                  "endColumn": 24
+                }
+              }
+            }
+          ],
+          "properties": {
+            "warningLevel": 1
+          }
+        },
+        {
+          "ruleId": "CA1816",
+          "level": "note",
+          "message": "Change ParentChildHandlerTests.Dispose() to call GC.SuppressFinalize(object). This will prevent derived types that introduce a finalizer from needing to re-implement 'IDisposable' to call it.",
+          "locations": [
+            {
+              "resultFile": {
+                "uri": "file:///D:/Facultate/.NET/ai-tutor/tests/AiTutor.UnitTests/Application/Users/ParentChildHandlerTests.cs",
+                "region": {
+                  "startLine": 27,
+                  "startColumn": 17,
+                  "endLine": 27,
+                  "endColumn": 24
+                }
+              }
+            }
+          ],
+          "properties": {
+            "warningLevel": 1
+          }
+        },
+        {
+          "ruleId": "CA1816",
+          "level": "note",
+          "message": "Change QuestionTests.Dispose() to call GC.SuppressFinalize(object). This will prevent derived types that introduce a finalizer from needing to re-implement 'IDisposable' to call it.",
+          "locations": [
+            {
+              "resultFile": {
+                "uri": "file:///D:/Facultate/.NET/ai-tutor/tests/AiTutor.UnitTests/Application/Questions/QuestionTests.cs",
+                "region": {
+                  "startLine": 24,
+                  "startColumn": 17,
+                  "endLine": 24,
+                  "endColumn": 24
+                }
+              }
+            }
+          ],
+          "properties": {
+            "warningLevel": 1
+          }
+        },
+        {
+          "ruleId": "CA1816",
+          "level": "note",
+          "message": "Change QuizTests.Dispose() to call GC.SuppressFinalize(object). This will prevent derived types that introduce a finalizer from needing to re-implement 'IDisposable' to call it.",
+          "locations": [
+            {
+              "resultFile": {
+                "uri": "file:///D:/Facultate/.NET/ai-tutor/tests/AiTutor.UnitTests/Application/Quizzes/QuizTests.cs",
+                "region": {
+                  "startLine": 27,
+                  "startColumn": 17,
+                  "endLine": 27,
                   "endColumn": 24
                 }
               }
@@ -539,15 +539,15 @@
         {
           "ruleId": "CA1816",
           "level": "note",
-          "message": "Change CreateCheckoutSessionTests.Dispose() to call GC.SuppressFinalize(object). This will prevent derived types that introduce a finalizer from needing to re-implement 'IDisposable' to call it.",
+          "message": "Change SubscriptionTests.Dispose() to call GC.SuppressFinalize(object). This will prevent derived types that introduce a finalizer from needing to re-implement 'IDisposable' to call it.",
           "locations": [
             {
               "resultFile": {
-                "uri": "file:///D:/Facultate/.NET/ai-tutor/tests/AiTutor.UnitTests/Application/Subscriptions/CreateCheckoutSessionTests.cs",
+                "uri": "file:///D:/Facultate/.NET/ai-tutor/tests/AiTutor.UnitTests/Application/Subscriptions/SubscriptionTests.cs",
                 "region": {
-                  "startLine": 30,
+                  "startLine": 35,
                   "startColumn": 17,
-                  "endLine": 30,
+                  "endLine": 35,
                   "endColumn": 24
                 }
               }
@@ -581,15 +581,15 @@
         {
           "ruleId": "CA1816",
           "level": "note",
-          "message": "Change ParentChildHandlerTests.Dispose() to call GC.SuppressFinalize(object). This will prevent derived types that introduce a finalizer from needing to re-implement 'IDisposable' to call it.",
+          "message": "Change CreateCheckoutSessionTests.Dispose() to call GC.SuppressFinalize(object). This will prevent derived types that introduce a finalizer from needing to re-implement 'IDisposable' to call it.",
           "locations": [
             {
               "resultFile": {
-                "uri": "file:///D:/Facultate/.NET/ai-tutor/tests/AiTutor.UnitTests/Application/Users/ParentChildHandlerTests.cs",
+                "uri": "file:///D:/Facultate/.NET/ai-tutor/tests/AiTutor.UnitTests/Application/Subscriptions/CreateCheckoutSessionTests.cs",
                 "region": {
-                  "startLine": 27,
+                  "startLine": 30,
                   "startColumn": 17,
-                  "endLine": 27,
+                  "endLine": 30,
                   "endColumn": 24
                 }
               }

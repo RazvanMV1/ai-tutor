@@ -18,55 +18,6 @@
           "locations": [
             {
               "resultFile": {
-                "uri": "file:///D:/Facultate/.NET/ai-tutor/src/backend/AiTutor.Application/Common/Exceptions/ForbiddenAccessException.cs",
-                "region": {
-                  "startLine": 3,
-                  "startColumn": 14,
-                  "endLine": 3,
-                  "endColumn": 38
-                }
-              }
-            }
-          ],
-          "relatedLocations": [
-            {
-              "physicalLocation": {
-                "uri": "file:///D:/Facultate/.NET/ai-tutor/src/backend/AiTutor.Application/Common/Exceptions/ForbiddenAccessException.cs",
-                "region": {
-                  "startLine": 3,
-                  "startColumn": 8,
-                  "endLine": 3,
-                  "endColumn": 13
-                }
-              }
-            },
-            {
-              "physicalLocation": {
-                "uri": "file:///D:/Facultate/.NET/ai-tutor/src/backend/AiTutor.Application/Common/Exceptions/ForbiddenAccessException.cs",
-                "region": {
-                  "startLine": 3,
-                  "startColumn": 8,
-                  "endLine": 3,
-                  "endColumn": 13
-                }
-              }
-            }
-          ],
-          "properties": {
-            "warningLevel": 1,
-            "customProperties": {
-              "0": "Add 'System.SerializableAttribute' attribute on 'ForbiddenAccessException' because it implements 'ISerializable'.",
-              "1": "Add a 'protected' constructor 'ForbiddenAccessException(SerializationInfo, StreamingContext)'."
-            }
-          }
-        },
-        {
-          "ruleId": "S3925",
-          "level": "warning",
-          "message": "Update this implementation of 'ISerializable' to conform to the recommended serialization pattern.",
-          "locations": [
-            {
-              "resultFile": {
                 "uri": "file:///D:/Facultate/.NET/ai-tutor/src/backend/AiTutor.Application/Common/Exceptions/NotFoundException.cs",
                 "region": {
                   "startLine": 3,
@@ -106,6 +57,55 @@
             "customProperties": {
               "0": "Add 'System.SerializableAttribute' attribute on 'NotFoundException' because it implements 'ISerializable'.",
               "1": "Add a 'protected' constructor 'NotFoundException(SerializationInfo, StreamingContext)'."
+            }
+          }
+        },
+        {
+          "ruleId": "S3925",
+          "level": "warning",
+          "message": "Update this implementation of 'ISerializable' to conform to the recommended serialization pattern.",
+          "locations": [
+            {
+              "resultFile": {
+                "uri": "file:///D:/Facultate/.NET/ai-tutor/src/backend/AiTutor.Application/Common/Exceptions/ForbiddenAccessException.cs",
+                "region": {
+                  "startLine": 3,
+                  "startColumn": 14,
+                  "endLine": 3,
+                  "endColumn": 38
+                }
+              }
+            }
+          ],
+          "relatedLocations": [
+            {
+              "physicalLocation": {
+                "uri": "file:///D:/Facultate/.NET/ai-tutor/src/backend/AiTutor.Application/Common/Exceptions/ForbiddenAccessException.cs",
+                "region": {
+                  "startLine": 3,
+                  "startColumn": 8,
+                  "endLine": 3,
+                  "endColumn": 13
+                }
+              }
+            },
+            {
+              "physicalLocation": {
+                "uri": "file:///D:/Facultate/.NET/ai-tutor/src/backend/AiTutor.Application/Common/Exceptions/ForbiddenAccessException.cs",
+                "region": {
+                  "startLine": 3,
+                  "startColumn": 8,
+                  "endLine": 3,
+                  "endColumn": 13
+                }
+              }
+            }
+          ],
+          "properties": {
+            "warningLevel": 1,
+            "customProperties": {
+              "0": "Add 'System.SerializableAttribute' attribute on 'ForbiddenAccessException' because it implements 'ISerializable'.",
+              "1": "Add a 'protected' constructor 'ForbiddenAccessException(SerializationInfo, StreamingContext)'."
             }
           }
         },
@@ -165,12 +165,12 @@
           "locations": [
             {
               "resultFile": {
-                "uri": "file:///D:/Facultate/.NET/ai-tutor/src/backend/AiTutor.Application/Features/AI/Queries/GenerateProblems/GenerateProblemsQueryHandler.cs",
+                "uri": "file:///D:/Facultate/.NET/ai-tutor/src/backend/AiTutor.Application/Features/AI/Queries/GetHint/GetHintQueryHandler.cs",
                 "region": {
                   "startLine": 14,
-                  "startColumn": 104,
+                  "startColumn": 92,
                   "endLine": 14,
-                  "endColumn": 106
+                  "endColumn": 94
                 }
               }
             }
@@ -186,12 +186,12 @@
           "locations": [
             {
               "resultFile": {
-                "uri": "file:///D:/Facultate/.NET/ai-tutor/src/backend/AiTutor.Application/Features/AI/Queries/GetHint/GetHintQueryHandler.cs",
+                "uri": "file:///D:/Facultate/.NET/ai-tutor/src/backend/AiTutor.Application/Features/AI/Queries/GenerateProblems/GenerateProblemsQueryHandler.cs",
                 "region": {
                   "startLine": 14,
-                  "startColumn": 92,
+                  "startColumn": 104,
                   "endLine": 14,
-                  "endColumn": 94
+                  "endColumn": 106
                 }
               }
             }
@@ -228,12 +228,117 @@
           "locations": [
             {
               "resultFile": {
+                "uri": "file:///D:/Facultate/.NET/ai-tutor/src/backend/AiTutor.Application/Features/Classrooms/Commands/UpdateGrade/UpdateGradeCommandHandler.cs",
+                "region": {
+                  "startLine": 18,
+                  "startColumn": 99,
+                  "endLine": 18,
+                  "endColumn": 101
+                }
+              }
+            }
+          ],
+          "properties": {
+            "warningLevel": 1
+          }
+        },
+        {
+          "ruleId": "S927",
+          "level": "warning",
+          "message": "Rename parameter 'ct' to 'cancellationToken' to match the interface declaration.",
+          "locations": [
+            {
+              "resultFile": {
+                "uri": "file:///D:/Facultate/.NET/ai-tutor/src/backend/AiTutor.Application/Features/Classrooms/Commands/AddClassroomQuestion/AddClassroomQuestionCommandHandler.cs",
+                "region": {
+                  "startLine": 15,
+                  "startColumn": 120,
+                  "endLine": 15,
+                  "endColumn": 122
+                }
+              }
+            }
+          ],
+          "properties": {
+            "warningLevel": 1
+          }
+        },
+        {
+          "ruleId": "S927",
+          "level": "warning",
+          "message": "Rename parameter 'ct' to 'cancellationToken' to match the interface declaration.",
+          "locations": [
+            {
+              "resultFile": {
                 "uri": "file:///D:/Facultate/.NET/ai-tutor/src/backend/AiTutor.Application/Features/Subscriptions/Queries/GetSubscriptionByUser/GetSubscriptionByUserQueryHandler.cs",
                 "region": {
                   "startLine": 18,
                   "startColumn": 63,
                   "endLine": 18,
                   "endColumn": 65
+                }
+              }
+            }
+          ],
+          "properties": {
+            "warningLevel": 1
+          }
+        },
+        {
+          "ruleId": "S927",
+          "level": "warning",
+          "message": "Rename parameter 'ct' to 'cancellationToken' to match the interface declaration.",
+          "locations": [
+            {
+              "resultFile": {
+                "uri": "file:///D:/Facultate/.NET/ai-tutor/src/backend/AiTutor.Application/Features/Classrooms/Queries/GetClassroomById/GetClassroomByIdQueryHandler.cs",
+                "region": {
+                  "startLine": 20,
+                  "startColumn": 58,
+                  "endLine": 20,
+                  "endColumn": 60
+                }
+              }
+            }
+          ],
+          "properties": {
+            "warningLevel": 1
+          }
+        },
+        {
+          "ruleId": "S1481",
+          "level": "warning",
+          "message": "Remove the unused local variable 'quiz'.",
+          "locations": [
+            {
+              "resultFile": {
+                "uri": "file:///D:/Facultate/.NET/ai-tutor/src/backend/AiTutor.Application/Features/Classrooms/Commands/AddClassroomQuestion/AddClassroomQuestionCommandHandler.cs",
+                "region": {
+                  "startLine": 17,
+                  "startColumn": 13,
+                  "endLine": 17,
+                  "endColumn": 17
+                }
+              }
+            }
+          ],
+          "properties": {
+            "warningLevel": 1
+          }
+        },
+        {
+          "ruleId": "S927",
+          "level": "warning",
+          "message": "Rename parameter 'ct' to 'cancellationToken' to match the interface declaration.",
+          "locations": [
+            {
+              "resultFile": {
+                "uri": "file:///D:/Facultate/.NET/ai-tutor/src/backend/AiTutor.Application/Features/Classrooms/Commands/UpdateClassroom/UpdateClassroomCommandHandler.cs",
+                "region": {
+                  "startLine": 18,
+                  "startColumn": 107,
+                  "endLine": 18,
+                  "endColumn": 109
                 }
               }
             }
@@ -333,6 +438,90 @@
           "locations": [
             {
               "resultFile": {
+                "uri": "file:///D:/Facultate/.NET/ai-tutor/src/backend/AiTutor.Application/Features/Classrooms/Commands/AddGrade/AddGradeCommandHandler.cs",
+                "region": {
+                  "startLine": 17,
+                  "startColumn": 96,
+                  "endLine": 17,
+                  "endColumn": 98
+                }
+              }
+            }
+          ],
+          "properties": {
+            "warningLevel": 1
+          }
+        },
+        {
+          "ruleId": "S927",
+          "level": "warning",
+          "message": "Rename parameter 'ct' to 'cancellationToken' to match the interface declaration.",
+          "locations": [
+            {
+              "resultFile": {
+                "uri": "file:///D:/Facultate/.NET/ai-tutor/src/backend/AiTutor.Application/Features/Classrooms/Queries/GetClassroomLessonById/GetClassroomLessonByIdQueryHandler.cs",
+                "region": {
+                  "startLine": 20,
+                  "startColumn": 64,
+                  "endLine": 20,
+                  "endColumn": 66
+                }
+              }
+            }
+          ],
+          "properties": {
+            "warningLevel": 1
+          }
+        },
+        {
+          "ruleId": "S927",
+          "level": "warning",
+          "message": "Rename parameter 'ct' to 'cancellationToken' to match the interface declaration.",
+          "locations": [
+            {
+              "resultFile": {
+                "uri": "file:///D:/Facultate/.NET/ai-tutor/src/backend/AiTutor.Application/Features/Classrooms/Commands/UpdateClassroomQuiz/UpdateClassroomQuizCommandHandler.cs",
+                "region": {
+                  "startLine": 20,
+                  "startColumn": 63,
+                  "endLine": 20,
+                  "endColumn": 65
+                }
+              }
+            }
+          ],
+          "properties": {
+            "warningLevel": 1
+          }
+        },
+        {
+          "ruleId": "S927",
+          "level": "warning",
+          "message": "Rename parameter 'ct' to 'cancellationToken' to match the interface declaration.",
+          "locations": [
+            {
+              "resultFile": {
+                "uri": "file:///D:/Facultate/.NET/ai-tutor/src/backend/AiTutor.Application/Features/Classrooms/Queries/GetClassroomGrades/GetClassroomGradesQueryHandler.cs",
+                "region": {
+                  "startLine": 20,
+                  "startColumn": 60,
+                  "endLine": 20,
+                  "endColumn": 62
+                }
+              }
+            }
+          ],
+          "properties": {
+            "warningLevel": 1
+          }
+        },
+        {
+          "ruleId": "S927",
+          "level": "warning",
+          "message": "Rename parameter 'ct' to 'cancellationToken' to match the interface declaration.",
+          "locations": [
+            {
+              "resultFile": {
                 "uri": "file:///D:/Facultate/.NET/ai-tutor/src/backend/AiTutor.Application/Features/Subscriptions/Queries/GetAllSubscriptions/GetAllSubscriptionsQueryHandler.cs",
                 "region": {
                   "startLine": 18,
@@ -354,12 +543,12 @@
           "locations": [
             {
               "resultFile": {
-                "uri": "file:///D:/Facultate/.NET/ai-tutor/src/backend/AiTutor.Application/Features/Classrooms/Queries/GetMyClassrooms/GetMyClassroomsQueryHandler.cs",
+                "uri": "file:///D:/Facultate/.NET/ai-tutor/src/backend/AiTutor.Application/Features/Classrooms/Queries/GetClassroomLessons/GetClassroomLessonsQueryHandler.cs",
                 "region": {
-                  "startLine": 18,
-                  "startColumn": 57,
-                  "endLine": 18,
-                  "endColumn": 59
+                  "startLine": 20,
+                  "startColumn": 61,
+                  "endLine": 20,
+                  "endColumn": 63
                 }
               }
             }
@@ -375,54 +564,12 @@
           "locations": [
             {
               "resultFile": {
-                "uri": "file:///D:/Facultate/.NET/ai-tutor/src/backend/AiTutor.Application/Features/Classrooms/Commands/AddClassroomQuestion/AddClassroomQuestionCommandHandler.cs",
-                "region": {
-                  "startLine": 15,
-                  "startColumn": 120,
-                  "endLine": 15,
-                  "endColumn": 122
-                }
-              }
-            }
-          ],
-          "properties": {
-            "warningLevel": 1
-          }
-        },
-        {
-          "ruleId": "S927",
-          "level": "warning",
-          "message": "Rename parameter 'ct' to 'cancellationToken' to match the interface declaration.",
-          "locations": [
-            {
-              "resultFile": {
-                "uri": "file:///D:/Facultate/.NET/ai-tutor/src/backend/AiTutor.Application/Features/Classrooms/Commands/UpdateGrade/UpdateGradeCommandHandler.cs",
-                "region": {
-                  "startLine": 18,
-                  "startColumn": 99,
-                  "endLine": 18,
-                  "endColumn": 101
-                }
-              }
-            }
-          ],
-          "properties": {
-            "warningLevel": 1
-          }
-        },
-        {
-          "ruleId": "S1481",
-          "level": "warning",
-          "message": "Remove the unused local variable 'quiz'.",
-          "locations": [
-            {
-              "resultFile": {
-                "uri": "file:///D:/Facultate/.NET/ai-tutor/src/backend/AiTutor.Application/Features/Classrooms/Commands/AddClassroomQuestion/AddClassroomQuestionCommandHandler.cs",
+                "uri": "file:///D:/Facultate/.NET/ai-tutor/src/backend/AiTutor.Application/Features/Classrooms/Commands/AddMember/AddMemberCommandHandler.cs",
                 "region": {
                   "startLine": 17,
-                  "startColumn": 13,
+                  "startColumn": 88,
                   "endLine": 17,
-                  "endColumn": 17
+                  "endColumn": 90
                 }
               }
             }
@@ -459,32 +606,11 @@
           "locations": [
             {
               "resultFile": {
-                "uri": "file:///D:/Facultate/.NET/ai-tutor/src/backend/AiTutor.Application/Features/Classrooms/Queries/GetClassroomById/GetClassroomByIdQueryHandler.cs",
+                "uri": "file:///D:/Facultate/.NET/ai-tutor/src/backend/AiTutor.Application/Features/Classrooms/Commands/UpdateClassroomLesson/UpdateClassroomLessonCommandHandler.cs",
                 "region": {
                   "startLine": 20,
-                  "startColumn": 58,
-                  "endLine": 20,
-                  "endColumn": 60
-                }
-              }
-            }
-          ],
-          "properties": {
-            "warningLevel": 1
-          }
-        },
-        {
-          "ruleId": "S927",
-          "level": "warning",
-          "message": "Rename parameter 'ct' to 'cancellationToken' to match the interface declaration.",
-          "locations": [
-            {
-              "resultFile": {
-                "uri": "file:///D:/Facultate/.NET/ai-tutor/src/backend/AiTutor.Application/Features/Classrooms/Commands/CreateClassroomLesson/CreateClassroomLessonCommandHandler.cs",
-                "region": {
-                  "startLine": 19,
                   "startColumn": 65,
-                  "endLine": 19,
+                  "endLine": 20,
                   "endColumn": 67
                 }
               }
@@ -501,33 +627,12 @@
           "locations": [
             {
               "resultFile": {
-                "uri": "file:///D:/Facultate/.NET/ai-tutor/src/backend/AiTutor.Application/Features/Classrooms/Commands/AddGrade/AddGradeCommandHandler.cs",
+                "uri": "file:///D:/Facultate/.NET/ai-tutor/src/backend/AiTutor.Application/Features/Classrooms/Queries/GetClassroomMembers/GetClassroomMembersQueryHandler.cs",
                 "region": {
-                  "startLine": 17,
-                  "startColumn": 96,
-                  "endLine": 17,
-                  "endColumn": 98
-                }
-              }
-            }
-          ],
-          "properties": {
-            "warningLevel": 1
-          }
-        },
-        {
-          "ruleId": "S927",
-          "level": "warning",
-          "message": "Rename parameter 'ct' to 'cancellationToken' to match the interface declaration.",
-          "locations": [
-            {
-              "resultFile": {
-                "uri": "file:///D:/Facultate/.NET/ai-tutor/src/backend/AiTutor.Application/Features/Subscriptions/Commands/CancelSubscription/CancelSubscriptionCommandHandler.cs",
-                "region": {
-                  "startLine": 27,
-                  "startColumn": 97,
-                  "endLine": 27,
-                  "endColumn": 99
+                  "startLine": 19,
+                  "startColumn": 61,
+                  "endLine": 19,
+                  "endColumn": 63
                 }
               }
             }
@@ -585,12 +690,12 @@
           "locations": [
             {
               "resultFile": {
-                "uri": "file:///D:/Facultate/.NET/ai-tutor/src/backend/AiTutor.Application/Features/Classrooms/Queries/GetClassroomLessonById/GetClassroomLessonByIdQueryHandler.cs",
+                "uri": "file:///D:/Facultate/.NET/ai-tutor/src/backend/AiTutor.Application/Features/Classrooms/Queries/GetClassroomQuizzesByLesson/GetClassroomQuizzesByLessonQueryHandler.cs",
                 "region": {
                   "startLine": 20,
-                  "startColumn": 64,
+                  "startColumn": 69,
                   "endLine": 20,
-                  "endColumn": 66
+                  "endColumn": 71
                 }
               }
             }
@@ -606,117 +711,33 @@
           "locations": [
             {
               "resultFile": {
-                "uri": "file:///D:/Facultate/.NET/ai-tutor/src/backend/AiTutor.Application/Features/Classrooms/Commands/AddMember/AddMemberCommandHandler.cs",
-                "region": {
-                  "startLine": 17,
-                  "startColumn": 88,
-                  "endLine": 17,
-                  "endColumn": 90
-                }
-              }
-            }
-          ],
-          "properties": {
-            "warningLevel": 1
-          }
-        },
-        {
-          "ruleId": "S927",
-          "level": "warning",
-          "message": "Rename parameter 'ct' to 'cancellationToken' to match the interface declaration.",
-          "locations": [
-            {
-              "resultFile": {
-                "uri": "file:///D:/Facultate/.NET/ai-tutor/src/backend/AiTutor.Application/Features/Classrooms/Queries/GetClassroomGrades/GetClassroomGradesQueryHandler.cs",
-                "region": {
-                  "startLine": 20,
-                  "startColumn": 60,
-                  "endLine": 20,
-                  "endColumn": 62
-                }
-              }
-            }
-          ],
-          "properties": {
-            "warningLevel": 1
-          }
-        },
-        {
-          "ruleId": "S927",
-          "level": "warning",
-          "message": "Rename parameter 'ct' to 'cancellationToken' to match the interface declaration.",
-          "locations": [
-            {
-              "resultFile": {
-                "uri": "file:///D:/Facultate/.NET/ai-tutor/src/backend/AiTutor.Application/Features/Classrooms/Commands/CreateClassroomQuiz/CreateClassroomQuizCommandHandler.cs",
-                "region": {
-                  "startLine": 14,
-                  "startColumn": 115,
-                  "endLine": 14,
-                  "endColumn": 117
-                }
-              }
-            }
-          ],
-          "properties": {
-            "warningLevel": 1
-          }
-        },
-        {
-          "ruleId": "CA1873",
-          "level": "note",
-          "message": "Evaluation of this argument may be expensive and unnecessary if logging is disabled",
-          "locations": [
-            {
-              "resultFile": {
-                "uri": "file:///D:/Facultate/.NET/ai-tutor/src/backend/AiTutor.Application/Features/Subscriptions/Commands/CancelSubscription/CancelSubscriptionCommandHandler.cs",
-                "region": {
-                  "startLine": 50,
-                  "startColumn": 17,
-                  "endLine": 52,
-                  "endColumn": 55
-                }
-              }
-            }
-          ],
-          "properties": {
-            "warningLevel": 1
-          }
-        },
-        {
-          "ruleId": "S1481",
-          "level": "warning",
-          "message": "Remove the unused local variable 'lesson'.",
-          "locations": [
-            {
-              "resultFile": {
-                "uri": "file:///D:/Facultate/.NET/ai-tutor/src/backend/AiTutor.Application/Features/Classrooms/Commands/CreateClassroomQuiz/CreateClassroomQuizCommandHandler.cs",
-                "region": {
-                  "startLine": 16,
-                  "startColumn": 13,
-                  "endLine": 16,
-                  "endColumn": 19
-                }
-              }
-            }
-          ],
-          "properties": {
-            "warningLevel": 1
-          }
-        },
-        {
-          "ruleId": "S927",
-          "level": "warning",
-          "message": "Rename parameter 'ct' to 'cancellationToken' to match the interface declaration.",
-          "locations": [
-            {
-              "resultFile": {
-                "uri": "file:///D:/Facultate/.NET/ai-tutor/src/backend/AiTutor.Application/Features/Classrooms/Queries/GetClassroomMembers/GetClassroomMembersQueryHandler.cs",
+                "uri": "file:///D:/Facultate/.NET/ai-tutor/src/backend/AiTutor.Application/Features/Classrooms/Commands/CreateClassroomLesson/CreateClassroomLessonCommandHandler.cs",
                 "region": {
                   "startLine": 19,
-                  "startColumn": 61,
+                  "startColumn": 65,
                   "endLine": 19,
-                  "endColumn": 63
+                  "endColumn": 67
+                }
+              }
+            }
+          ],
+          "properties": {
+            "warningLevel": 1
+          }
+        },
+        {
+          "ruleId": "S927",
+          "level": "warning",
+          "message": "Rename parameter 'ct' to 'cancellationToken' to match the interface declaration.",
+          "locations": [
+            {
+              "resultFile": {
+                "uri": "file:///D:/Facultate/.NET/ai-tutor/src/backend/AiTutor.Application/Features/Classrooms/Queries/GetMyClassrooms/GetMyClassroomsQueryHandler.cs",
+                "region": {
+                  "startLine": 18,
+                  "startColumn": 57,
+                  "endLine": 18,
+                  "endColumn": 59
                 }
               }
             }
@@ -753,12 +774,12 @@
           "locations": [
             {
               "resultFile": {
-                "uri": "file:///D:/Facultate/.NET/ai-tutor/src/backend/AiTutor.Application/Features/Classrooms/Commands/DeleteClassroomQuestion/DeleteClassroomQuestionCommandHandler.cs",
+                "uri": "file:///D:/Facultate/.NET/ai-tutor/src/backend/AiTutor.Application/Features/Subscriptions/Commands/CancelSubscription/CancelSubscriptionCommandHandler.cs",
                 "region": {
-                  "startLine": 19,
-                  "startColumn": 67,
-                  "endLine": 19,
-                  "endColumn": 69
+                  "startLine": 27,
+                  "startColumn": 97,
+                  "endLine": 27,
+                  "endColumn": 99
                 }
               }
             }
@@ -774,12 +795,117 @@
           "locations": [
             {
               "resultFile": {
-                "uri": "file:///D:/Facultate/.NET/ai-tutor/src/backend/AiTutor.Application/Features/Classrooms/Commands/UpdateClassroom/UpdateClassroomCommandHandler.cs",
+                "uri": "file:///D:/Facultate/.NET/ai-tutor/src/backend/AiTutor.Application/Features/Classrooms/Commands/CreateClassroomQuiz/CreateClassroomQuizCommandHandler.cs",
+                "region": {
+                  "startLine": 14,
+                  "startColumn": 115,
+                  "endLine": 14,
+                  "endColumn": 117
+                }
+              }
+            }
+          ],
+          "properties": {
+            "warningLevel": 1
+          }
+        },
+        {
+          "ruleId": "S1481",
+          "level": "warning",
+          "message": "Remove the unused local variable 'lesson'.",
+          "locations": [
+            {
+              "resultFile": {
+                "uri": "file:///D:/Facultate/.NET/ai-tutor/src/backend/AiTutor.Application/Features/Classrooms/Commands/CreateClassroomQuiz/CreateClassroomQuizCommandHandler.cs",
+                "region": {
+                  "startLine": 16,
+                  "startColumn": 13,
+                  "endLine": 16,
+                  "endColumn": 19
+                }
+              }
+            }
+          ],
+          "properties": {
+            "warningLevel": 1
+          }
+        },
+        {
+          "ruleId": "CA1873",
+          "level": "note",
+          "message": "Evaluation of this argument may be expensive and unnecessary if logging is disabled",
+          "locations": [
+            {
+              "resultFile": {
+                "uri": "file:///D:/Facultate/.NET/ai-tutor/src/backend/AiTutor.Application/Features/Subscriptions/Commands/CancelSubscription/CancelSubscriptionCommandHandler.cs",
+                "region": {
+                  "startLine": 50,
+                  "startColumn": 17,
+                  "endLine": 52,
+                  "endColumn": 55
+                }
+              }
+            }
+          ],
+          "properties": {
+            "warningLevel": 1
+          }
+        },
+        {
+          "ruleId": "S927",
+          "level": "warning",
+          "message": "Rename parameter 'ct' to 'cancellationToken' to match the interface declaration.",
+          "locations": [
+            {
+              "resultFile": {
+                "uri": "file:///D:/Facultate/.NET/ai-tutor/src/backend/AiTutor.Application/Features/Classrooms/Commands/SubmitClassroomQuiz/SubmitClassroomQuizCommandHandler.cs",
+                "region": {
+                  "startLine": 14,
+                  "startColumn": 121,
+                  "endLine": 14,
+                  "endColumn": 123
+                }
+              }
+            }
+          ],
+          "properties": {
+            "warningLevel": 1
+          }
+        },
+        {
+          "ruleId": "S927",
+          "level": "warning",
+          "message": "Rename parameter 'ct' to 'cancellationToken' to match the interface declaration.",
+          "locations": [
+            {
+              "resultFile": {
+                "uri": "file:///D:/Facultate/.NET/ai-tutor/src/backend/AiTutor.Application/Features/Subscriptions/Commands/CreateCheckoutSession/CreateCheckoutSessionCommandHandler.cs",
+                "region": {
+                  "startLine": 26,
+                  "startColumn": 65,
+                  "endLine": 26,
+                  "endColumn": 67
+                }
+              }
+            }
+          ],
+          "properties": {
+            "warningLevel": 1
+          }
+        },
+        {
+          "ruleId": "S927",
+          "level": "warning",
+          "message": "Rename parameter 'ct' to 'cancellationToken' to match the interface declaration.",
+          "locations": [
+            {
+              "resultFile": {
+                "uri": "file:///D:/Facultate/.NET/ai-tutor/src/backend/AiTutor.Application/Features/Subscriptions/Commands/CreateSubscription/CreateSubscriptionCommandHandler.cs",
                 "region": {
                   "startLine": 18,
-                  "startColumn": 107,
+                  "startColumn": 62,
                   "endLine": 18,
-                  "endColumn": 109
+                  "endColumn": 64
                 }
               }
             }
@@ -795,33 +921,12 @@
           "locations": [
             {
               "resultFile": {
-                "uri": "file:///D:/Facultate/.NET/ai-tutor/src/backend/AiTutor.Application/Features/Classrooms/Commands/DeleteClassroom/DeleteClassroomCommandHandler.cs",
+                "uri": "file:///D:/Facultate/.NET/ai-tutor/src/backend/AiTutor.Application/Features/Classrooms/Queries/GetClassroomProgress/GetClassroomProgressQueryHandler.cs",
                 "region": {
-                  "startLine": 17,
-                  "startColumn": 94,
-                  "endLine": 17,
-                  "endColumn": 96
-                }
-              }
-            }
-          ],
-          "properties": {
-            "warningLevel": 1
-          }
-        },
-        {
-          "ruleId": "S927",
-          "level": "warning",
-          "message": "Rename parameter 'ct' to 'cancellationToken' to match the interface declaration.",
-          "locations": [
-            {
-              "resultFile": {
-                "uri": "file:///D:/Facultate/.NET/ai-tutor/src/backend/AiTutor.Application/Features/Classrooms/Queries/GetClassroomQuizzesByLesson/GetClassroomQuizzesByLessonQueryHandler.cs",
-                "region": {
-                  "startLine": 20,
-                  "startColumn": 69,
-                  "endLine": 20,
-                  "endColumn": 71
+                  "startLine": 13,
+                  "startColumn": 124,
+                  "endLine": 13,
+                  "endColumn": 126
                 }
               }
             }
@@ -858,12 +963,54 @@
           "locations": [
             {
               "resultFile": {
-                "uri": "file:///D:/Facultate/.NET/ai-tutor/src/backend/AiTutor.Application/Features/Classrooms/Queries/GetClassroomLessons/GetClassroomLessonsQueryHandler.cs",
+                "uri": "file:///D:/Facultate/.NET/ai-tutor/src/backend/AiTutor.Application/Features/Classrooms/Commands/DeleteClassroomQuestion/DeleteClassroomQuestionCommandHandler.cs",
                 "region": {
-                  "startLine": 20,
-                  "startColumn": 61,
-                  "endLine": 20,
-                  "endColumn": 63
+                  "startLine": 19,
+                  "startColumn": 67,
+                  "endLine": 19,
+                  "endColumn": 69
+                }
+              }
+            }
+          ],
+          "properties": {
+            "warningLevel": 1
+          }
+        },
+        {
+          "ruleId": "S927",
+          "level": "warning",
+          "message": "Rename parameter 'ct' to 'cancellationToken' to match the interface declaration.",
+          "locations": [
+            {
+              "resultFile": {
+                "uri": "file:///D:/Facultate/.NET/ai-tutor/src/backend/AiTutor.Application/Features/Classrooms/Commands/DeleteClassroom/DeleteClassroomCommandHandler.cs",
+                "region": {
+                  "startLine": 17,
+                  "startColumn": 94,
+                  "endLine": 17,
+                  "endColumn": 96
+                }
+              }
+            }
+          ],
+          "properties": {
+            "warningLevel": 1
+          }
+        },
+        {
+          "ruleId": "S927",
+          "level": "warning",
+          "message": "Rename parameter 'ct' to 'cancellationToken' to match the interface declaration.",
+          "locations": [
+            {
+              "resultFile": {
+                "uri": "file:///D:/Facultate/.NET/ai-tutor/src/backend/AiTutor.Application/Features/Classrooms/Commands/RemoveMember/RemoveMemberCommandHandler.cs",
+                "region": {
+                  "startLine": 17,
+                  "startColumn": 91,
+                  "endLine": 17,
+                  "endColumn": 93
                 }
               }
             }
@@ -885,48 +1032,6 @@
                   "startColumn": 63,
                   "endLine": 19,
                   "endColumn": 65
-                }
-              }
-            }
-          ],
-          "properties": {
-            "warningLevel": 1
-          }
-        },
-        {
-          "ruleId": "S927",
-          "level": "warning",
-          "message": "Rename parameter 'ct' to 'cancellationToken' to match the interface declaration.",
-          "locations": [
-            {
-              "resultFile": {
-                "uri": "file:///D:/Facultate/.NET/ai-tutor/src/backend/AiTutor.Application/Features/Classrooms/Commands/DeleteGrade/DeleteGradeCommandHandler.cs",
-                "region": {
-                  "startLine": 17,
-                  "startColumn": 90,
-                  "endLine": 17,
-                  "endColumn": 92
-                }
-              }
-            }
-          ],
-          "properties": {
-            "warningLevel": 1
-          }
-        },
-        {
-          "ruleId": "S927",
-          "level": "warning",
-          "message": "Rename parameter 'ct' to 'cancellationToken' to match the interface declaration.",
-          "locations": [
-            {
-              "resultFile": {
-                "uri": "file:///D:/Facultate/.NET/ai-tutor/src/backend/AiTutor.Application/Features/Subscriptions/Commands/CreateSubscription/CreateSubscriptionCommandHandler.cs",
-                "region": {
-                  "startLine": 18,
-                  "startColumn": 62,
-                  "endLine": 18,
-                  "endColumn": 64
                 }
               }
             }
@@ -969,132 +1074,6 @@
                   "startColumn": 92,
                   "endLine": 17,
                   "endColumn": 94
-                }
-              }
-            }
-          ],
-          "properties": {
-            "warningLevel": 1
-          }
-        },
-        {
-          "ruleId": "S927",
-          "level": "warning",
-          "message": "Rename parameter 'ct' to 'cancellationToken' to match the interface declaration.",
-          "locations": [
-            {
-              "resultFile": {
-                "uri": "file:///D:/Facultate/.NET/ai-tutor/src/backend/AiTutor.Application/Features/Classrooms/Commands/UpdateClassroomLesson/UpdateClassroomLessonCommandHandler.cs",
-                "region": {
-                  "startLine": 20,
-                  "startColumn": 65,
-                  "endLine": 20,
-                  "endColumn": 67
-                }
-              }
-            }
-          ],
-          "properties": {
-            "warningLevel": 1
-          }
-        },
-        {
-          "ruleId": "S927",
-          "level": "warning",
-          "message": "Rename parameter 'ct' to 'cancellationToken' to match the interface declaration.",
-          "locations": [
-            {
-              "resultFile": {
-                "uri": "file:///D:/Facultate/.NET/ai-tutor/src/backend/AiTutor.Application/Features/Subscriptions/Commands/CreateCheckoutSession/CreateCheckoutSessionCommandHandler.cs",
-                "region": {
-                  "startLine": 26,
-                  "startColumn": 65,
-                  "endLine": 26,
-                  "endColumn": 67
-                }
-              }
-            }
-          ],
-          "properties": {
-            "warningLevel": 1
-          }
-        },
-        {
-          "ruleId": "S927",
-          "level": "warning",
-          "message": "Rename parameter 'ct' to 'cancellationToken' to match the interface declaration.",
-          "locations": [
-            {
-              "resultFile": {
-                "uri": "file:///D:/Facultate/.NET/ai-tutor/src/backend/AiTutor.Application/Features/Classrooms/Commands/UpdateClassroomQuiz/UpdateClassroomQuizCommandHandler.cs",
-                "region": {
-                  "startLine": 20,
-                  "startColumn": 63,
-                  "endLine": 20,
-                  "endColumn": 65
-                }
-              }
-            }
-          ],
-          "properties": {
-            "warningLevel": 1
-          }
-        },
-        {
-          "ruleId": "S927",
-          "level": "warning",
-          "message": "Rename parameter 'ct' to 'cancellationToken' to match the interface declaration.",
-          "locations": [
-            {
-              "resultFile": {
-                "uri": "file:///D:/Facultate/.NET/ai-tutor/src/backend/AiTutor.Application/Features/Classrooms/Commands/RemoveMember/RemoveMemberCommandHandler.cs",
-                "region": {
-                  "startLine": 17,
-                  "startColumn": 91,
-                  "endLine": 17,
-                  "endColumn": 93
-                }
-              }
-            }
-          ],
-          "properties": {
-            "warningLevel": 1
-          }
-        },
-        {
-          "ruleId": "S927",
-          "level": "warning",
-          "message": "Rename parameter 'ct' to 'cancellationToken' to match the interface declaration.",
-          "locations": [
-            {
-              "resultFile": {
-                "uri": "file:///D:/Facultate/.NET/ai-tutor/src/backend/AiTutor.Application/Features/Classrooms/Queries/GetClassroomProgress/GetClassroomProgressQueryHandler.cs",
-                "region": {
-                  "startLine": 13,
-                  "startColumn": 124,
-                  "endLine": 13,
-                  "endColumn": 126
-                }
-              }
-            }
-          ],
-          "properties": {
-            "warningLevel": 1
-          }
-        },
-        {
-          "ruleId": "S927",
-          "level": "warning",
-          "message": "Rename parameter 'ct' to 'cancellationToken' to match the interface declaration.",
-          "locations": [
-            {
-              "resultFile": {
-                "uri": "file:///D:/Facultate/.NET/ai-tutor/src/backend/AiTutor.Application/Features/Classrooms/Commands/SubmitClassroomQuiz/SubmitClassroomQuizCommandHandler.cs",
-                "region": {
-                  "startLine": 14,
-                  "startColumn": 121,
-                  "endLine": 14,
-                  "endColumn": 123
                 }
               }
             }
@@ -1167,18 +1146,18 @@
           }
         },
         {
-          "ruleId": "CA1873",
-          "level": "note",
-          "message": "Evaluation of this argument may be expensive and unnecessary if logging is disabled",
+          "ruleId": "S927",
+          "level": "warning",
+          "message": "Rename parameter 'ct' to 'cancellationToken' to match the interface declaration.",
           "locations": [
             {
               "resultFile": {
-                "uri": "file:///D:/Facultate/.NET/ai-tutor/src/backend/AiTutor.Application/Features/Subscriptions/Commands/HandleStripeWebhook/HandleStripeWebhookCommandHandler.cs",
+                "uri": "file:///D:/Facultate/.NET/ai-tutor/src/backend/AiTutor.Application/Features/Classrooms/Commands/DeleteGrade/DeleteGradeCommandHandler.cs",
                 "region": {
-                  "startLine": 220,
-                  "startColumn": 9,
-                  "endLine": 222,
-                  "endColumn": 37
+                  "startLine": 17,
+                  "startColumn": 90,
+                  "endLine": 17,
+                  "endColumn": 92
                 }
               }
             }
@@ -1221,6 +1200,27 @@
                   "startColumn": 9,
                   "endLine": 133,
                   "endColumn": 62
+                }
+              }
+            }
+          ],
+          "properties": {
+            "warningLevel": 1
+          }
+        },
+        {
+          "ruleId": "CA1873",
+          "level": "note",
+          "message": "Evaluation of this argument may be expensive and unnecessary if logging is disabled",
+          "locations": [
+            {
+              "resultFile": {
+                "uri": "file:///D:/Facultate/.NET/ai-tutor/src/backend/AiTutor.Application/Features/Subscriptions/Commands/HandleStripeWebhook/HandleStripeWebhookCommandHandler.cs",
+                "region": {
+                  "startLine": 220,
+                  "startColumn": 9,
+                  "endLine": 222,
+                  "endColumn": 37
                 }
               }
             }

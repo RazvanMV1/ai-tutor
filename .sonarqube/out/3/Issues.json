@@ -41,10 +41,10 @@
               "resultFile": {
                 "uri": "file:///D:/Facultate/.NET/ai-tutor/src/backend/AiTutor.Infrastructure/Services/AiTutorService.cs",
                 "region": {
-                  "startLine": 130,
+                  "startLine": 125,
                   "startColumn": 20,
-                  "endLine": 130,
-                  "endColumn": 37
+                  "endLine": 125,
+                  "endColumn": 34
                 }
               }
             }
@@ -62,16 +62,61 @@
               "resultFile": {
                 "uri": "file:///D:/Facultate/.NET/ai-tutor/src/backend/AiTutor.Infrastructure/Services/AiTutorService.cs",
                 "region": {
-                  "startLine": 125,
+                  "startLine": 130,
                   "startColumn": 20,
-                  "endLine": 125,
-                  "endColumn": 34
+                  "endLine": 130,
+                  "endColumn": 37
                 }
               }
             }
           ],
           "properties": {
             "warningLevel": 1
+          }
+        },
+        {
+          "ruleId": "S5332",
+          "level": "warning",
+          "message": "Using http protocol is insecure. Use https instead.",
+          "locations": [
+            {
+              "resultFile": {
+                "uri": "file:///D:/Facultate/.NET/ai-tutor/src/backend/AiTutor.Infrastructure/Services/AiTutorService.cs",
+                "region": {
+                  "startLine": 26,
+                  "startColumn": 57,
+                  "endLine": 26,
+                  "endColumn": 80
+                }
+              }
+            }
+          ],
+          "properties": {
+            "warningLevel": 1
+          }
+        },
+        {
+          "ruleId": "CA1860",
+          "level": "note",
+          "message": "Prefer comparing 'Count' to 0 rather than using 'Any()', both for clarity and for performance",
+          "locations": [
+            {
+              "resultFile": {
+                "uri": "file:///D:/Facultate/.NET/ai-tutor/src/backend/AiTutor.Infrastructure/Persistence/ApplicationDbContext.cs",
+                "region": {
+                  "startLine": 52,
+                  "startColumn": 25,
+                  "endLine": 52,
+                  "endColumn": 52
+                }
+              }
+            }
+          ],
+          "properties": {
+            "warningLevel": 1,
+            "customProperties": {
+              "DiagnosticPropertyKey": "Count"
+            }
           }
         },
         {
@@ -96,18 +141,18 @@
           }
         },
         {
-          "ruleId": "S5332",
-          "level": "warning",
-          "message": "Using http protocol is insecure. Use https instead.",
+          "ruleId": "CA1873",
+          "level": "note",
+          "message": "Evaluation of this argument may be expensive and unnecessary if logging is disabled",
           "locations": [
             {
               "resultFile": {
-                "uri": "file:///D:/Facultate/.NET/ai-tutor/src/backend/AiTutor.Infrastructure/Services/AiTutorService.cs",
+                "uri": "file:///D:/Facultate/.NET/ai-tutor/src/backend/AiTutor.Infrastructure/Services/Stripe/StripeService.cs",
                 "region": {
-                  "startLine": 26,
-                  "startColumn": 57,
-                  "endLine": 26,
-                  "endColumn": 80
+                  "startLine": 75,
+                  "startColumn": 9,
+                  "endLine": 77,
+                  "endColumn": 50
                 }
               }
             }
@@ -148,30 +193,6 @@
           ],
           "properties": {
             "warningLevel": 1
-          }
-        },
-        {
-          "ruleId": "CA1860",
-          "level": "note",
-          "message": "Prefer comparing 'Count' to 0 rather than using 'Any()', both for clarity and for performance",
-          "locations": [
-            {
-              "resultFile": {
-                "uri": "file:///D:/Facultate/.NET/ai-tutor/src/backend/AiTutor.Infrastructure/Persistence/ApplicationDbContext.cs",
-                "region": {
-                  "startLine": 52,
-                  "startColumn": 25,
-                  "endLine": 52,
-                  "endColumn": 52
-                }
-              }
-            }
-          ],
-          "properties": {
-            "warningLevel": 1,
-            "customProperties": {
-              "DiagnosticPropertyKey": "Count"
-            }
           }
         },
         {
@@ -225,10 +246,10 @@
               "resultFile": {
                 "uri": "file:///D:/Facultate/.NET/ai-tutor/src/backend/AiTutor.Infrastructure/Services/Stripe/StripeService.cs",
                 "region": {
-                  "startLine": 75,
-                  "startColumn": 9,
-                  "endLine": 77,
-                  "endColumn": 50
+                  "startLine": 188,
+                  "startColumn": 17,
+                  "endLine": 188,
+                  "endColumn": 90
                 }
               }
             }
@@ -244,12 +265,12 @@
           "locations": [
             {
               "resultFile": {
-                "uri": "file:///D:/Facultate/.NET/ai-tutor/src/backend/AiTutor.Infrastructure/Services/Stripe/StripeService.cs",
+                "uri": "file:///D:/Facultate/.NET/ai-tutor/src/backend/AiTutor.Infrastructure/Services/AiTutorService.cs",
                 "region": {
-                  "startLine": 188,
-                  "startColumn": 17,
-                  "endLine": 188,
-                  "endColumn": 90
+                  "startLine": 98,
+                  "startColumn": 9,
+                  "endLine": 98,
+                  "endColumn": 89
                 }
               }
             }
@@ -292,27 +313,6 @@
                   "startColumn": 70,
                   "endLine": 221,
                   "endColumn": 78
-                }
-              }
-            }
-          ],
-          "properties": {
-            "warningLevel": 1
-          }
-        },
-        {
-          "ruleId": "CA1873",
-          "level": "note",
-          "message": "Evaluation of this argument may be expensive and unnecessary if logging is disabled",
-          "locations": [
-            {
-              "resultFile": {
-                "uri": "file:///D:/Facultate/.NET/ai-tutor/src/backend/AiTutor.Infrastructure/Services/AiTutorService.cs",
-                "region": {
-                  "startLine": 98,
-                  "startColumn": 9,
-                  "endLine": 98,
-                  "endColumn": 89
                 }
               }
             }

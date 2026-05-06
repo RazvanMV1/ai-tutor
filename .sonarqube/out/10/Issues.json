@@ -138,6 +138,27 @@
           }
         },
         {
+          "ruleId": "S1075",
+          "level": "warning",
+          "message": "Refactor your code not to use hardcoded absolute paths or URIs.",
+          "locations": [
+            {
+              "resultFile": {
+                "uri": "file:///D:/Facultate/.NET/ai-tutor/src/backend/AiTutor.API/Controllers/AiController.cs",
+                "region": {
+                  "startLine": 106,
+                  "startColumn": 67,
+                  "endLine": 106,
+                  "endColumn": 90
+                }
+              }
+            }
+          ],
+          "properties": {
+            "warningLevel": 1
+          }
+        },
+        {
           "ruleId": "ASP0018",
           "level": "note",
           "message": "Unused route parameter 'lessonId'",
@@ -189,27 +210,6 @@
               "RouteParameterName": "lessonId",
               "RouteParameterPolicy": ""
             }
-          }
-        },
-        {
-          "ruleId": "S1075",
-          "level": "warning",
-          "message": "Refactor your code not to use hardcoded absolute paths or URIs.",
-          "locations": [
-            {
-              "resultFile": {
-                "uri": "file:///D:/Facultate/.NET/ai-tutor/src/backend/AiTutor.API/Controllers/AiController.cs",
-                "region": {
-                  "startLine": 106,
-                  "startColumn": 67,
-                  "endLine": 106,
-                  "endColumn": 90
-                }
-              }
-            }
-          ],
-          "properties": {
-            "warningLevel": 1
           }
         }
       ],

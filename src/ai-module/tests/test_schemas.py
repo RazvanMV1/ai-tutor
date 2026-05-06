@@ -1,4 +1,4 @@
-﻿import pytest
+import pytest
 from app.schemas.ai_schemas import (
     ExplanationRequest,
     ProblemRequest,
@@ -10,12 +10,12 @@ from app.schemas.ai_schemas import (
 
 def test_explanation_request_valid():
     request = ExplanationRequest(
-        topic="Ecuații de gradul 2",
+        topic="Ecua?ii de gradul 2",
         subject=SubjectType.MATHEMATICS,
         difficulty_level=DifficultyLevel.BEGINNER,
         student_age=14
     )
-    assert request.topic == "Ecuații de gradul 2"
+    assert request.topic == "Ecua?ii de gradul 2"
     assert request.subject == SubjectType.MATHEMATICS
     assert request.difficulty_level == DifficultyLevel.BEGINNER
 
@@ -32,7 +32,7 @@ def test_explanation_request_invalid_age():
 
 def test_problem_request_valid():
     request = ProblemRequest(
-        topic="Funcții",
+        topic="Func?ii",
         subject=SubjectType.MATHEMATICS,
         difficulty_level=DifficultyLevel.INTERMEDIATE,
         student_age=16,
@@ -54,7 +54,7 @@ def test_problem_request_invalid_count():
 
 def test_hint_request_valid():
     request = HintRequest(
-        question="Ce este o ecuație de gradul 2?",
+        question="Ce este o ecua?ie de gradul 2?",
         subject=SubjectType.MATHEMATICS
     )
-    assert request.question == "Ce este o ecuație de gradul 2?"
+    assert request.question == "Ce este o ecua?ie de gradul 2?"

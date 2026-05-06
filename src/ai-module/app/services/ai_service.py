@@ -1,4 +1,4 @@
-﻿import os
+import os
 import json
 import google.generativeai as genai
 from app.schemas.ai_schemas import (

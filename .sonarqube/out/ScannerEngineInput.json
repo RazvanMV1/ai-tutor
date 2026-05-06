@@ -10,11 +10,11 @@
     },
     {
       "key": "sonar.scanner.bootstrapStartTime",
-      "value": "1777797484000"
+      "value": "1778043495000"
     },
     {
       "key": "sonar.projectKey",
-      "value": "ai-tutor"
+      "value": "AiTutor"
     },
     {
       "key": "sonar.projectName",
@@ -42,11 +42,11 @@
     },
     {
       "key": "sonar.modules",
-      "value": "E1AB0A9F-5B05-66B4-2B6D-19FA6B5AAAA8,BF18C45A-30B7-D452-BD3B-D34FDE1017A2,B1247871-A76D-4AEF-98F0-08C1648C3BEB,A16203BC-9766-4E68-9DD1-FCF25DB81B7C,C9F027F3-572E-20EE-676B-9374D39F92F5,377DC975-AEED-64A3-AA98-2BC4E363D3CF,6F883BDD-0C0F-418A-B82C-47AF01646FC9,16DF284E-906E-1AE2-EB6D-8917873EBE33,4C651A79-8038-C567-A753-D390919CE255,7E085627-A6D4-4208-BACA-FB28BB9834FA,4C31D3D1-D97E-48CF-82D1-10582C3D15B9,612D0601-613C-43C9-9D74-44770E447FB0"
+      "value": "E1AB0A9F-5B05-66B4-2B6D-19FA6B5AAAA8,BF18C45A-30B7-D452-BD3B-D34FDE1017A2,F0D267E8-7350-4AA6-A570-30A8266E348E,889CAF2B-8252-48BB-B9A8-37020E637CE6,C9F027F3-572E-20EE-676B-9374D39F92F5,377DC975-AEED-64A3-AA98-2BC4E363D3CF,6F883BDD-0C0F-418A-B82C-47AF01646FC9,16DF284E-906E-1AE2-EB6D-8917873EBE33,4C651A79-8038-C567-A753-D390919CE255,2C1AA72A-9CD3-41A0-B4CD-5846496E8C28,92F7965A-77D7-46FD-A771-19B178D4BA97,EBFBF900-79E5-431E-8883-4D3C3E03AE44"
     },
     {
       "key": "E1AB0A9F-5B05-66B4-2B6D-19FA6B5AAAA8.sonar.projectKey",
-      "value": "ai-tutor:E1AB0A9F-5B05-66B4-2B6D-19FA6B5AAAA8"
+      "value": "AiTutor:E1AB0A9F-5B05-66B4-2B6D-19FA6B5AAAA8"
     },
     {
       "key": "E1AB0A9F-5B05-66B4-2B6D-19FA6B5AAAA8.sonar.projectName",
@@ -86,7 +86,7 @@
     },
     {
       "key": "BF18C45A-30B7-D452-BD3B-D34FDE1017A2.sonar.projectKey",
-      "value": "ai-tutor:BF18C45A-30B7-D452-BD3B-D34FDE1017A2"
+      "value": "AiTutor:BF18C45A-30B7-D452-BD3B-D34FDE1017A2"
     },
     {
       "key": "BF18C45A-30B7-D452-BD3B-D34FDE1017A2.sonar.projectName",
@@ -110,7 +110,7 @@
     },
     {
       "key": "BF18C45A-30B7-D452-BD3B-D34FDE1017A2.sonar.sources",
-      "value": "D:\\Facultate\\.NET\\ai-tutor\\src\\frontend\\AiTutor.Web\\Dockerfile,D:\\Facultate\\.NET\\ai-tutor\\src\\frontend\\AiTutor.Web\\obj\\AiTutor.Web.csproj.nuget.dgspec.json,D:\\Facultate\\.NET\\ai-tutor\\src\\frontend\\AiTutor.Web\\obj\\project.assets.json,D:\\Facultate\\.NET\\ai-tutor\\src\\frontend\\AiTutor.Web\\Properties\\launchSettings.json,D:\\Facultate\\.NET\\ai-tutor\\src\\frontend\\AiTutor.Web\\wwwroot\\index.html,D:\\Facultate\\.NET\\ai-tutor\\src\\frontend\\AiTutor.Web\\wwwroot\\css\\animations.css,D:\\Facultate\\.NET\\ai-tutor\\src\\frontend\\AiTutor.Web\\wwwroot\\css\\app.css,D:\\Facultate\\.NET\\ai-tutor\\src\\frontend\\AiTutor.Web\\wwwroot\\js\\app.js,D:\\Facultate\\.NET\\ai-tutor\\src\\frontend\\AiTutor.Web\\wwwroot\\sample-data\\weather.json,D:\\Facultate\\.NET\\ai-tutor\\src\\frontend\\AiTutor.Web\\bin\\Debug\\net10.0\\AiTutor.Web.runtimeconfig.json,D:\\Facultate\\.NET\\ai-tutor\\src\\frontend\\AiTutor.Web\\bin\\Debug\\net10.0\\AiTutor.Web.staticwebassets.endpoints.json,D:\\Facultate\\.NET\\ai-tutor\\src\\frontend\\AiTutor.Web\\bin\\Debug\\net10.0\\AiTutor.Web.staticwebassets.runtime.json,D:\\Facultate\\.NET\\ai-tutor\\src\\frontend\\AiTutor.Web\\bin\\Debug\\net10.0\\dotnet.js,D:\\Facultate\\.NET\\ai-tutor\\src\\frontend\\AiTutor.Web\\bin\\Debug\\net10.0\\dotnet.native.js,D:\\Facultate\\.NET\\ai-tutor\\src\\frontend\\AiTutor.Web\\bin\\Debug\\net10.0\\dotnet.runtime.js,D:\\Facultate\\.NET\\ai-tutor\\src\\frontend\\AiTutor.Web\\obj\\Debug\\net10.0\\AiTutor.Web.sourcelink.json,D:\\Facultate\\.NET\\ai-tutor\\src\\frontend\\AiTutor.Web\\obj\\Debug\\net10.0\\blazor.build.boot-extension.json,D:\\Facultate\\.NET\\ai-tutor\\src\\frontend\\AiTutor.Web\\obj\\Debug\\net10.0\\dotnet.js,D:\\Facultate\\.NET\\ai-tutor\\src\\frontend\\AiTutor.Web\\obj\\Debug\\net10.0\\rbcswa.dswa.cache.json,D:\\Facultate\\.NET\\ai-tutor\\src\\frontend\\AiTutor.Web\\obj\\Debug\\net10.0\\rjimswa.dswa.cache.json,D:\\Facultate\\.NET\\ai-tutor\\src\\frontend\\AiTutor.Web\\obj\\Debug\\net10.0\\rjsmcshtml.dswa.cache.json,D:\\Facultate\\.NET\\ai-tutor\\src\\frontend\\AiTutor.Web\\obj\\Debug\\net10.0\\rjsmrazor.dswa.cache.json,D:\\Facultate\\.NET\\ai-tutor\\src\\frontend\\AiTutor.Web\\obj\\Debug\\net10.0\\rpswa.dswa.cache.json,D:\\Facultate\\.NET\\ai-tutor\\src\\frontend\\AiTutor.Web\\obj\\Debug\\net10.0\\staticwebassets.build.endpoints.json,D:\\Facultate\\.NET\\ai-tutor\\src\\frontend\\AiTutor.Web\\obj\\Debug\\net10.0\\staticwebassets.build.json,D:\\Facultate\\.NET\\ai-tutor\\src\\frontend\\AiTutor.Web\\obj\\Debug\\net10.0\\staticwebassets.development.json,D:\\Facultate\\.NET\\ai-tutor\\src\\frontend\\AiTutor.Web\\bin\\Debug\\net10.0\\wwwroot\\_framework\\blazor.webassembly.66stpp682q.js,D:\\Facultate\\.NET\\ai-tutor\\src\\frontend\\AiTutor.Web\\bin\\Debug\\net10.0\\wwwroot\\_framework\\dotnet.mq38u81dax.js,D:\\Facultate\\.NET\\ai-tutor\\src\\frontend\\AiTutor.Web\\bin\\Debug\\net10.0\\wwwroot\\_framework\\dotnet.native.ykrnppwhq2.js,D:\\Facultate\\.NET\\ai-tutor\\src\\frontend\\AiTutor.Web\\bin\\Debug\\net10.0\\wwwroot\\_framework\\dotnet.runtime.peu2mfb29t.js,D:\\Facultate\\.NET\\ai-tutor\\src\\frontend\\AiTutor.Web\\obj\\Debug\\net10.0\\staticwebassets\\htmlassetplaceholders\\build\\2fxs50s9fo.html,D:\\Facultate\\.NET\\ai-tutor\\src\\frontend\\AiTutor.Web\\Models\\Models.cs,D:\\Facultate\\.NET\\ai-tutor\\src\\frontend\\AiTutor.Web\\Program.cs,D:\\Facultate\\.NET\\ai-tutor\\src\\frontend\\AiTutor.Web\\Services\\AiService.cs,D:\\Facultate\\.NET\\ai-tutor\\src\\frontend\\AiTutor.Web\\Services\\ApiService.cs,D:\\Facultate\\.NET\\ai-tutor\\src\\frontend\\AiTutor.Web\\Services\\AuthService.cs,D:\\Facultate\\.NET\\ai-tutor\\src\\frontend\\AiTutor.Web\\Store\\Auth\\AuthEffects.cs,D:\\Facultate\\.NET\\ai-tutor\\src\\frontend\\AiTutor.Web\\Store\\Auth\\AuthState.cs,D:\\Facultate\\.NET\\ai-tutor\\src\\frontend\\AiTutor.Web\\Store\\Progress\\ProgressEffects.cs,D:\\Facultate\\.NET\\ai-tutor\\src\\frontend\\AiTutor.Web\\Store\\Progress\\ProgressState.cs,D:\\Facultate\\.NET\\ai-tutor\\src\\frontend\\AiTutor.Web\\Store\\Subjects\\SubjectsEffects.cs,D:\\Facultate\\.NET\\ai-tutor\\src\\frontend\\AiTutor.Web\\Store\\Subjects\\SubjectsState.cs,D:\\Facultate\\.NET\\ai-tutor\\src\\frontend\\AiTutor.Web\\obj\\Debug\\net10.0\\EmbeddedAttribute.cs,D:\\Facultate\\.NET\\ai-tutor\\src\\frontend\\AiTutor.Web\\obj\\Debug\\net10.0\\ValidatableTypeAttribute.cs,D:\\Facultate\\.NET\\ai-tutor\\src\\frontend\\AiTutor.Web\\obj\\Debug\\net10.0\\AiTutor.Web.GlobalUsings.g.cs,\"D:\\Facultate\\.NET\\ai-tutor\\src\\frontend\\AiTutor.Web\\obj\\Debug\\net10.0\\.NETCoreApp,Version=v10.0.AssemblyAttributes.cs\",D:\\Facultate\\.NET\\ai-tutor\\src\\frontend\\AiTutor.Web\\obj\\Debug\\net10.0\\AiTutor.Web.AssemblyInfo.cs,D:\\Facultate\\.NET\\ai-tutor\\src\\frontend\\AiTutor.Web\\wwwroot\\favicon.png,D:\\Facultate\\.NET\\ai-tutor\\src\\frontend\\AiTutor.Web\\wwwroot\\icon-192.png,D:\\Facultate\\.NET\\ai-tutor\\src\\frontend\\AiTutor.Web\\App.razor,D:\\Facultate\\.NET\\ai-tutor\\src\\frontend\\AiTutor.Web\\Pages\\AI\\AiExplanation.razor,D:\\Facultate\\.NET\\ai-tutor\\src\\frontend\\AiTutor.Web\\Pages\\AI\\AiProblems.razor,D:\\Facultate\\.NET\\ai-tutor\\src\\frontend\\AiTutor.Web\\Pages\\Auth\\Login.razor,D:\\Facultate\\.NET\\ai-tutor\\src\\frontend\\AiTutor.Web\\Pages\\Auth\\Register.razor,D:\\Facultate\\.NET\\ai-tutor\\src\\frontend\\AiTutor.Web\\Pages\\Classrooms\\ClassroomDetail.razor,D:\\Facultate\\.NET\\ai-tutor\\src\\frontend\\AiTutor.Web\\Pages\\Classrooms\\MyClassrooms.razor,D:\\Facultate\\.NET\\ai-tutor\\src\\frontend\\AiTutor.Web\\Pages\\Dashboard\\Dashboard.razor,D:\\Facultate\\.NET\\ai-tutor\\src\\frontend\\AiTutor.Web\\Pages\\Lessons\\LessonDetail.razor,D:\\Facultate\\.NET\\ai-tutor\\src\\frontend\\AiTutor.Web\\Pages\\Lessons\\LessonsList.razor,D:\\Facultate\\.NET\\ai-tutor\\src\\frontend\\AiTutor.Web\\Pages\\Parent\\ChildGrades.razor,D:\\Facultate\\.NET\\ai-tutor\\src\\frontend\\AiTutor.Web\\Pages\\Parent\\Children.razor,D:\\Facultate\\.NET\\ai-tutor\\src\\frontend\\AiTutor.Web\\Pages\\Progress\\StudentProgress.razor,D:\\Facultate\\.NET\\ai-tutor\\src\\frontend\\AiTutor.Web\\Pages\\Quiz\\QuizList.razor,D:\\Facultate\\.NET\\ai-tutor\\src\\frontend\\AiTutor.Web\\Pages\\Quiz\\QuizPage.razor,D:\\Facultate\\.NET\\ai-tutor\\src\\frontend\\AiTutor.Web\\Pages\\Student\\LinkParent.razor,D:\\Facultate\\.NET\\ai-tutor\\src\\frontend\\AiTutor.Web\\Pages\\Subjects\\SubjectsList.razor,D:\\Facultate\\.NET\\ai-tutor\\src\\frontend\\AiTutor.Web\\Pages\\Subscriptions\\Cancel.razor,D:\\Facultate\\.NET\\ai-tutor\\src\\frontend\\AiTutor.Web\\Pages\\Subscriptions\\Subscriptions.razor,D:\\Facultate\\.NET\\ai-tutor\\src\\frontend\\AiTutor.Web\\Pages\\Subscriptions\\Success.razor,D:\\Facultate\\.NET\\ai-tutor\\src\\frontend\\AiTutor.Web\\Shared\\AuthLayout.razor,D:\\Facultate\\.NET\\ai-tutor\\src\\frontend\\AiTutor.Web\\Shared\\MainLayout.razor,D:\\Facultate\\.NET\\ai-tutor\\src\\frontend\\AiTutor.Web\\Shared\\NavMenu.razor,D:\\Facultate\\.NET\\ai-tutor\\src\\frontend\\AiTutor.Web\\_Imports.razor,D:\\Facultate\\.NET\\ai-tutor\\src\\frontend\\AiTutor.Web\\.dockerignore,D:\\Facultate\\.NET\\ai-tutor\\src\\frontend\\AiTutor.Web\\nginx.conf,D:\\Facultate\\.NET\\ai-tutor\\src\\frontend\\AiTutor.Web\\nginx.dev.conf,D:\\Facultate\\.NET\\ai-tutor\\src\\frontend\\AiTutor.Web\\Pages\\Classrooms\\ClassroomDetail.razor.bak"
+      "value": "D:\\Facultate\\.NET\\ai-tutor\\src\\frontend\\AiTutor.Web\\Dockerfile,D:\\Facultate\\.NET\\ai-tutor\\src\\frontend\\AiTutor.Web\\obj\\AiTutor.Web.csproj.nuget.dgspec.json,D:\\Facultate\\.NET\\ai-tutor\\src\\frontend\\AiTutor.Web\\obj\\project.assets.json,D:\\Facultate\\.NET\\ai-tutor\\src\\frontend\\AiTutor.Web\\Properties\\launchSettings.json,D:\\Facultate\\.NET\\ai-tutor\\src\\frontend\\AiTutor.Web\\wwwroot\\index.html,D:\\Facultate\\.NET\\ai-tutor\\src\\frontend\\AiTutor.Web\\wwwroot\\css\\animations.css,D:\\Facultate\\.NET\\ai-tutor\\src\\frontend\\AiTutor.Web\\wwwroot\\css\\app.css,D:\\Facultate\\.NET\\ai-tutor\\src\\frontend\\AiTutor.Web\\wwwroot\\js\\app.js,D:\\Facultate\\.NET\\ai-tutor\\src\\frontend\\AiTutor.Web\\wwwroot\\sample-data\\weather.json,D:\\Facultate\\.NET\\ai-tutor\\src\\frontend\\AiTutor.Web\\bin\\Debug\\net10.0\\AiTutor.Web.runtimeconfig.json,D:\\Facultate\\.NET\\ai-tutor\\src\\frontend\\AiTutor.Web\\bin\\Debug\\net10.0\\AiTutor.Web.staticwebassets.endpoints.json,D:\\Facultate\\.NET\\ai-tutor\\src\\frontend\\AiTutor.Web\\bin\\Debug\\net10.0\\AiTutor.Web.staticwebassets.runtime.json,D:\\Facultate\\.NET\\ai-tutor\\src\\frontend\\AiTutor.Web\\bin\\Debug\\net10.0\\dotnet.js,D:\\Facultate\\.NET\\ai-tutor\\src\\frontend\\AiTutor.Web\\bin\\Debug\\net10.0\\dotnet.native.js,D:\\Facultate\\.NET\\ai-tutor\\src\\frontend\\AiTutor.Web\\bin\\Debug\\net10.0\\dotnet.runtime.js,D:\\Facultate\\.NET\\ai-tutor\\src\\frontend\\AiTutor.Web\\obj\\Debug\\net10.0\\AiTutor.Web.sourcelink.json,D:\\Facultate\\.NET\\ai-tutor\\src\\frontend\\AiTutor.Web\\obj\\Debug\\net10.0\\blazor.build.boot-extension.json,D:\\Facultate\\.NET\\ai-tutor\\src\\frontend\\AiTutor.Web\\obj\\Debug\\net10.0\\dotnet.js,D:\\Facultate\\.NET\\ai-tutor\\src\\frontend\\AiTutor.Web\\obj\\Debug\\net10.0\\rbcswa.dswa.cache.json,D:\\Facultate\\.NET\\ai-tutor\\src\\frontend\\AiTutor.Web\\obj\\Debug\\net10.0\\rjimswa.dswa.cache.json,D:\\Facultate\\.NET\\ai-tutor\\src\\frontend\\AiTutor.Web\\obj\\Debug\\net10.0\\rjsmcshtml.dswa.cache.json,D:\\Facultate\\.NET\\ai-tutor\\src\\frontend\\AiTutor.Web\\obj\\Debug\\net10.0\\rjsmrazor.dswa.cache.json,D:\\Facultate\\.NET\\ai-tutor\\src\\frontend\\AiTutor.Web\\obj\\Debug\\net10.0\\rpswa.dswa.cache.json,D:\\Facultate\\.NET\\ai-tutor\\src\\frontend\\AiTutor.Web\\obj\\Debug\\net10.0\\staticwebassets.build.endpoints.json,D:\\Facultate\\.NET\\ai-tutor\\src\\frontend\\AiTutor.Web\\obj\\Debug\\net10.0\\staticwebassets.build.json,D:\\Facultate\\.NET\\ai-tutor\\src\\frontend\\AiTutor.Web\\obj\\Debug\\net10.0\\staticwebassets.development.json,D:\\Facultate\\.NET\\ai-tutor\\src\\frontend\\AiTutor.Web\\bin\\Debug\\net10.0\\wwwroot\\_framework\\blazor.webassembly.66stpp682q.js,D:\\Facultate\\.NET\\ai-tutor\\src\\frontend\\AiTutor.Web\\bin\\Debug\\net10.0\\wwwroot\\_framework\\dotnet.3yaimic94x.js,D:\\Facultate\\.NET\\ai-tutor\\src\\frontend\\AiTutor.Web\\bin\\Debug\\net10.0\\wwwroot\\_framework\\dotnet.native.ykrnppwhq2.js,D:\\Facultate\\.NET\\ai-tutor\\src\\frontend\\AiTutor.Web\\bin\\Debug\\net10.0\\wwwroot\\_framework\\dotnet.runtime.peu2mfb29t.js,D:\\Facultate\\.NET\\ai-tutor\\src\\frontend\\AiTutor.Web\\obj\\Debug\\net10.0\\staticwebassets\\htmlassetplaceholders\\build\\2fxs50s9fo.html,D:\\Facultate\\.NET\\ai-tutor\\src\\frontend\\AiTutor.Web\\Models\\Models.cs,D:\\Facultate\\.NET\\ai-tutor\\src\\frontend\\AiTutor.Web\\Program.cs,D:\\Facultate\\.NET\\ai-tutor\\src\\frontend\\AiTutor.Web\\Services\\AiService.cs,D:\\Facultate\\.NET\\ai-tutor\\src\\frontend\\AiTutor.Web\\Services\\ApiService.cs,D:\\Facultate\\.NET\\ai-tutor\\src\\frontend\\AiTutor.Web\\Services\\AuthService.cs,D:\\Facultate\\.NET\\ai-tutor\\src\\frontend\\AiTutor.Web\\Store\\Auth\\AuthEffects.cs,D:\\Facultate\\.NET\\ai-tutor\\src\\frontend\\AiTutor.Web\\Store\\Auth\\AuthState.cs,D:\\Facultate\\.NET\\ai-tutor\\src\\frontend\\AiTutor.Web\\Store\\Progress\\ProgressEffects.cs,D:\\Facultate\\.NET\\ai-tutor\\src\\frontend\\AiTutor.Web\\Store\\Progress\\ProgressState.cs,D:\\Facultate\\.NET\\ai-tutor\\src\\frontend\\AiTutor.Web\\Store\\Subjects\\SubjectsEffects.cs,D:\\Facultate\\.NET\\ai-tutor\\src\\frontend\\AiTutor.Web\\Store\\Subjects\\SubjectsState.cs,D:\\Facultate\\.NET\\ai-tutor\\src\\frontend\\AiTutor.Web\\obj\\Debug\\net10.0\\EmbeddedAttribute.cs,D:\\Facultate\\.NET\\ai-tutor\\src\\frontend\\AiTutor.Web\\obj\\Debug\\net10.0\\ValidatableTypeAttribute.cs,D:\\Facultate\\.NET\\ai-tutor\\src\\frontend\\AiTutor.Web\\obj\\Debug\\net10.0\\AiTutor.Web.GlobalUsings.g.cs,\"D:\\Facultate\\.NET\\ai-tutor\\src\\frontend\\AiTutor.Web\\obj\\Debug\\net10.0\\.NETCoreApp,Version=v10.0.AssemblyAttributes.cs\",D:\\Facultate\\.NET\\ai-tutor\\src\\frontend\\AiTutor.Web\\obj\\Debug\\net10.0\\AiTutor.Web.AssemblyInfo.cs,D:\\Facultate\\.NET\\ai-tutor\\src\\frontend\\AiTutor.Web\\wwwroot\\favicon.png,D:\\Facultate\\.NET\\ai-tutor\\src\\frontend\\AiTutor.Web\\wwwroot\\icon-192.png,D:\\Facultate\\.NET\\ai-tutor\\src\\frontend\\AiTutor.Web\\App.razor,D:\\Facultate\\.NET\\ai-tutor\\src\\frontend\\AiTutor.Web\\Pages\\AI\\AiExplanation.razor,D:\\Facultate\\.NET\\ai-tutor\\src\\frontend\\AiTutor.Web\\Pages\\AI\\AiProblems.razor,D:\\Facultate\\.NET\\ai-tutor\\src\\frontend\\AiTutor.Web\\Pages\\Auth\\Login.razor,D:\\Facultate\\.NET\\ai-tutor\\src\\frontend\\AiTutor.Web\\Pages\\Auth\\Register.razor,D:\\Facultate\\.NET\\ai-tutor\\src\\frontend\\AiTutor.Web\\Pages\\Classrooms\\ClassroomDetail.razor,D:\\Facultate\\.NET\\ai-tutor\\src\\frontend\\AiTutor.Web\\Pages\\Classrooms\\MyClassrooms.razor,D:\\Facultate\\.NET\\ai-tutor\\src\\frontend\\AiTutor.Web\\Pages\\Dashboard\\Dashboard.razor,D:\\Facultate\\.NET\\ai-tutor\\src\\frontend\\AiTutor.Web\\Pages\\Lessons\\LessonDetail.razor,D:\\Facultate\\.NET\\ai-tutor\\src\\frontend\\AiTutor.Web\\Pages\\Lessons\\LessonsList.razor,D:\\Facultate\\.NET\\ai-tutor\\src\\frontend\\AiTutor.Web\\Pages\\Parent\\ChildGrades.razor,D:\\Facultate\\.NET\\ai-tutor\\src\\frontend\\AiTutor.Web\\Pages\\Parent\\Children.razor,D:\\Facultate\\.NET\\ai-tutor\\src\\frontend\\AiTutor.Web\\Pages\\Progress\\StudentProgress.razor,D:\\Facultate\\.NET\\ai-tutor\\src\\frontend\\AiTutor.Web\\Pages\\Quiz\\QuizList.razor,D:\\Facultate\\.NET\\ai-tutor\\src\\frontend\\AiTutor.Web\\Pages\\Quiz\\QuizPage.razor,D:\\Facultate\\.NET\\ai-tutor\\src\\frontend\\AiTutor.Web\\Pages\\Student\\LinkParent.razor,D:\\Facultate\\.NET\\ai-tutor\\src\\frontend\\AiTutor.Web\\Pages\\Subjects\\SubjectsList.razor,D:\\Facultate\\.NET\\ai-tutor\\src\\frontend\\AiTutor.Web\\Pages\\Subscriptions\\Cancel.razor,D:\\Facultate\\.NET\\ai-tutor\\src\\frontend\\AiTutor.Web\\Pages\\Subscriptions\\Subscriptions.razor,D:\\Facultate\\.NET\\ai-tutor\\src\\frontend\\AiTutor.Web\\Pages\\Subscriptions\\Success.razor,D:\\Facultate\\.NET\\ai-tutor\\src\\frontend\\AiTutor.Web\\Shared\\AuthLayout.razor,D:\\Facultate\\.NET\\ai-tutor\\src\\frontend\\AiTutor.Web\\Shared\\MainLayout.razor,D:\\Facultate\\.NET\\ai-tutor\\src\\frontend\\AiTutor.Web\\Shared\\NavMenu.razor,D:\\Facultate\\.NET\\ai-tutor\\src\\frontend\\AiTutor.Web\\_Imports.razor,D:\\Facultate\\.NET\\ai-tutor\\src\\frontend\\AiTutor.Web\\.dockerignore,D:\\Facultate\\.NET\\ai-tutor\\src\\frontend\\AiTutor.Web\\nginx.conf,D:\\Facultate\\.NET\\ai-tutor\\src\\frontend\\AiTutor.Web\\nginx.dev.conf,D:\\Facultate\\.NET\\ai-tutor\\src\\frontend\\AiTutor.Web\\Pages\\Classrooms\\ClassroomDetail.razor.bak"
     },
     {
       "key": "BF18C45A-30B7-D452-BD3B-D34FDE1017A2.sonar.cs.analyzer.projectOutPaths",
@@ -125,88 +125,88 @@
       "value": "D:\\Facultate\\.NET\\ai-tutor\\.sonarqube\\out\\1\\Telemetry.json"
     },
     {
-      "key": "B1247871-A76D-4AEF-98F0-08C1648C3BEB.sonar.projectKey",
-      "value": "ai-tutor:B1247871-A76D-4AEF-98F0-08C1648C3BEB"
+      "key": "F0D267E8-7350-4AA6-A570-30A8266E348E.sonar.projectKey",
+      "value": "AiTutor:F0D267E8-7350-4AA6-A570-30A8266E348E"
     },
     {
-      "key": "B1247871-A76D-4AEF-98F0-08C1648C3BEB.sonar.projectName",
+      "key": "F0D267E8-7350-4AA6-A570-30A8266E348E.sonar.projectName",
       "value": "AiTutor.API"
     },
     {
-      "key": "B1247871-A76D-4AEF-98F0-08C1648C3BEB.sonar.projectBaseDir",
+      "key": "F0D267E8-7350-4AA6-A570-30A8266E348E.sonar.projectBaseDir",
       "value": "D:\\Facultate\\.NET\\ai-tutor\\src\\backend\\AiTutor.API"
     },
     {
-      "key": "B1247871-A76D-4AEF-98F0-08C1648C3BEB.sonar.working.directory",
+      "key": "F0D267E8-7350-4AA6-A570-30A8266E348E.sonar.working.directory",
       "value": "D:\\Facultate\\.NET\\ai-tutor\\.sonarqube\\out\\.sonar\\mod2"
     },
     {
-      "key": "B1247871-A76D-4AEF-98F0-08C1648C3BEB.sonar.sourceEncoding",
+      "key": "F0D267E8-7350-4AA6-A570-30A8266E348E.sonar.sourceEncoding",
       "value": "utf-8"
     },
     {
-      "key": "B1247871-A76D-4AEF-98F0-08C1648C3BEB.sonar.tests",
+      "key": "F0D267E8-7350-4AA6-A570-30A8266E348E.sonar.tests",
       "value": ""
     },
     {
-      "key": "B1247871-A76D-4AEF-98F0-08C1648C3BEB.sonar.sources",
+      "key": "F0D267E8-7350-4AA6-A570-30A8266E348E.sonar.sources",
       "value": "D:\\Facultate\\.NET\\ai-tutor\\src\\backend\\AiTutor.API\\appsettings.Development.json,D:\\Facultate\\.NET\\ai-tutor\\src\\backend\\AiTutor.API\\appsettings.json,D:\\Facultate\\.NET\\ai-tutor\\src\\backend\\AiTutor.API\\Dockerfile,D:\\Facultate\\.NET\\ai-tutor\\src\\backend\\AiTutor.API\\obj\\AiTutor.API.csproj.nuget.dgspec.json,D:\\Facultate\\.NET\\ai-tutor\\src\\backend\\AiTutor.API\\obj\\project.assets.json,D:\\Facultate\\.NET\\ai-tutor\\src\\backend\\AiTutor.API\\Properties\\launchSettings.json,D:\\Facultate\\.NET\\ai-tutor\\src\\backend\\AiTutor.API\\bin\\Debug\\net10.0\\AiTutor.API.deps.json,D:\\Facultate\\.NET\\ai-tutor\\src\\backend\\AiTutor.API\\bin\\Debug\\net10.0\\AiTutor.API.runtimeconfig.json,D:\\Facultate\\.NET\\ai-tutor\\src\\backend\\AiTutor.API\\bin\\Debug\\net10.0\\AiTutor.API.staticwebassets.endpoints.json,D:\\Facultate\\.NET\\ai-tutor\\src\\backend\\AiTutor.API\\bin\\Debug\\net10.0\\appsettings.Development.json,D:\\Facultate\\.NET\\ai-tutor\\src\\backend\\AiTutor.API\\bin\\Debug\\net10.0\\appsettings.json,D:\\Facultate\\.NET\\ai-tutor\\src\\backend\\AiTutor.API\\obj\\Debug\\net10.0\\AiTutor.API.sourcelink.json,D:\\Facultate\\.NET\\ai-tutor\\src\\backend\\AiTutor.API\\obj\\Debug\\net10.0\\rjsmcshtml.dswa.cache.json,D:\\Facultate\\.NET\\ai-tutor\\src\\backend\\AiTutor.API\\obj\\Debug\\net10.0\\rjsmrazor.dswa.cache.json,D:\\Facultate\\.NET\\ai-tutor\\src\\backend\\AiTutor.API\\obj\\Debug\\net10.0\\rpswa.dswa.cache.json,D:\\Facultate\\.NET\\ai-tutor\\src\\backend\\AiTutor.API\\obj\\Debug\\net10.0\\staticwebassets.build.endpoints.json,D:\\Facultate\\.NET\\ai-tutor\\src\\backend\\AiTutor.API\\obj\\Debug\\net10.0\\staticwebassets.build.json,D:\\Facultate\\.NET\\ai-tutor\\src\\backend\\AiTutor.API\\bin\\Debug\\net10.0\\BuildHost-netcore\\Microsoft.CodeAnalysis.Workspaces.MSBuild.BuildHost.deps.json,D:\\Facultate\\.NET\\ai-tutor\\src\\backend\\AiTutor.API\\bin\\Debug\\net10.0\\BuildHost-netcore\\Microsoft.CodeAnalysis.Workspaces.MSBuild.BuildHost.runtimeconfig.json,D:\\Facultate\\.NET\\ai-tutor\\src\\backend\\AiTutor.API\\Controllers\\AdminController.cs,D:\\Facultate\\.NET\\ai-tutor\\src\\backend\\AiTutor.API\\Controllers\\AiController.cs,D:\\Facultate\\.NET\\ai-tutor\\src\\backend\\AiTutor.API\\Controllers\\AuthController.cs,D:\\Facultate\\.NET\\ai-tutor\\src\\backend\\AiTutor.API\\Controllers\\BaseController.cs,D:\\Facultate\\.NET\\ai-tutor\\src\\backend\\AiTutor.API\\Controllers\\ClassroomsController.cs,D:\\Facultate\\.NET\\ai-tutor\\src\\backend\\AiTutor.API\\Controllers\\LessonsController.cs,D:\\Facultate\\.NET\\ai-tutor\\src\\backend\\AiTutor.API\\Controllers\\ProgressController.cs,D:\\Facultate\\.NET\\ai-tutor\\src\\backend\\AiTutor.API\\Controllers\\QuizzesController.cs,D:\\Facultate\\.NET\\ai-tutor\\src\\backend\\AiTutor.API\\Controllers\\SubjectsController.cs,D:\\Facultate\\.NET\\ai-tutor\\src\\backend\\AiTutor.API\\Controllers\\SubscriptionsController.cs,D:\\Facultate\\.NET\\ai-tutor\\src\\backend\\AiTutor.API\\Controllers\\UsersController.cs,D:\\Facultate\\.NET\\ai-tutor\\src\\backend\\AiTutor.API\\Middleware\\ExceptionHandlingMiddleware.cs,D:\\Facultate\\.NET\\ai-tutor\\src\\backend\\AiTutor.API\\Program.cs,D:\\Facultate\\.NET\\ai-tutor\\src\\backend\\AiTutor.API\\obj\\Debug\\net10.0\\AiTutor.API.GlobalUsings.g.cs,\"D:\\Facultate\\.NET\\ai-tutor\\src\\backend\\AiTutor.API\\obj\\Debug\\net10.0\\.NETCoreApp,Version=v10.0.AssemblyAttributes.cs\",D:\\Facultate\\.NET\\ai-tutor\\src\\backend\\AiTutor.API\\obj\\Debug\\net10.0\\AiTutor.API.AssemblyInfo.cs,D:\\Facultate\\.NET\\ai-tutor\\src\\backend\\AiTutor.API\\obj\\Debug\\net10.0\\AiTutor.API.MvcApplicationPartsAssemblyInfo.cs,D:\\Facultate\\.NET\\ai-tutor\\src\\backend\\AiTutor.API\\.dockerignore,D:\\Facultate\\.NET\\ai-tutor\\src\\backend\\AiTutor.API\\AiTutor.API.http"
     },
     {
-      "key": "B1247871-A76D-4AEF-98F0-08C1648C3BEB.sonar.cs.analyzer.projectOutPaths",
+      "key": "F0D267E8-7350-4AA6-A570-30A8266E348E.sonar.cs.analyzer.projectOutPaths",
       "value": "D:\\Facultate\\.NET\\ai-tutor\\.sonarqube\\out\\10"
     },
     {
-      "key": "B1247871-A76D-4AEF-98F0-08C1648C3BEB.sonar.cs.roslyn.reportFilePaths",
+      "key": "F0D267E8-7350-4AA6-A570-30A8266E348E.sonar.cs.roslyn.reportFilePaths",
       "value": "D:\\Facultate\\.NET\\ai-tutor\\.sonarqube\\out\\10\\Issues.json"
     },
     {
-      "key": "B1247871-A76D-4AEF-98F0-08C1648C3BEB.sonar.cs.scanner.telemetry",
+      "key": "F0D267E8-7350-4AA6-A570-30A8266E348E.sonar.cs.scanner.telemetry",
       "value": "D:\\Facultate\\.NET\\ai-tutor\\.sonarqube\\out\\10\\Telemetry.json"
     },
     {
-      "key": "A16203BC-9766-4E68-9DD1-FCF25DB81B7C.sonar.projectKey",
-      "value": "ai-tutor:A16203BC-9766-4E68-9DD1-FCF25DB81B7C"
+      "key": "889CAF2B-8252-48BB-B9A8-37020E637CE6.sonar.projectKey",
+      "value": "AiTutor:889CAF2B-8252-48BB-B9A8-37020E637CE6"
     },
     {
-      "key": "A16203BC-9766-4E68-9DD1-FCF25DB81B7C.sonar.projectName",
+      "key": "889CAF2B-8252-48BB-B9A8-37020E637CE6.sonar.projectName",
       "value": "AiTutor.UnitTests"
     },
     {
-      "key": "A16203BC-9766-4E68-9DD1-FCF25DB81B7C.sonar.projectBaseDir",
+      "key": "889CAF2B-8252-48BB-B9A8-37020E637CE6.sonar.projectBaseDir",
       "value": "D:\\Facultate\\.NET\\ai-tutor\\tests\\AiTutor.UnitTests"
     },
     {
-      "key": "A16203BC-9766-4E68-9DD1-FCF25DB81B7C.sonar.working.directory",
+      "key": "889CAF2B-8252-48BB-B9A8-37020E637CE6.sonar.working.directory",
       "value": "D:\\Facultate\\.NET\\ai-tutor\\.sonarqube\\out\\.sonar\\mod3"
     },
     {
-      "key": "A16203BC-9766-4E68-9DD1-FCF25DB81B7C.sonar.sourceEncoding",
+      "key": "889CAF2B-8252-48BB-B9A8-37020E637CE6.sonar.sourceEncoding",
       "value": "utf-8"
     },
     {
-      "key": "A16203BC-9766-4E68-9DD1-FCF25DB81B7C.sonar.sources",
+      "key": "889CAF2B-8252-48BB-B9A8-37020E637CE6.sonar.sources",
       "value": ""
     },
     {
-      "key": "A16203BC-9766-4E68-9DD1-FCF25DB81B7C.sonar.tests",
+      "key": "889CAF2B-8252-48BB-B9A8-37020E637CE6.sonar.tests",
       "value": "D:\\Facultate\\.NET\\ai-tutor\\tests\\AiTutor.UnitTests\\obj\\AiTutor.UnitTests.csproj.nuget.dgspec.json,D:\\Facultate\\.NET\\ai-tutor\\tests\\AiTutor.UnitTests\\obj\\project.assets.json,D:\\Facultate\\.NET\\ai-tutor\\tests\\AiTutor.UnitTests\\bin\\Debug\\net10.0\\AiTutor.API.deps.json,D:\\Facultate\\.NET\\ai-tutor\\tests\\AiTutor.UnitTests\\bin\\Debug\\net10.0\\AiTutor.API.runtimeconfig.json,D:\\Facultate\\.NET\\ai-tutor\\tests\\AiTutor.UnitTests\\bin\\Debug\\net10.0\\AiTutor.API.staticwebassets.endpoints.json,D:\\Facultate\\.NET\\ai-tutor\\tests\\AiTutor.UnitTests\\bin\\Debug\\net10.0\\AiTutor.UnitTests.deps.json,D:\\Facultate\\.NET\\ai-tutor\\tests\\AiTutor.UnitTests\\bin\\Debug\\net10.0\\AiTutor.UnitTests.runtimeconfig.json,D:\\Facultate\\.NET\\ai-tutor\\tests\\AiTutor.UnitTests\\bin\\Debug\\net10.0\\appsettings.Development.json,D:\\Facultate\\.NET\\ai-tutor\\tests\\AiTutor.UnitTests\\bin\\Debug\\net10.0\\appsettings.json,D:\\Facultate\\.NET\\ai-tutor\\tests\\AiTutor.UnitTests\\obj\\Debug\\net10.0\\AiTutor.UnitTests.sourcelink.json,D:\\Facultate\\.NET\\ai-tutor\\tests\\AiTutor.UnitTests\\API\\ExceptionHandlingMiddlewareTests.cs,D:\\Facultate\\.NET\\ai-tutor\\tests\\AiTutor.UnitTests\\Application\\AI\\AiQueryTests.cs,D:\\Facultate\\.NET\\ai-tutor\\tests\\AiTutor.UnitTests\\Application\\Classrooms\\ClassroomCommandHandlerTests.cs,D:\\Facultate\\.NET\\ai-tutor\\tests\\AiTutor.UnitTests\\Application\\Classrooms\\ClassroomCreateTests.cs,D:\\Facultate\\.NET\\ai-tutor\\tests\\AiTutor.UnitTests\\Application\\Classrooms\\ClassroomExtendedTests.cs,D:\\Facultate\\.NET\\ai-tutor\\tests\\AiTutor.UnitTests\\Application\\Classrooms\\ClassroomLessonQuizDeleteUpdateTests.cs,D:\\Facultate\\.NET\\ai-tutor\\tests\\AiTutor.UnitTests\\Application\\Classrooms\\ClassroomQueryByIdTests.cs,D:\\Facultate\\.NET\\ai-tutor\\tests\\AiTutor.UnitTests\\Application\\Common\\AllValidatorsTests.cs,D:\\Facultate\\.NET\\ai-tutor\\tests\\AiTutor.UnitTests\\Application\\Common\\ExceptionTests.cs,D:\\Facultate\\.NET\\ai-tutor\\tests\\AiTutor.UnitTests\\Application\\Common\\LoggingBehaviorTests.cs,D:\\Facultate\\.NET\\ai-tutor\\tests\\AiTutor.UnitTests\\Application\\Common\\PaginatedListTests.cs,D:\\Facultate\\.NET\\ai-tutor\\tests\\AiTutor.UnitTests\\Application\\Common\\ResultTests.cs,D:\\Facultate\\.NET\\ai-tutor\\tests\\AiTutor.UnitTests\\Application\\Common\\ValidationBehaviorTests.cs,D:\\Facultate\\.NET\\ai-tutor\\tests\\AiTutor.UnitTests\\Application\\Events\\EventHandlerTests.cs,D:\\Facultate\\.NET\\ai-tutor\\tests\\AiTutor.UnitTests\\Application\\Lessons\\CreateLessonCommandHandlerTests.cs,D:\\Facultate\\.NET\\ai-tutor\\tests\\AiTutor.UnitTests\\Application\\Lessons\\LessonTests.cs,D:\\Facultate\\.NET\\ai-tutor\\tests\\AiTutor.UnitTests\\Application\\Progress\\CompleteLessonCommandHandlerTests.cs,D:\\Facultate\\.NET\\ai-tutor\\tests\\AiTutor.UnitTests\\Application\\Progress\\ProgressTests.cs,D:\\Facultate\\.NET\\ai-tutor\\tests\\AiTutor.UnitTests\\Application\\Questions\\QuestionTests.cs,D:\\Facultate\\.NET\\ai-tutor\\tests\\AiTutor.UnitTests\\Application\\Quizzes\\QuizTests.cs,D:\\Facultate\\.NET\\ai-tutor\\tests\\AiTutor.UnitTests\\Application\\Subjects\\CreateSubjectCommandHandlerTests.cs,D:\\Facultate\\.NET\\ai-tutor\\tests\\AiTutor.UnitTests\\Application\\Subjects\\GetAllSubjectsHandlerTests.cs,D:\\Facultate\\.NET\\ai-tutor\\tests\\AiTutor.UnitTests\\Application\\Subscriptions\\CreateCheckoutSessionTests.cs,D:\\Facultate\\.NET\\ai-tutor\\tests\\AiTutor.UnitTests\\Application\\Subscriptions\\HandleStripeWebhookTests.cs,D:\\Facultate\\.NET\\ai-tutor\\tests\\AiTutor.UnitTests\\Application\\Subscriptions\\SubscriptionTests.cs,D:\\Facultate\\.NET\\ai-tutor\\tests\\AiTutor.UnitTests\\Application\\TestDbContext.cs,D:\\Facultate\\.NET\\ai-tutor\\tests\\AiTutor.UnitTests\\Application\\TestDbContextFactory.cs,D:\\Facultate\\.NET\\ai-tutor\\tests\\AiTutor.UnitTests\\Application\\Users\\CreateUserCommandHandlerTests.cs,D:\\Facultate\\.NET\\ai-tutor\\tests\\AiTutor.UnitTests\\Application\\Users\\CreateUserCommandValidatorTests.cs,D:\\Facultate\\.NET\\ai-tutor\\tests\\AiTutor.UnitTests\\Application\\Users\\GetStudentGradesTests.cs,D:\\Facultate\\.NET\\ai-tutor\\tests\\AiTutor.UnitTests\\Application\\Users\\ParentChildHandlerTests.cs,D:\\Facultate\\.NET\\ai-tutor\\tests\\AiTutor.UnitTests\\Application\\Users\\UserTests.cs,D:\\Facultate\\.NET\\ai-tutor\\tests\\AiTutor.UnitTests\\Domain\\EmailTests.cs,D:\\Facultate\\.NET\\ai-tutor\\tests\\AiTutor.UnitTests\\Domain\\LessonTests.cs,D:\\Facultate\\.NET\\ai-tutor\\tests\\AiTutor.UnitTests\\Domain\\StudentProgressTests.cs,D:\\Facultate\\.NET\\ai-tutor\\tests\\AiTutor.UnitTests\\Domain\\SubscriptionEntityTests.cs,D:\\Facultate\\.NET\\ai-tutor\\tests\\AiTutor.UnitTests\\Domain\\SubscriptionTests.cs,D:\\Facultate\\.NET\\ai-tutor\\tests\\AiTutor.UnitTests\\Domain\\UserTests.cs,D:\\Facultate\\.NET\\ai-tutor\\tests\\AiTutor.UnitTests\\Infrastructure\\CurrentUserServiceTests.cs,D:\\Facultate\\.NET\\ai-tutor\\tests\\AiTutor.UnitTests\\Infrastructure\\JwtServiceTests.cs"
     },
     {
-      "key": "A16203BC-9766-4E68-9DD1-FCF25DB81B7C.sonar.cs.analyzer.projectOutPaths",
+      "key": "889CAF2B-8252-48BB-B9A8-37020E637CE6.sonar.cs.analyzer.projectOutPaths",
       "value": "D:\\Facultate\\.NET\\ai-tutor\\.sonarqube\\out\\11"
     },
     {
-      "key": "A16203BC-9766-4E68-9DD1-FCF25DB81B7C.sonar.cs.roslyn.reportFilePaths",
+      "key": "889CAF2B-8252-48BB-B9A8-37020E637CE6.sonar.cs.roslyn.reportFilePaths",
       "value": "D:\\Facultate\\.NET\\ai-tutor\\.sonarqube\\out\\11\\Issues.json"
     },
     {
-      "key": "A16203BC-9766-4E68-9DD1-FCF25DB81B7C.sonar.cs.scanner.telemetry",
+      "key": "889CAF2B-8252-48BB-B9A8-37020E637CE6.sonar.cs.scanner.telemetry",
       "value": "D:\\Facultate\\.NET\\ai-tutor\\.sonarqube\\out\\11\\Telemetry.json"
     },
     {
       "key": "C9F027F3-572E-20EE-676B-9374D39F92F5.sonar.projectKey",
-      "value": "ai-tutor:C9F027F3-572E-20EE-676B-9374D39F92F5"
+      "value": "AiTutor:C9F027F3-572E-20EE-676B-9374D39F92F5"
     },
     {
       "key": "C9F027F3-572E-20EE-676B-9374D39F92F5.sonar.projectName",
@@ -246,7 +246,7 @@
     },
     {
       "key": "377DC975-AEED-64A3-AA98-2BC4E363D3CF.sonar.projectKey",
-      "value": "ai-tutor:377DC975-AEED-64A3-AA98-2BC4E363D3CF"
+      "value": "AiTutor:377DC975-AEED-64A3-AA98-2BC4E363D3CF"
     },
     {
       "key": "377DC975-AEED-64A3-AA98-2BC4E363D3CF.sonar.projectName",
@@ -286,7 +286,7 @@
     },
     {
       "key": "6F883BDD-0C0F-418A-B82C-47AF01646FC9.sonar.projectKey",
-      "value": "ai-tutor:6F883BDD-0C0F-418A-B82C-47AF01646FC9"
+      "value": "AiTutor:6F883BDD-0C0F-418A-B82C-47AF01646FC9"
     },
     {
       "key": "6F883BDD-0C0F-418A-B82C-47AF01646FC9.sonar.projectName",
@@ -326,7 +326,7 @@
     },
     {
       "key": "16DF284E-906E-1AE2-EB6D-8917873EBE33.sonar.projectKey",
-      "value": "ai-tutor:16DF284E-906E-1AE2-EB6D-8917873EBE33"
+      "value": "AiTutor:16DF284E-906E-1AE2-EB6D-8917873EBE33"
     },
     {
       "key": "16DF284E-906E-1AE2-EB6D-8917873EBE33.sonar.projectName",
@@ -366,7 +366,7 @@
     },
     {
       "key": "4C651A79-8038-C567-A753-D390919CE255.sonar.projectKey",
-      "value": "ai-tutor:4C651A79-8038-C567-A753-D390919CE255"
+      "value": "AiTutor:4C651A79-8038-C567-A753-D390919CE255"
     },
     {
       "key": "4C651A79-8038-C567-A753-D390919CE255.sonar.projectName",
@@ -405,123 +405,123 @@
       "value": "D:\\Facultate\\.NET\\ai-tutor\\.sonarqube\\out\\6\\Telemetry.json"
     },
     {
-      "key": "7E085627-A6D4-4208-BACA-FB28BB9834FA.sonar.projectKey",
-      "value": "ai-tutor:7E085627-A6D4-4208-BACA-FB28BB9834FA"
+      "key": "2C1AA72A-9CD3-41A0-B4CD-5846496E8C28.sonar.projectKey",
+      "value": "AiTutor:2C1AA72A-9CD3-41A0-B4CD-5846496E8C28"
     },
     {
-      "key": "7E085627-A6D4-4208-BACA-FB28BB9834FA.sonar.projectName",
+      "key": "2C1AA72A-9CD3-41A0-B4CD-5846496E8C28.sonar.projectName",
       "value": "AiTutor.Domain"
     },
     {
-      "key": "7E085627-A6D4-4208-BACA-FB28BB9834FA.sonar.projectBaseDir",
+      "key": "2C1AA72A-9CD3-41A0-B4CD-5846496E8C28.sonar.projectBaseDir",
       "value": "D:\\Facultate\\.NET\\ai-tutor\\src\\backend\\AiTutor.Domain"
     },
     {
-      "key": "7E085627-A6D4-4208-BACA-FB28BB9834FA.sonar.working.directory",
+      "key": "2C1AA72A-9CD3-41A0-B4CD-5846496E8C28.sonar.working.directory",
       "value": "D:\\Facultate\\.NET\\ai-tutor\\.sonarqube\\out\\.sonar\\mod9"
     },
     {
-      "key": "7E085627-A6D4-4208-BACA-FB28BB9834FA.sonar.sourceEncoding",
+      "key": "2C1AA72A-9CD3-41A0-B4CD-5846496E8C28.sonar.sourceEncoding",
       "value": "utf-8"
     },
     {
-      "key": "7E085627-A6D4-4208-BACA-FB28BB9834FA.sonar.tests",
+      "key": "2C1AA72A-9CD3-41A0-B4CD-5846496E8C28.sonar.tests",
       "value": ""
     },
     {
-      "key": "7E085627-A6D4-4208-BACA-FB28BB9834FA.sonar.sources",
+      "key": "2C1AA72A-9CD3-41A0-B4CD-5846496E8C28.sonar.sources",
       "value": ""
     },
     {
-      "key": "7E085627-A6D4-4208-BACA-FB28BB9834FA.sonar.cs.analyzer.projectOutPaths",
+      "key": "2C1AA72A-9CD3-41A0-B4CD-5846496E8C28.sonar.cs.analyzer.projectOutPaths",
       "value": "D:\\Facultate\\.NET\\ai-tutor\\.sonarqube\\out\\7"
     },
     {
-      "key": "7E085627-A6D4-4208-BACA-FB28BB9834FA.sonar.cs.roslyn.reportFilePaths",
+      "key": "2C1AA72A-9CD3-41A0-B4CD-5846496E8C28.sonar.cs.roslyn.reportFilePaths",
       "value": "D:\\Facultate\\.NET\\ai-tutor\\.sonarqube\\out\\7\\Issues.json"
     },
     {
-      "key": "7E085627-A6D4-4208-BACA-FB28BB9834FA.sonar.cs.scanner.telemetry",
+      "key": "2C1AA72A-9CD3-41A0-B4CD-5846496E8C28.sonar.cs.scanner.telemetry",
       "value": "D:\\Facultate\\.NET\\ai-tutor\\.sonarqube\\out\\7\\Telemetry.json"
     },
     {
-      "key": "4C31D3D1-D97E-48CF-82D1-10582C3D15B9.sonar.projectKey",
-      "value": "ai-tutor:4C31D3D1-D97E-48CF-82D1-10582C3D15B9"
+      "key": "92F7965A-77D7-46FD-A771-19B178D4BA97.sonar.projectKey",
+      "value": "AiTutor:92F7965A-77D7-46FD-A771-19B178D4BA97"
     },
     {
-      "key": "4C31D3D1-D97E-48CF-82D1-10582C3D15B9.sonar.projectName",
+      "key": "92F7965A-77D7-46FD-A771-19B178D4BA97.sonar.projectName",
       "value": "AiTutor.Application"
     },
     {
-      "key": "4C31D3D1-D97E-48CF-82D1-10582C3D15B9.sonar.projectBaseDir",
+      "key": "92F7965A-77D7-46FD-A771-19B178D4BA97.sonar.projectBaseDir",
       "value": "D:\\Facultate\\.NET\\ai-tutor\\src\\backend\\AiTutor.Application"
     },
     {
-      "key": "4C31D3D1-D97E-48CF-82D1-10582C3D15B9.sonar.working.directory",
+      "key": "92F7965A-77D7-46FD-A771-19B178D4BA97.sonar.working.directory",
       "value": "D:\\Facultate\\.NET\\ai-tutor\\.sonarqube\\out\\.sonar\\mod10"
     },
     {
-      "key": "4C31D3D1-D97E-48CF-82D1-10582C3D15B9.sonar.sourceEncoding",
+      "key": "92F7965A-77D7-46FD-A771-19B178D4BA97.sonar.sourceEncoding",
       "value": "utf-8"
     },
     {
-      "key": "4C31D3D1-D97E-48CF-82D1-10582C3D15B9.sonar.tests",
+      "key": "92F7965A-77D7-46FD-A771-19B178D4BA97.sonar.tests",
       "value": ""
     },
     {
-      "key": "4C31D3D1-D97E-48CF-82D1-10582C3D15B9.sonar.sources",
+      "key": "92F7965A-77D7-46FD-A771-19B178D4BA97.sonar.sources",
       "value": ""
     },
     {
-      "key": "4C31D3D1-D97E-48CF-82D1-10582C3D15B9.sonar.cs.analyzer.projectOutPaths",
+      "key": "92F7965A-77D7-46FD-A771-19B178D4BA97.sonar.cs.analyzer.projectOutPaths",
       "value": "D:\\Facultate\\.NET\\ai-tutor\\.sonarqube\\out\\8"
     },
     {
-      "key": "4C31D3D1-D97E-48CF-82D1-10582C3D15B9.sonar.cs.roslyn.reportFilePaths",
+      "key": "92F7965A-77D7-46FD-A771-19B178D4BA97.sonar.cs.roslyn.reportFilePaths",
       "value": "D:\\Facultate\\.NET\\ai-tutor\\.sonarqube\\out\\8\\Issues.json"
     },
     {
-      "key": "4C31D3D1-D97E-48CF-82D1-10582C3D15B9.sonar.cs.scanner.telemetry",
+      "key": "92F7965A-77D7-46FD-A771-19B178D4BA97.sonar.cs.scanner.telemetry",
       "value": "D:\\Facultate\\.NET\\ai-tutor\\.sonarqube\\out\\8\\Telemetry.json"
     },
     {
-      "key": "612D0601-613C-43C9-9D74-44770E447FB0.sonar.projectKey",
-      "value": "ai-tutor:612D0601-613C-43C9-9D74-44770E447FB0"
+      "key": "EBFBF900-79E5-431E-8883-4D3C3E03AE44.sonar.projectKey",
+      "value": "AiTutor:EBFBF900-79E5-431E-8883-4D3C3E03AE44"
     },
     {
-      "key": "612D0601-613C-43C9-9D74-44770E447FB0.sonar.projectName",
+      "key": "EBFBF900-79E5-431E-8883-4D3C3E03AE44.sonar.projectName",
       "value": "AiTutor.Infrastructure"
     },
     {
-      "key": "612D0601-613C-43C9-9D74-44770E447FB0.sonar.projectBaseDir",
+      "key": "EBFBF900-79E5-431E-8883-4D3C3E03AE44.sonar.projectBaseDir",
       "value": "D:\\Facultate\\.NET\\ai-tutor\\src\\backend\\AiTutor.Infrastructure"
     },
     {
-      "key": "612D0601-613C-43C9-9D74-44770E447FB0.sonar.working.directory",
+      "key": "EBFBF900-79E5-431E-8883-4D3C3E03AE44.sonar.working.directory",
       "value": "D:\\Facultate\\.NET\\ai-tutor\\.sonarqube\\out\\.sonar\\mod11"
     },
     {
-      "key": "612D0601-613C-43C9-9D74-44770E447FB0.sonar.sourceEncoding",
+      "key": "EBFBF900-79E5-431E-8883-4D3C3E03AE44.sonar.sourceEncoding",
       "value": "utf-8"
     },
     {
-      "key": "612D0601-613C-43C9-9D74-44770E447FB0.sonar.tests",
+      "key": "EBFBF900-79E5-431E-8883-4D3C3E03AE44.sonar.tests",
       "value": ""
     },
     {
-      "key": "612D0601-613C-43C9-9D74-44770E447FB0.sonar.sources",
+      "key": "EBFBF900-79E5-431E-8883-4D3C3E03AE44.sonar.sources",
       "value": ""
     },
     {
-      "key": "612D0601-613C-43C9-9D74-44770E447FB0.sonar.cs.analyzer.projectOutPaths",
+      "key": "EBFBF900-79E5-431E-8883-4D3C3E03AE44.sonar.cs.analyzer.projectOutPaths",
       "value": "D:\\Facultate\\.NET\\ai-tutor\\.sonarqube\\out\\9"
     },
     {
-      "key": "612D0601-613C-43C9-9D74-44770E447FB0.sonar.cs.roslyn.reportFilePaths",
+      "key": "EBFBF900-79E5-431E-8883-4D3C3E03AE44.sonar.cs.roslyn.reportFilePaths",
       "value": "D:\\Facultate\\.NET\\ai-tutor\\.sonarqube\\out\\9\\Issues.json"
     },
     {
-      "key": "612D0601-613C-43C9-9D74-44770E447FB0.sonar.cs.scanner.telemetry",
+      "key": "EBFBF900-79E5-431E-8883-4D3C3E03AE44.sonar.cs.scanner.telemetry",
       "value": "D:\\Facultate\\.NET\\ai-tutor\\.sonarqube\\out\\9\\Telemetry.json"
     },
     {

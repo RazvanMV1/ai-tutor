@@ -2,13 +2,6 @@
 
 An educational platform that uses AI to help Romanian primary and middle school students learn at their own pace.
 
-[![CI/CD](https://github.com/RazvanMV1/ai-tutor/actions/workflows/ci.yml/badge.svg)](https://github.com/RazvanMV1/ai-tutor/actions)
-[![Quality Gate Status](https://sonarcloud.io/api/project_badges/measure?project=RazvanMV1_ai-tutor&metric=alert_status)](https://sonarcloud.io/project/overview?id=RazvanMV1_ai-tutor)
-[![Coverage](https://sonarcloud.io/api/project_badges/measure?project=RazvanMV1_ai-tutor&metric=coverage)](https://sonarcloud.io/project/overview?id=RazvanMV1_ai-tutor)
-[![Reliability Rating](https://sonarcloud.io/api/project_badges/measure?project=RazvanMV1_ai-tutor&metric=reliability_rating)](https://sonarcloud.io/project/overview?id=RazvanMV1_ai-tutor)
-[![Security Rating](https://sonarcloud.io/api/project_badges/measure?project=RazvanMV1_ai-tutor&metric=security_rating)](https://sonarcloud.io/project/overview?id=RazvanMV1_ai-tutor)
-[![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](https://opensource.org/licenses/MIT)
-
 ## About
 
 AI Tutor started from a simple observation: kids learn at very different speeds, and a textbook can't adapt to each of them. The platform covers Mathematics, Romanian language, and Computer Science for primary and middle school students, and the part that makes it different from a regular e-learning site is the AI tutor itself. Using Google Gemini, the app generates explanations tailored to the student's age and level, so the same topic, fractions for instance, gets explained one way to a 4th grader and a completely different way to an 8th grader.
